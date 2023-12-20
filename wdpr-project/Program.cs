@@ -1,8 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using wdpr_project;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+
+var connectionString = builder.Configuration.GetConnectionString("WdprContext");
+
+builder.Services.AddDbContext<WdprDbContext>(options =>
+    options.UseSqlite(connectionString));
 
 var app = builder.Build();
 
