@@ -1,7 +1,7 @@
-Bla bla bal
 
 # link naar website
-
+<<<<<<< HEAD
+https://stichtingaccessebility.azurewebsites.net/
 
 commands om het project up to date krijgen voor .NET 6
 
@@ -15,3 +15,6 @@ commands om het project up to date krijgen voor .NET 6
 - dotnet ef database update
 
 -  dotnet add package MySql.EntityFrameworkCore --version 6.0.0 (azure database)
+=======
+
+>>>>>>> main
