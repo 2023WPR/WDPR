@@ -4,12 +4,16 @@
   word-break: break-all;
 }
 
+.logo {
+  max-width: 150px; 
+}
+
 html {
-  font-size: 14px;
+  font-size: 1px;
 }
 @media (min-width: 768px) {
   html {
-    font-size: 16px;
+    font-size: 17px;
   }
 }
 
