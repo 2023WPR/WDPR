@@ -14,25 +14,72 @@ public class UserController : ControllerBase
     {
         _userService = userService;
     }
+    
+    //Expert
 
-    /*
-    [HttpPost("User")]
-    public async Task<ActionResult<User>> PostUser(User user)
+    [HttpPost("Expert")]
+    public async Task<ActionResult<ExpertDetailDTO>> PostExpert(Expert expert)
     {
-        return await _userService.CreateUser(user);
+        return await _userService.CreateExpert(expert);
     }
 
-    [HttpGet("User")]
-    public async Task<ActionResult<IEnumerable<User>>> ListUsers()
+    [HttpGet("Expert")]
+    public async Task<ActionResult<IEnumerable<ExpertBaseDTO>>> ListExperts()
     {
-        return await _userService.GetUserList();
+        return await _userService.GetExpertList();
     }
 
-    [HttpGet("User/{id}")]
-    public async Task<ActionResult<User>> GetUser(int id)
+    [HttpGet("Expert/{id}")]
+    public async Task<ActionResult<ExpertDetailDTO>> GetExpert(int id)
     {
-        return await _userService.GetUser(id);
-    }*/
+        return await _userService.GetExpert(id);
+    }
+
+    [HttpPut("Expert/{id}")]
+    public async Task<ActionResult> UpdateExpert(int id, Expert expert)
+    {
+        return await _userService.UpdateExpert(id, expert);
+    }
+
+    [HttpDelete("Expert/{id}")]
+    public async Task<ActionResult> DeleteExpert(int id)
+    {
+        return await _userService.DeleteExpert(id);
+    }
+    
+    //Business
+
+    [HttpPost("Business")]
+    public async Task<ActionResult<BusinessDTO>> PostBusiness(Business business)
+    {
+        return await _userService.CreateBusiness(business);
+    }
+
+    [HttpGet("Business")]
+    public async Task<ActionResult<IEnumerable<BusinessDTO>>> ListBusinesss()
+    {
+        return await _userService.GetBusinessList();
+    }
+
+    [HttpGet("Business/{id}")]
+    public async Task<ActionResult<BusinessDTO>> GetBusiness(int id)
+    {
+        return await _userService.GetBusiness(id);
+    }
+
+    [HttpPut("Business/{id}")]
+    public async Task<ActionResult> UpdateBusiness(int id, Business business)
+    {
+        return await _userService.UpdateBusiness(id, business);
+    }
+
+    [HttpDelete("Business/{id}")]
+    public async Task<ActionResult> DeleteBusiness(int id)
+    {
+        return await _userService.DeleteBusiness(id);
+    }
+    
+    //Admin
 
     [HttpPost("Admin")]
     public async Task<ActionResult<AdminDTO>> PostAdmin(Admin Admin)

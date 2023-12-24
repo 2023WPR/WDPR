@@ -10,23 +10,27 @@ public interface IUserService
     public Task<ActionResult<IEnumerable<User>>> GetUserList();
     public Task<ActionResult<User>> GetUser(int id);
     public void UpdateUser(int id, User updatedUser);
-    public void DeleteUser(int id);
+    public void DeleteUser(int id);*/
 
-    public int CreateExpert(Expert expert);
-    public Expert GetExpert(int id);
-    public void UpdateExpert(int id, Expert updatedExpert);
-    public void DeleteExpert(int id);
+    public Task<ActionResult<ExpertDetailDTO>> CreateExpert(Expert expert);
+    public Task<ActionResult<IEnumerable<ExpertBaseDTO>>> GetExpertList();
+    public Task<ActionResult<ExpertDetailDTO>> GetExpert(int id);
+    public Task<ActionResult> UpdateExpert(int id, Expert updatedExpert);
+    public Task<ActionResult> DeleteExpert(int id);
 
-    public int CreatePersonalData(PersonalData personalData);
+    //TODO: Remove PersonalData from UML: Data accessed via /Expert endpoint
+/*    public int CreatePersonalData(PersonalData personalData);
     public PersonalData GetPersonalData(int id);
     public void UpdatePersonalData(int id, PersonalData updatedPersonalData);
     public void DeletePersonalData(int id);
-
-    public int CreateBusiness(Business business);
-    public Business GetBusiness(int id);
-    public void UpdateBusiness(int id, Business updatedBusiness);
-    public void DeleteBusiness(int id){}
 */
+
+    public Task<ActionResult<BusinessDTO>> CreateBusiness(Business business);
+    public Task<ActionResult<IEnumerable<BusinessDTO>>> GetBusinessList();
+    public Task<ActionResult<BusinessDTO>> GetBusiness(int id);
+    public Task<ActionResult> UpdateBusiness(int id, Business updatedBusiness);
+    public Task<ActionResult> DeleteBusiness(int id);
+    
     public Task<ActionResult<AdminDTO>> CreateAdmin(Admin admin);
     public Task<ActionResult<IEnumerable<AdminDTO>>> GetAdminList();
     public Task<ActionResult<AdminDTO>> GetAdmin(int id);

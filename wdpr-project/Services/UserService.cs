@@ -20,6 +20,8 @@ public class UserService : IUserService
         _mapper = mapper;
     }
 
+    //Expert
+    
     public async Task<ActionResult<ExpertDetailDTO>> CreateExpert(Expert expert)
     {
         _dbContext.Experts.Add(expert);
@@ -47,7 +49,12 @@ public class UserService : IUserService
             return new NotFoundResult();
         }
 
-        var expert = await _dbContext.Experts.FindAsync(id);
+        var expert = await _dbContext.Experts
+            .Include(e => e.PersonalData)
+            .Include(e => e.Caretaker)
+            .Include(e => e.Disabilities).AsSplitQuery()
+            .Include(e => e.Aids).AsSplitQuery()
+            .FirstOrDefaultAsync(e => e.Id == id);
 
         if (expert is null)
         {
@@ -112,6 +119,105 @@ public class UserService : IUserService
 
         return new NoContentResult();
     }
+    
+    //Business
+
+    public async Task<ActionResult<BusinessDTO>> CreateBusiness(Business business)
+    {
+        _dbContext.Businesses.Add(business);
+        await _dbContext.SaveChangesAsync();
+        
+        return new CreatedAtActionResult(nameof(GetBusiness), nameof(UserController), new { id = business.Id }, business);
+    }
+
+    public async Task<ActionResult<IEnumerable<BusinessDTO>>> GetBusinessList()
+    {
+        if (_dbContext.Businesses is null)
+        {
+            return new NotFoundResult();
+        }
+
+        return await _dbContext.Businesses
+            .ProjectTo<BusinessDTO>(_mapper.ConfigurationProvider)
+            .ToListAsync();
+    }
+
+    public async Task<ActionResult<BusinessDTO>> GetBusiness(int id)
+    {
+        if (_dbContext.Businesses is null)
+        {
+            return new NotFoundResult();
+        }
+
+        var business = await _dbContext.Businesses
+            .Include(b => b.Address)
+            .FirstOrDefaultAsync(b => b.Id == id);
+
+        if (business is null)
+        {
+            return new NotFoundResult();
+        }
+
+        return _mapper.Map<BusinessDTO>(business);
+    }
+
+    public async Task<ActionResult> UpdateBusiness(int id, Business business)
+    {
+        if (id != business.Id)
+        {
+            return new BadRequestResult();
+        }
+
+        _dbContext.Entry(business).State = EntityState.Modified;
+
+        try
+        {
+            await _dbContext.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!(_dbContext.Businesses?.Any(e => e.Id == id)).GetValueOrDefault())
+            {
+                return new NotFoundResult();
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        return new NoContentResult();
+    }
+
+    public async Task<ActionResult> DeleteBusiness(int id)
+    {
+        if (_dbContext.Businesses is null)
+        {
+            return new NotFoundResult();
+        }
+
+        var business = new Business(id);
+        _dbContext.Businesses.Remove(business);
+        try
+        {
+            await _dbContext.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!(_dbContext.Businesses?.Any(e => e.Id == id)).GetValueOrDefault())
+            {
+                return new NotFoundResult();
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        return new NoContentResult();
+    }
+    
+    //Admin
 
     public async Task<ActionResult<AdminDTO>> CreateAdmin(Admin admin)
     {
