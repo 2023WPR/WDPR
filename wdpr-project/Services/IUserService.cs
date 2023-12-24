@@ -1,31 +1,35 @@
-﻿using wdpr_project.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using wdpr_project.Models;
 
 namespace wdpr_project.Services;
 
 public interface IUserService
 {
-    public Guid CreateUser(User user);
-    public User GetUser(Guid id);
-    public void UpdateUser(Guid id, User updatedUser);
-    public void DeleteUser(Guid id);
+    //TODO: Remove User from UML: User does not need it's own API endpoint
+    /*public Task<ActionResult<User>> CreateUser(User user);
+    public Task<ActionResult<IEnumerable<User>>> GetUserList();
+    public Task<ActionResult<User>> GetUser(int id);
+    public void UpdateUser(int id, User updatedUser);
+    public void DeleteUser(int id);
 
-    public Guid CreateExpert(Expert expert);
-    public Expert GetExpert(Guid id);
-    public void UpdateExpert(Guid id, Expert updatedExpert);
-    public void DeleteExpert(Guid id);
+    public int CreateExpert(Expert expert);
+    public Expert GetExpert(int id);
+    public void UpdateExpert(int id, Expert updatedExpert);
+    public void DeleteExpert(int id);
 
-    public Guid CreatePerson(Person person);
-    public Person GetPerson(Guid id);
-    public void UpdatePerson(Guid id, Person updatedPerson);
-    public void DeletePerson(Guid id);
+    public int CreatePersonalData(PersonalData personalData);
+    public PersonalData GetPersonalData(int id);
+    public void UpdatePersonalData(int id, PersonalData updatedPersonalData);
+    public void DeletePersonalData(int id);
 
-    public Guid CreateBusiness(Business business);
-    public Business GetBusiness(Guid id);
-    public void UpdateBusiness(Guid id, Business updatedBusiness);
-    public void DeleteBusiness(Guid id){}
-
-    public Guid CreateAdmin(Admin admin);
-    public Admin GetAdmin(Guid id);
-    public void UpdateAdmin(Guid id, Admin updatedAdmin);
-    public void DeleteAdmin(Guid id);
+    public int CreateBusiness(Business business);
+    public Business GetBusiness(int id);
+    public void UpdateBusiness(int id, Business updatedBusiness);
+    public void DeleteBusiness(int id){}
+*/
+    public Task<ActionResult<AdminDTO>> CreateAdmin(Admin admin);
+    public Task<ActionResult<IEnumerable<AdminDTO>>> GetAdminList();
+    public Task<ActionResult<AdminDTO>> GetAdmin(int id);
+    public Task<ActionResult> UpdateAdmin(int id, Admin updatedAdmin);
+    public Task<ActionResult> DeleteAdmin(int id);
 }

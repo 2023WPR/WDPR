@@ -2,10 +2,12 @@
 
 public class Address
 {
-    private Guid AddressId { get; set; } //TODO add to UML | added as a foreign key, because a composite key is not guaranteed to be unique
-    private string Postcode { get; set; }
-    private int HouseNumber { get; set; }
-    private string Addition { get; set; }
+    public int Id { get; set; } //TODO add to UML | added as a foreign key, because a composite key is not guaranteed to be unique
+    public string Postcode { get; set; }
+    public int HouseNumber { get; set; }
+    public string Addition { get; set; }
+
+    public Address(){}
 
     public Address(string postcode, int houseNumber, string addition = "")
     {
