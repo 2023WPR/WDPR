@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using wdpr_project.Data;
+using wdpr_project.Models;
 using wdpr_project.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,8 +16,9 @@ builder.Services.AddSwaggerGen();
 // AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-// Custom services
+builder.Services.AddSignalR();
 
+// Custom services
 builder.Services.AddScoped<IUserService, UserService>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -29,6 +31,11 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors(x => x
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .SetIsOriginAllowed(origin => true) // allow any origin
+        .AllowCredentials());
 }
 
 // Configure the HTTP request pipeline.
@@ -41,7 +48,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
+app.UseHttpsRedirection();
+app.MapHub<ChatHub>("/ChatHub");
 
 app.MapControllerRoute(
     name: "default",
