@@ -17,6 +17,17 @@ public class Address
         HouseNumber = houseNumber;
         Addition = addition;
     }
+
+    public void UpdateFields(Address updated)
+    {
+        if (updated.Id != Id)
+        {
+            return; //TODO: Throw error?
+        }
+        Postcode = updated.Postcode;
+        HouseNumber = updated.HouseNumber;
+        Addition = updated.Addition;
+    }
 }
 
 public class AddressDTO
