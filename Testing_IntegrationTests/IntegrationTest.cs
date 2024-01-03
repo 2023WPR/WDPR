@@ -5,6 +5,7 @@ using wdpr_project.Data;
 
 namespace Testing_IntegrationTests;
 
+[Trait("Category", "Integration")]
 public abstract class IntegrationTest: IClassFixture<ApiWebApplicationFactory>
 {
     private readonly RespawnerOptions _respawnerOptions = new RespawnerOptions {
