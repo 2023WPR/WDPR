@@ -56,7 +56,7 @@ export class Chat extends Component {
     };
 
     render() {
-        const { user, message, messages } = this.state;
+        const {  message, messages } = this.state;
 
         return (
             <div className="chat-container">

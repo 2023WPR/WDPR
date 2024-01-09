@@ -14,8 +14,9 @@ export class Register extends Component {
     }
 
     render(){
+        
         return(
-           <a>aaaaa</a> 
+           <a href='linkHref'>aaaaa</a> 
         );
     }
 }
