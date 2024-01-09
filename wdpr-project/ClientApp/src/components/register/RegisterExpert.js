@@ -4,6 +4,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import '../register/register.css';
 import axios from 'axios';
+import ToggleButton from 'react-bootstrap/ToggleButton';
+import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 
 export class RegisterExpert extends Component {
     static displayName = RegisterExpert.name;
@@ -20,9 +22,13 @@ export class RegisterExpert extends Component {
             street:'',
             state:'',
             phoneNumber:'',
-            switch:'',
-            username:'',
-            password:''
+            switchP:'',
+            switchT:'',
+            UserName:'',
+            password:'',
+            city:'',
+            email:'',
+            aid:''
         };
         this.submit = this.submit.bind(this);
         this.handleNameChange = this.handleNameChange.bind(this);
@@ -33,18 +39,17 @@ export class RegisterExpert extends Component {
         this.handleHomeStreetChange = this.handleHomeStreetChange.bind(this);
         this.handleStateChange = this.handleStateChange.bind(this);
         this.handlePhoneNumberChange = this.handlePhoneNumberChange.bind(this);
-        this.handleUsernameChange = this.handleUsernameChange.bind(this);
+        this.handleUserNameChange = this.handleUserNameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
-        this.handleSwitchChange = this.handleSwitchChange.bind(this);
+        this.handleCityChange = this.handleCityChange.bind(this);
+        this.handleEmailChange = this.handleEmailChange.bind(this);
+        this.handleAidChange = this.handleAidChange.bind(this);
       }
-      handleUsernameChange = (event) => {
-        this.setState({ username: event.target.value });
+      handleUserNameChange = (event) => {
+        this.setState({ UserName: event.target.value });
       };
       handlePasswordChange = (event) => {
         this.setState({ password: event.target.value });
-      };
-      handleSwitchChange = (event) => {
-        this.setState({ switch: event.target.value });
       };
       handlePhoneNumberChange = (event) => {
         this.setState({ phoneNumber: event.target.value });
@@ -70,6 +75,25 @@ export class RegisterExpert extends Component {
       handleLastNameChange = (event) => {
         this.setState({ lastName: event.target.value });
       };
+      handleCityChange = (event) => {
+        this.setState({ city: event.target.value });
+      };
+      handleEmailChange = (event) => {
+        this.setState({ email: event.target.value });
+      };
+      handleAidChange = (event) => {
+        this.setState({ email: event.target.value });
+      };
+
+      handleAgeChange = (event) => {
+        let newAge = event.target.value;
+        if (newAge < 0) {
+          newAge = 0;
+        } else if (newAge > 100) {
+          newAge = 100;
+        }
+        this.setState({ age: newAge });
+      };
 
       nextPage = () => {
         this.setState((prevState) => ({
@@ -84,34 +108,44 @@ export class RegisterExpert extends Component {
       };
 
       submit = () => {
-        const backendEndpoint = 'http://localhost:5192/register';  // Adjust the endpoint accordingly
-      
-        // Get form data or construct the data you want to send to the backend
+        const backendEndpoint = 'http://localhost:5192/Expert';  
         const formData = {
-          name: this.state.name,
-          middelName: this.state.middelName,
-          lastName: this.state.lastName,
-          postCode: this.state.postCode,
-          homeNumber: this.state.homeNumber,
-          street: this.state.street,
-          state: this.state.state,
-          phoneNumber: this.state.phoneNumber,
-          switch: this.state.switch,  // Assuming you have a switch state
-          username: this.state.username,
-          password: this.state.password,
+          UserName: this.state.UserName,
+          Password: this.state.password,
+          ContactByPhone:  true, 
+          ContactByThirdParty: true, 
+          Disabilities: [
+            {
+              Type: "Visual Impairment",
+              Description: "Some description about the visual impairment"
+            }
+          ],
+          Aids: [
+            {
+              Description: this.state.aid
+            }
+          ],
+          PersonalData: {
+            Firstname: this.state.name,
+            Middlenames: this.state.middelName,  
+            Lastname: this.state.lastName,
+            Emailaddress: this.state.email,
+            Phonenumber: this.state.phoneNumber,
+            Age: this.state.age,
+            Address: {
+              Street: this.state.street,
+              City: this.state.city,  
+              State: this.state.state,  
+              Postcode: this.state.postCode
+            }
+          }
         };
-      
-        // Use axios to send the data to the backend
         axios.post(backendEndpoint, formData)
           .then(response => {
             console.log('Backend response:', response.data);
-      
-            // Optionally, you can handle success scenarios here, e.g., show a success message
           })
           .catch(error => {
             console.error('Error submitting form to backend:', error);
-      
-            // Optionally, you can handle error scenarios here, e.g., show an error message
           });
       };      
 
@@ -135,6 +169,18 @@ export class RegisterExpert extends Component {
                         <Form.Label>Vul je achternaam in</Form.Label>
                         <Form.Control type="lastName" value={this.state.lastName} onChange={this.handleLastNameChange} placeholder="vul in achternaam"/>
                     </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicAge">
+                        <Form.Label>Vul je leeftijd in</Form.Label>
+                        <Form.Control type="number" min="0" max="100" value={this.state.age} onChange={this.handleAgeChange} placeholder="vul in leeftijd"/>
+                    </Form.Group>
+                    <Form.Group className="mb-3 " controlId="formBasicPhoneNumber">
+                        <Form.Label>Vul je telefoonnummer in </Form.Label>
+                        <Form.Control type="phoneNumber" value={this.state.phoneNumber} onChange={this.handlePhoneNumberChange} placeholder="vul in telefoonnummer" />
+                    </Form.Group>
+                    <Form.Group className="mb-3 " controlId="formBasicEmail">
+                        <Form.Label>Vul je email adres in </Form.Label>
+                        <Form.Control type="email" value={this.state.email} onChange={this.handleEmailChange} placeholder="vul in email" />
+                    </Form.Group>
                     <Button variant="primary" type="button" onClick={this.nextPage}> Volgende </Button>
                 </>
             )}
@@ -147,33 +193,58 @@ export class RegisterExpert extends Component {
                         <Form.Control type="homeNumber" value={this.state.homeNumber} onChange={this.handleHomeNumberChange} placeholder="vul in Huisnummer" />
                         <Form.Label>Vul je Straatnaam in</Form.Label>
                         <Form.Control type="street" value={this.state.street} onChange={this.handleHomeStreetChange} placeholder="vul in straatnaam " />
+                        <Form.Label>Vul je stad in</Form.Label>
+                        <Form.Control type="city" value={this.state.city} onChange={this.handleCityChange} placeholder="vul in stad" />
                         <Form.Label>Vul je provincie in</Form.Label>
                         <Form.Control type="state" value={this.state.state} onChange={this.handleStateChange} placeholder="vul in provincie" />
-                    </Form.Group>
-                    <Form.Group className="mb-3 " controlId="formBasicPhoneNumber">
-                        <Form.Label>Wilt u telefonisch benaderd worden? </Form.Label>
-                        <Form.Control type="phoneNumber" value={this.state.phoneNumber} onChange={this.handlePhoneNumberChange} placeholder="vul in telefoonnummer" />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicThirdParty">
-                        <Form.Label>Wilt u derde partijen de mogelijkheid geven om contact met u op te nemen</Form.Label>
-                        <Form.Check  type="switch" id="custom-switch" checked={this.state.switch} onChange={(e) => this.setState({ switch: e.target.checked })}/>
                     </Form.Group>
                     <Button variant="primary" type="button" onClick={this.previousPage }> Vorige </Button>
                     <Button variant="primary" type="button" onClick={this.nextPage}> Volgende</Button>
                 </>
              )}  
-            {currentPage === 3 && (
+              {currentPage === 3 && (
                 <>
-                    <Form.Group className="mb-3" controlId="formBasicUsername">
+                    <Form.Group className="mb-3" controlId="formBasicDisabilities">
+                        <Form.Label>Vul je beperkingen in</Form.Label>
+                        <Form.Control type="disabilities" value={this.state.disabilities} onChange={this.handleDisabilitiesChange} placeholder="vul in beperkingen" />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicAid">
+                        <Form.Label>Vul je hulpmiddelen in</Form.Label>
+                        <Form.Control type="aid" value={this.state.aid} onChange={this.handleAidChange} placeholder="vul in hulpmiddelen" />
+                    </Form.Group>
+                    <>
+                    <Form.Group className="mb-3" controlId="formBasicDaysOfWeek">
+                      <Form.Label>Select days of the week</Form.Label>
+                      <ToggleButtonGroup
+                        type="checkbox"
+                        value={this.state.selectedDays}
+                        onChange={(selectedDays) => this.setState({ selectedDays })}
+                      >
+                        {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day, index) => (
+                          <ToggleButton key={index} value={day}>
+                            {day}
+                          </ToggleButton>
+                        ))}
+                      </ToggleButtonGroup>
+                    </Form.Group>
+                    <br />
+                  </>
+                    <Button variant="primary" type="button" onClick={this.previousPage }> Vorige </Button>
+                    <Button variant="primary" type="button"  onClick={this.nextPage}> Volgende </Button>
+                </>
+             )}  
+            {currentPage === 4 && (
+                <>
+                    <Form.Group className="mb-3" controlId="formBasicUserName">
                         <Form.Label>Vul je gebruikersnaam in</Form.Label>
-                        <Form.Control type="username" value={this.state.username} onChange={this.handleUsernameChange} placeholder="vul in gebruikersnaam" />
+                        <Form.Control type="UserName" value={this.state.UserName} onChange={this.handleUserNameChange} placeholder="vul in gebruikersnaam" />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicPassword">
                         <Form.Label>Vul je wachtwoord in</Form.Label>
                         <Form.Control type="password" value={this.state.password} onChange={this.handlePasswordChange} placeholder="vul in wachtwoord" />
                     </Form.Group>
                     <Button variant="primary" type="button" onClick={this.previousPage }> Vorige </Button>
-                    <Button variant="primary" type="button"  onClick={this.submit}> Registreer </Button>
+                    <Button variant="primary" type="button" href="/" onClick={this.submit}> Registreer </Button>
                 </>
              )}  
             </Form> 

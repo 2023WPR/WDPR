@@ -1,11 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using wdpr_project.Models;
 
 namespace wdpr_project.Data
 {
-    public class ApplicationDbContext : DbContext
+     public class ApplicationDbContext : IdentityDbContext<User>
     {
-        public ApplicationDbContext(DbContextOptions options) : base(options) 
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) 
         {
         }
         public DbSet<User> Users { get; set; }
@@ -30,20 +32,13 @@ namespace wdpr_project.Data
             modelBuilder.Entity<Business>().HasBaseType<User>();
             modelBuilder.Entity<Expert>().HasBaseType<User>();
 
-            modelBuilder.Entity<ResearchCriterium>()
-                .HasOne(rc => rc.Research)
-                .WithOne(r => r.ResearchCriterium)
-                .HasForeignKey<ResearchCriterium>(rc => rc.ResearchId);
+             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ResearchCriterium>()
-                .HasOne(rc => rc.Address)
-                .WithMany()  
-                .HasForeignKey(rc => rc.AddressId);
-
-            modelBuilder.Entity<ResearchCriterium>()
-                .HasOne(rc => rc.Disability)
-                .WithMany()  
-                .HasForeignKey(rc => rc.DisabilityId);
+            // Specify primary key for IdentityUserLogin<string>
+            modelBuilder.Entity<IdentityUserLogin<string>>(entity =>
+            {
+                entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
+            });
         }
 
     }

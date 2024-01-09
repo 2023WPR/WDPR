@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using wdpr_project.Controllers;
@@ -13,23 +14,42 @@ public class UserService : IUserService
 
     private readonly ApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
-
-    public UserService(ApplicationDbContext dbContext, IMapper mapper)
+    private readonly UserManager<User> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
+    public UserService(ApplicationDbContext dbContext, IMapper mapper, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
     {
         _dbContext = dbContext;
         _mapper = mapper;
+        _roleManager = roleManager;
+        _userManager = userManager;
     }
 
     //Expert
     
     public async Task<ActionResult<ExpertDetailDTO>> CreateExpert(Expert expert)
     {
-        _dbContext.Experts.Add(expert);
-        await _dbContext.SaveChangesAsync();
-        
-        return new CreatedAtActionResult(nameof(GetExpert), nameof(UserController), new { id = expert.Id }, expert);
+      Console.WriteLine("ddd");
+    if (!await _roleManager.RoleExistsAsync("Expert"))
+    {
+        await _roleManager.CreateAsync(new IdentityRole { Name = "Expert" });
+      Console.WriteLine("ddd1");
+
     }
 
+    // Create the user if it doesn't exist
+    var result = await _userManager.CreateAsync(expert, expert.Password);
+    if (result.Succeeded)
+    {
+      Console.WriteLine("ddd3");
+
+        // Add the user to the "Expert" role
+        await _userManager.AddToRoleAsync(expert, "Expert");
+
+        return new CreatedAtActionResult(nameof(GetExpert), nameof(UserController), new { id = expert.Id }, expert);
+    }
+            return new NotFoundResult();
+
+    }
     public async Task<ActionResult<IEnumerable<ExpertBaseDTO>>> GetExpertList()
     {
         if (_dbContext.Experts is null)

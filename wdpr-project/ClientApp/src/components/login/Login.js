@@ -10,11 +10,11 @@ export class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          username: '',
+          Username: '',
           password: '',
         };
         this.submit = this.submit.bind(this);
-        this.handleUsernameChange = this.handleUsernameChange.bind(this);
+        this.handleUserNameChange = this.handleUserNameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
       }
 
@@ -22,8 +22,8 @@ export class Login extends Component {
         const backendEndpoint = 'http://localhost:5192/login';
         // Get form data or construct the data you want to send to the backend
         const formData = {
-          username: this.state.username,
-          password: this.state.password,
+          UserName: this.state.Username,
+          Password: this.state.password,
         };
         axios.post(backendEndpoint, formData)
           .then(response => {
@@ -34,8 +34,8 @@ export class Login extends Component {
           })
     }
 
-    handleUsernameChange = (event) => {
-        this.setState({ username: event.target.value });
+    handleUserNameChange = (event) => {
+        this.setState({ Username: event.target.value });
       };
     
       handlePasswordChange = (event) => {
@@ -46,9 +46,9 @@ export class Login extends Component {
         return(
             <Form>
                 <script src="https://accounts.google.com/gsi/client" async defer></script>
-                <Form.Group className="mb-3 " controlId="formBasicUsername">
+                <Form.Group className="mb-3 " controlId="formBasicUserName">
                     <Form.Label>Vul je gebruikersnaam in</Form.Label>
-                    <Form.Control type="username" value={this.state.username} onChange={this.handleUsernameChange} placeholder="vul in gebruikersnaam" />
+                    <Form.Control type="Username" value={this.state.Username} onChange={this.handleUserNameChange} placeholder="vul in gebruikersnaam" />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -56,7 +56,7 @@ export class Login extends Component {
                     <Form.Control type="password" value={this.state.password} onChange={this.handlePasswordChange} placeholder="vul in wachtwoord" />
                 </Form.Group>
 
-                <Button variant="primary" type="button" to="/Home" onClick={this.submit}>
+                <Button variant="primary" type="button" href="/" onClick={this.submit}>
                     Inloggen
                 </Button>
             </Form> 
