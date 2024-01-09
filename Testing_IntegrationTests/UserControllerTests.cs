@@ -357,7 +357,7 @@ public class UserControllerTests : IntegrationTest
         //Arrange
         _context.Businesses.Add(business);
         await _context.SaveChangesAsync();
-        business.Username = newUsername;
+        
 
         //Act
         var response = await _client.PutAsJsonAsync($"/Business/{business.Id}", business);
@@ -486,7 +486,7 @@ public class UserControllerTests : IntegrationTest
         //Arrange
         _context.Admins.Add(admin);
         await _context.SaveChangesAsync();
-        admin.Username = newUsername;
+        
 
         //Act
         var response = await _client.PutAsJsonAsync($"/Admin/{admin.Id}", admin);
