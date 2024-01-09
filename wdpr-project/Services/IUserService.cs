@@ -12,10 +12,10 @@ public interface IUserService
     public void UpdateUser(int id, User updatedUser);
     public void DeleteUser(int id);*/
 
-    public Task<ActionResult<ExpertDetailDTO>> CreateExpert(Expert expert);
+    public Task<ActionResult<ExpertDetailDTO>> CreateExpert(ExpertFullDTO expert);
     public Task<ActionResult<IEnumerable<ExpertBaseDTO>>> GetExpertList();
     public Task<ActionResult<ExpertDetailDTO>> GetExpert(int id);
-    public Task<ActionResult> UpdateExpert(int id, Expert updatedExpert);
+    public Task<ActionResult> UpdateExpert(int id, ExpertFullDTO updatedExpert);
     public Task<ActionResult> DeleteExpert(int id);
 
     //TODO: Remove PersonalData from UML: Data accessed via /Expert endpoint
