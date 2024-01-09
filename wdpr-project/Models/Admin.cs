@@ -10,7 +10,7 @@ public class Admin : User
     {
         Id = id;
     }
-    public Admin(string username, string password) : base(username, password) {}
+    public Admin(string userName, string password) : base(userName, password) {}
 }
 
 public class AdminDTO

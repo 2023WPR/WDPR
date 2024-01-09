@@ -1,15 +1,19 @@
-﻿namespace wdpr_project.Models;
+﻿using Microsoft.AspNetCore.Identity;
 
-public abstract class User
+namespace wdpr_project.Models
 {
-    public int Id { get; set; }
-    public string Username { get; set; }
-    public string Password { get; set; } //TODO: change to something more secure
-
-    public User(){}
-    public User(string username, string password)
+    public class User : IdentityUser
     {
-        Username = username;
-        Password = password;
+        public int Id { get; set; }
+        //public string UserName { get; set; }
+        public string Password { get; set; } // TODO: change to something more secure
+
+        public User() { }
+
+        public User(string userName, string password)
+        {
+            UserName = userName;
+            Password = password;
+        }
     }
 }

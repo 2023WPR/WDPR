@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using wdpr_project.Controllers;
@@ -13,11 +14,14 @@ public class UserService : IUserService
 
     private readonly ApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
-
-    public UserService(ApplicationDbContext dbContext, IMapper mapper)
+    private readonly UserManager<User> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
+    public UserService(ApplicationDbContext dbContext, IMapper mapper, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
     {
         _dbContext = dbContext;
         _mapper = mapper;
+        _roleManager = roleManager;
+        _userManager = userManager;
     }
 
     //Expert
@@ -38,7 +42,6 @@ public class UserService : IUserService
         
         return new CreatedAtActionResult(nameof(GetExpert), nameof(UserController), new { id = expert.Id }, _mapper.Map<ExpertFullDTO>(expert));
     }
-
     public async Task<ActionResult<IEnumerable<ExpertBaseDTO>>> GetExpertList()
     {
         if (_dbContext.Experts is null)
