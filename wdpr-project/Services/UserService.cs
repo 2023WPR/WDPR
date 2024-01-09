@@ -42,21 +42,6 @@ public class UserService : IUserService
         
         return new CreatedAtActionResult(nameof(GetExpert), nameof(UserController), new { id = expert.Id }, _mapper.Map<ExpertFullDTO>(expert));
     }
-
-    // Create the user if it doesn't exist
-    var result = await _userManager.CreateAsync(expert, expert.Password);
-    if (result.Succeeded)
-    {
-      Console.WriteLine("ddd3");
-
-        // Add the user to the "Expert" role
-        await _userManager.AddToRoleAsync(expert, "Expert");
-
-        return new CreatedAtActionResult(nameof(GetExpert), nameof(UserController), new { id = expert.Id }, expert);
-    }
-            return new NotFoundResult();
-
-    }
     public async Task<ActionResult<IEnumerable<ExpertBaseDTO>>> GetExpertList()
     {
         if (_dbContext.Experts is null)

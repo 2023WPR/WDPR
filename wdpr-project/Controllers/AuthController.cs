@@ -26,7 +26,6 @@ public class AurhorizatiomController : ControllerBase
     }
 
 [HttpPost("Login")]
-
 public async Task<IActionResult> Login([FromBody] User user)
 {
     var userData = await _userManager.FindByNameAsync(user.UserName);
@@ -74,4 +73,28 @@ public async Task<IActionResult> Login([FromBody] User user)
 
     return Unauthorized("Invalid UserName or password");
 }
+
+[HttpPost("create")] 
+public async Task<ActionResult<User>> CreateExpert(User expert)
+{
+    if (!await _roleManager.RoleExistsAsync("Expert"))
+    {
+        await _roleManager.CreateAsync(new IdentityRole { Name = "Expert" });
+    }
+
+    // Create the user if it doesn't exist
+    var result = await _userManager.CreateAsync(expert, expert.Password);
+    if (result.Succeeded)
+    {
+        // Add the user to the "Expert" role
+        await _userManager.AddToRoleAsync(expert, "Expert");
+        return Ok();
+    }
+    else
+    {
+        // Handle user creation failure, return an error response, etc.
+        return BadRequest(result.Errors);
+    }
+}
+
 }

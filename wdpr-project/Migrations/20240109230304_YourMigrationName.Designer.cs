@@ -12,7 +12,7 @@ using wdpr_project.Data;
 namespace wdpr_project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240109220909_YourMigrationName")]
+    [Migration("20240109230304_YourMigrationName")]
     partial class YourMigrationName
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,36 @@ namespace wdpr_project.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("DisabilityAidExpert", b =>
+                {
+                    b.Property<string>("AidUsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AidsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AidUsersId", "AidsId");
+
+                    b.HasIndex("AidsId");
+
+                    b.ToTable("DisabilityAidExpert");
+                });
+
+            modelBuilder.Entity("DisabilityExpert", b =>
+                {
+                    b.Property<int>("DisabilitiesId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DisabledExpertsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("DisabilitiesId", "DisabledExpertsId");
+
+                    b.HasIndex("DisabledExpertsId");
+
+                    b.ToTable("DisabilityExpert");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -227,16 +257,11 @@ namespace wdpr_project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ExpertId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ExpertId");
 
                     b.ToTable("Disabilities");
                 });
@@ -253,12 +278,7 @@ namespace wdpr_project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ExpertId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ExpertId");
 
                     b.ToTable("DisabilityAids");
                 });
@@ -389,10 +409,6 @@ namespace wdpr_project.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -453,6 +469,36 @@ namespace wdpr_project.Migrations
                     b.HasIndex("PersonalDataId");
 
                     b.ToTable("Experts", (string)null);
+                });
+
+            modelBuilder.Entity("DisabilityAidExpert", b =>
+                {
+                    b.HasOne("wdpr_project.Models.Expert", null)
+                        .WithMany()
+                        .HasForeignKey("AidUsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("wdpr_project.Models.DisabilityAid", null)
+                        .WithMany()
+                        .HasForeignKey("AidsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DisabilityExpert", b =>
+                {
+                    b.HasOne("wdpr_project.Models.Disability", null)
+                        .WithMany()
+                        .HasForeignKey("DisabilitiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("wdpr_project.Models.Expert", null)
+                        .WithMany()
+                        .HasForeignKey("DisabledExpertsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -533,20 +579,6 @@ namespace wdpr_project.Migrations
                     b.Navigation("Research");
                 });
 
-            modelBuilder.Entity("wdpr_project.Models.Disability", b =>
-                {
-                    b.HasOne("wdpr_project.Models.Expert", null)
-                        .WithMany("Disabilities")
-                        .HasForeignKey("ExpertId");
-                });
-
-            modelBuilder.Entity("wdpr_project.Models.DisabilityAid", b =>
-                {
-                    b.HasOne("wdpr_project.Models.Expert", null)
-                        .WithMany("Aids")
-                        .HasForeignKey("ExpertId");
-                });
-
             modelBuilder.Entity("wdpr_project.Models.PersonalData", b =>
                 {
                     b.HasOne("wdpr_project.Models.Address", "Address")
@@ -611,13 +643,6 @@ namespace wdpr_project.Migrations
                 {
                     b.Navigation("ResearchCriterium")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("wdpr_project.Models.Expert", b =>
-                {
-                    b.Navigation("Aids");
-
-                    b.Navigation("Disabilities");
                 });
 #pragma warning restore 612, 618
         }

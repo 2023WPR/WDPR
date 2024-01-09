@@ -43,8 +43,8 @@ namespace wdpr_project.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -62,6 +62,33 @@ namespace wdpr_project.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Disabilities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Disabilities", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DisabilityAids",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DisabilityAids", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -254,6 +281,41 @@ namespace wdpr_project.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ResearchCriteria",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MinmumAge = table.Column<int>(type: "int", nullable: false),
+                    MaximumAge = table.Column<int>(type: "int", nullable: false),
+                    AddressId = table.Column<int>(type: "int", nullable: false),
+                    DisabilityId = table.Column<int>(type: "int", nullable: false),
+                    ResearchId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ResearchCriteria", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ResearchCriteria_Addresses_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Addresses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ResearchCriteria_Disabilities_DisabilityId",
+                        column: x => x.DisabilityId,
+                        principalTable: "Disabilities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ResearchCriteria_Researches_ResearchId",
+                        column: x => x.ResearchId,
+                        principalTable: "Researches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Experts",
                 columns: table => new
                 {
@@ -285,75 +347,49 @@ namespace wdpr_project.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Disabilities",
+                name: "DisabilityAidExpert",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ExpertId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    AidUsersId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AidsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Disabilities", x => x.Id);
+                    table.PrimaryKey("PK_DisabilityAidExpert", x => new { x.AidUsersId, x.AidsId });
                     table.ForeignKey(
-                        name: "FK_Disabilities_Experts_ExpertId",
-                        column: x => x.ExpertId,
-                        principalTable: "Experts",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DisabilityAids",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ExpertId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DisabilityAids", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_DisabilityAids_Experts_ExpertId",
-                        column: x => x.ExpertId,
-                        principalTable: "Experts",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ResearchCriteria",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MinmumAge = table.Column<int>(type: "int", nullable: false),
-                    MaximumAge = table.Column<int>(type: "int", nullable: false),
-                    AddressId = table.Column<int>(type: "int", nullable: false),
-                    DisabilityId = table.Column<int>(type: "int", nullable: false),
-                    ResearchId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ResearchCriteria", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ResearchCriteria_Addresses_AddressId",
-                        column: x => x.AddressId,
-                        principalTable: "Addresses",
+                        name: "FK_DisabilityAidExpert_DisabilityAids_AidsId",
+                        column: x => x.AidsId,
+                        principalTable: "DisabilityAids",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ResearchCriteria_Disabilities_DisabilityId",
-                        column: x => x.DisabilityId,
+                        name: "FK_DisabilityAidExpert_Experts_AidUsersId",
+                        column: x => x.AidUsersId,
+                        principalTable: "Experts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DisabilityExpert",
+                columns: table => new
+                {
+                    DisabilitiesId = table.Column<int>(type: "int", nullable: false),
+                    DisabledExpertsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DisabilityExpert", x => new { x.DisabilitiesId, x.DisabledExpertsId });
+                    table.ForeignKey(
+                        name: "FK_DisabilityExpert_Disabilities_DisabilitiesId",
+                        column: x => x.DisabilitiesId,
                         principalTable: "Disabilities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ResearchCriteria_Researches_ResearchId",
-                        column: x => x.ResearchId,
-                        principalTable: "Researches",
+                        name: "FK_DisabilityExpert_Experts_DisabledExpertsId",
+                        column: x => x.DisabledExpertsId,
+                        principalTable: "Experts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -403,14 +439,14 @@ namespace wdpr_project.Migrations
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Disabilities_ExpertId",
-                table: "Disabilities",
-                column: "ExpertId");
+                name: "IX_DisabilityAidExpert_AidsId",
+                table: "DisabilityAidExpert",
+                column: "AidsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DisabilityAids_ExpertId",
-                table: "DisabilityAids",
-                column: "ExpertId");
+                name: "IX_DisabilityExpert_DisabledExpertsId",
+                table: "DisabilityExpert",
+                column: "DisabledExpertsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Experts_CaretakerId",
@@ -468,7 +504,10 @@ namespace wdpr_project.Migrations
                 name: "Businesses");
 
             migrationBuilder.DropTable(
-                name: "DisabilityAids");
+                name: "DisabilityAidExpert");
+
+            migrationBuilder.DropTable(
+                name: "DisabilityExpert");
 
             migrationBuilder.DropTable(
                 name: "ResearchCriteria");
@@ -477,13 +516,16 @@ namespace wdpr_project.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "DisabilityAids");
+
+            migrationBuilder.DropTable(
+                name: "Experts");
+
+            migrationBuilder.DropTable(
                 name: "Disabilities");
 
             migrationBuilder.DropTable(
                 name: "Researches");
-
-            migrationBuilder.DropTable(
-                name: "Experts");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

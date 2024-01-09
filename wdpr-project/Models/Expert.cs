@@ -24,7 +24,6 @@ public class Expert : User
 
     public async Task<ActionResult?> UpdateFields(ExpertFullDTO dto, ApplicationDbContext dbContext) //TODO: Unit tests
     {
-        Username = dto.Username;
         Password = dto.Password;
         ContactByPhone = dto.ContactByPhone;
         ContactByThirdParty = dto.ContactByThirdParty;

@@ -108,7 +108,7 @@ export class RegisterExpert extends Component {
       };
 
       submit = () => {
-        const backendEndpoint = 'http://localhost:5192/Expert';  
+        const backendEndpoint = 'http://localhost:5192/create' 
         const formData = {
           UserName: this.state.UserName,
           Password: this.state.password,
@@ -244,7 +244,7 @@ export class RegisterExpert extends Component {
                         <Form.Control type="password" value={this.state.password} onChange={this.handlePasswordChange} placeholder="vul in wachtwoord" />
                     </Form.Group>
                     <Button variant="primary" type="button" onClick={this.previousPage }> Vorige </Button>
-                    <Button variant="primary" type="button" href="/" onClick={this.submit}> Registreer </Button>
+                    <Button variant="primary" type="button"  onClick={this.submit}> Registreer </Button>
                 </>
              )}  
             </Form> 
