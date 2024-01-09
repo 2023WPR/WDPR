@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace wdpr_project.Migrations
 {
-    public partial class YourMigrationName : Migration
+    public partial class YourMigrationName1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

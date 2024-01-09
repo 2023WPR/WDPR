@@ -12,8 +12,8 @@ using wdpr_project.Data;
 namespace wdpr_project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240109230304_YourMigrationName")]
-    partial class YourMigrationName
+    [Migration("20240109233429_YourMigrationName13")]
+    partial class YourMigrationName13
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
