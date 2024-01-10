@@ -108,7 +108,7 @@ export class RegisterExpert extends Component {
       };
 
       submit = () => {
-        const backendEndpoint = 'http://localhost:5192/create' 
+        const backendEndpoint = 'https://stichingaccessebility.azurewebsites.net/create' 
         const formData = {
           UserName: this.state.UserName,
           Password: this.state.password,

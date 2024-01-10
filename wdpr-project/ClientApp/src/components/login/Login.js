@@ -19,7 +19,7 @@ export class Login extends Component {
       }
 
     submit(){
-        const backendEndpoint = 'http://localhost:5192/login';
+        const backendEndpoint = 'https://stichingaccessebility.azurewebsites.net/login';
         // Get form data or construct the data you want to send to the backend
         const formData = {
           UserName: this.state.Username,
