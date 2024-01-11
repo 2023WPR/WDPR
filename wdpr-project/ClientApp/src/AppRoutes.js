@@ -1,11 +1,10 @@
-import { Login } from "./components/login/Login";
-import { FetchData } from "./components/FetchData";
+import  Login  from "./components/login/Login";
 import { Home } from "./components/Home";
 import { Chat } from "./components/chat/Chat";
 import { Register } from "./components/register/Register";
 import { RegisterExpert } from "./components/register/RegisterExpert";
 import { RegisterSelection } from "./components/register/RegisterSelection";
-
+import {ChatList } from "./components/chat/ChatList";
 const AppRoutes = [
   {
     index: true,
@@ -16,11 +15,11 @@ const AppRoutes = [
     element: <Login />
   },
   {
-    path: '/register-business',
+    path: '/register/business',
     element: <Register />
   },
   {
-    path: '/register-consultant',
+    path: '/register/consultant',
     element: <RegisterExpert />
   },
   {
@@ -28,12 +27,13 @@ const AppRoutes = [
     element: <RegisterSelection />
   },
   {
-    path: '/fetch-data',
-    element: <FetchData />
-  },
-  {
     path: '/chat',
     element: <Chat />
+  }
+  ,
+  {
+    path: '/chatIndex',
+    element: <ChatList />
   }
 ];
 

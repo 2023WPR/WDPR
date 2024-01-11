@@ -77,6 +77,8 @@ public async Task<IActionResult> Login([FromBody] User user)
 [HttpPost("create")] 
 public async Task<ActionResult<User>> CreateExpert(User expert)
 {
+            Console.WriteLine( "2");
+
     if (!await _roleManager.RoleExistsAsync("Expert"))
     {
         await _roleManager.CreateAsync(new IdentityRole { Name = "Expert" });

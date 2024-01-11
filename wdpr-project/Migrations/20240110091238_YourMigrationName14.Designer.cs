@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using wdpr_project.Data;
 
@@ -11,9 +12,10 @@ using wdpr_project.Data;
 namespace wdpr_project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240110091238_YourMigrationName14")]
+    partial class YourMigrationName14
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,19 +23,6 @@ namespace wdpr_project.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("Chat", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Chats");
-                });
 
             modelBuilder.Entity("DisabilityAidExpert", b =>
                 {
@@ -63,38 +52,6 @@ namespace wdpr_project.Migrations
                     b.HasIndex("DisabledExpertsId");
 
                     b.ToTable("DisabilityExpert");
-                });
-
-            modelBuilder.Entity("Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("ChatId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ChatRoomId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChatId");
-
-                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -404,9 +361,6 @@ namespace wdpr_project.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ChatId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -456,8 +410,6 @@ namespace wdpr_project.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ChatId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -549,13 +501,6 @@ namespace wdpr_project.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Message", b =>
-                {
-                    b.HasOne("Chat", null)
-                        .WithMany("Messages")
-                        .HasForeignKey("ChatId");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -645,13 +590,6 @@ namespace wdpr_project.Migrations
                     b.Navigation("Address");
                 });
 
-            modelBuilder.Entity("wdpr_project.Models.User", b =>
-                {
-                    b.HasOne("Chat", null)
-                        .WithMany("Users")
-                        .HasForeignKey("ChatId");
-                });
-
             modelBuilder.Entity("wdpr_project.Models.Admin", b =>
                 {
                     b.HasOne("wdpr_project.Models.User", null)
@@ -699,13 +637,6 @@ namespace wdpr_project.Migrations
                     b.Navigation("Caretaker");
 
                     b.Navigation("PersonalData");
-                });
-
-            modelBuilder.Entity("Chat", b =>
-                {
-                    b.Navigation("Messages");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("wdpr_project.Models.Research", b =>
