@@ -12,9 +12,6 @@ namespace wdpr_project.Data
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Admin> Admins { get; set; }
-        public DbSet<Chat> Chats { get; set; }
-        public DbSet<Message> Messages { get; set; }
-
         public DbSet<Business> Businesses { get; set; }
         public DbSet<Expert> Experts { get; set; }
         public DbSet<Research> Researches { get; set; }

@@ -25,7 +25,7 @@ export class RegisterSelection extends Component {
             <Card.Img variant="top" src="holder.js/100px180" />
             <Card.Body>
               <Card.Title>Registreer als bedrijf</Card.Title>
-              <Button variant="primary" href="/register/business">Registreer als Bedrijf</Button>
+              <Button variant="primary" href="/register-business">Registreer als Bedrijf</Button>
             </Card.Body>
           </Card>
         </Col>
@@ -35,7 +35,7 @@ export class RegisterSelection extends Component {
             <Card.Img variant="top" src="holder.js/100px180" />
             <Card.Body>
               <Card.Title>Registreer als Ervaringsdeskundige</Card.Title>
-              <Button variant="primary" href="/register/consultant">Registreer als Ervaringsdeskundige</Button>
+              <Button variant="primary" href="/register-consultant">Registreer als Ervaringsdeskundige</Button>
             </Card.Body>
           </Card>
         </Col>
