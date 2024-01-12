@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import Image from 'react-bootstrap/Image';
 import { Link } from 'react-router-dom';
-import '../navbar/NavMenu.css';
+import './NavMenu.css';
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
