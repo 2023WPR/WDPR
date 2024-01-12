@@ -48,13 +48,13 @@ const Login = () => {
     const userRole = localStorage.getItem("role");
     switch (userRole) {
       case 'Expert':
-        history('/expert');
+        history('/expertHome');
         break;
       case 'Business':
-        history('/business');
+        history('/businessHome');
         break;
       case 'Admin':
-        history('/admin');
+        history('/adminHome');
         break;
       default:
         history('/');

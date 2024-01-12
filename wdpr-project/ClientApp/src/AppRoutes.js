@@ -31,15 +31,15 @@ const AppRoutes = [
     element: <RegisterSelection />
   },
   {
-    path: '/expert',
+    path: '/expertHome',
     element: <ExpertHome />
   },
   {
-    path: '/business',
+    path: '/businessHome',
     element: <BusinessHome />
   },
   {
-    path: '/admin',
+    path: '/adminHome',
     element: <AdminHome />
   },
   {
