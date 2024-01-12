@@ -5,8 +5,8 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
 
-export class RegisterSelection extends Component {
-    static displayName = RegisterSelection.name;
+export class AdminHome extends Component {
+    static displayName = AdminHome.name;
 
     constructor (props) {
         super(props);
@@ -23,8 +23,8 @@ export class RegisterSelection extends Component {
         <Col md={4}>
           <Card style={{ width: '18rem', marginBottom: '20px' }}>
             <Card.Body>
-              <Card.Title>Registreer als bedrijf</Card.Title>
-              <Button variant="primary" href="/register-business">Registreer als Bedrijf</Button>
+              <Card.Title>Overzicht gebruikers</Card.Title>
+              <Button variant="primary" href="/research">bekijk gegevens gebruikers</Button>
             </Card.Body>
           </Card>
         </Col>
@@ -32,8 +32,8 @@ export class RegisterSelection extends Component {
         <Col md={3}>
           <Card style={{ width: '18rem' }}>
             <Card.Body>
-              <Card.Title>Registreer als Ervaringsdeskundige</Card.Title>
-              <Button variant="primary" href="/register-consultant">Registreer als Ervaringsdeskundige</Button>
+              <Card.Title>Chat</Card.Title>
+              <Button variant="primary" href="/chatIndex">stuur bericht</Button>
             </Card.Body>
           </Card>
         </Col>

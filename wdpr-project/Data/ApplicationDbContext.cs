@@ -20,7 +20,8 @@ namespace wdpr_project.Data
         public DbSet<Disability> Disabilities { get; set; }
         public DbSet<DisabilityAid> DisabilityAids { get; set; }   
         public DbSet<ResearchCriterium> ResearchCriteria { get; set; }      
-
+        public DbSet<Chat> Chats { get; set; }
+        public DbSet<Message> Messages { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().ToTable("Users");

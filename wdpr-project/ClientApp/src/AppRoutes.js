@@ -1,10 +1,13 @@
-import { Login } from "./components/login/Login";
-import { FetchData } from "./components/FetchData";
+import Login  from "./components/login/Login";
 import { Home } from "./components/Home";
 import { Chat } from "./components/chat/Chat";
 import { Register } from "./components/register/Register";
 import { RegisterExpert } from "./components/register/RegisterExpert";
 import { RegisterSelection } from "./components/register/RegisterSelection";
+import { ExpertHome } from "./components/homepage/Expert";
+import { BusinessHome } from "./components/homepage/Business";
+import { AdminHome } from "./components/homepage/Admin";
+import { ChatList } from "./components/chat/Chatlist";
 
 const AppRoutes = [
   {
@@ -28,12 +31,24 @@ const AppRoutes = [
     element: <RegisterSelection />
   },
   {
-    path: '/fetch-data',
-    element: <FetchData />
+    path: '/expert',
+    element: <ExpertHome />
+  },
+  {
+    path: '/business',
+    element: <BusinessHome />
+  },
+  {
+    path: '/admin',
+    element: <AdminHome />
   },
   {
     path: '/chat',
     element: <Chat />
+  },
+  {
+    path: '/chatIndex',
+    element: <ChatList />
   }
 ];
 

@@ -4,8 +4,6 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import '../register/register.css';
 import axios from 'axios';
-import ToggleButton from 'react-bootstrap/ToggleButton';
-import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 
 export class RegisterExpert extends Component {
     static displayName = RegisterExpert.name;
@@ -108,7 +106,7 @@ export class RegisterExpert extends Component {
       };
 
       submit = () => {
-        const backendEndpoint = 'https://stichingaccessebility.azurewebsites.net/create' 
+        const backendEndpoint = ' https://stichingaccessebility.azurewebsites.net/create';  //https://stichingaccessebility.azurewebsites.net/create'
         const formData = {
           UserName: this.state.UserName,
           Password: this.state.password,
@@ -122,7 +120,7 @@ export class RegisterExpert extends Component {
           ],
           Aids: [
             {
-              Description: this.state.aid
+              Description: "Some description about the visual impairment"
             }
           ],
           PersonalData: {
@@ -202,38 +200,7 @@ export class RegisterExpert extends Component {
                     <Button variant="primary" type="button" onClick={this.nextPage}> Volgende</Button>
                 </>
              )}  
-              {currentPage === 3 && (
-                <>
-                    <Form.Group className="mb-3" controlId="formBasicDisabilities">
-                        <Form.Label>Vul je beperkingen in</Form.Label>
-                        <Form.Control type="disabilities" value={this.state.disabilities} onChange={this.handleDisabilitiesChange} placeholder="vul in beperkingen" />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicAid">
-                        <Form.Label>Vul je hulpmiddelen in</Form.Label>
-                        <Form.Control type="aid" value={this.state.aid} onChange={this.handleAidChange} placeholder="vul in hulpmiddelen" />
-                    </Form.Group>
-                    <>
-                    <Form.Group className="mb-3" controlId="formBasicDaysOfWeek">
-                      <Form.Label>Select days of the week</Form.Label>
-                      <ToggleButtonGroup
-                        type="checkbox"
-                        value={this.state.selectedDays}
-                        onChange={(selectedDays) => this.setState({ selectedDays })}
-                      >
-                        {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day, index) => (
-                          <ToggleButton key={index} value={day}>
-                            {day}
-                          </ToggleButton>
-                        ))}
-                      </ToggleButtonGroup>
-                    </Form.Group>
-                    <br />
-                  </>
-                    <Button variant="primary" type="button" onClick={this.previousPage }> Vorige </Button>
-                    <Button variant="primary" type="button"  onClick={this.nextPage}> Volgende </Button>
-                </>
-             )}  
-            {currentPage === 4 && (
+            {currentPage === 3 && (
                 <>
                     <Form.Group className="mb-3" controlId="formBasicUserName">
                         <Form.Label>Vul je gebruikersnaam in</Form.Label>
