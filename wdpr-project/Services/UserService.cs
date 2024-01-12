@@ -36,7 +36,8 @@ public class UserService : IUserService
         _dbContext.Experts.Add(expert);
         await _dbContext.SaveChangesAsync();
         
-        return new CreatedAtActionResult(nameof(GetExpert), nameof(UserController), new { id = expert.Id }, _mapper.Map<ExpertFullDTO>(expert));
+        return new CreatedAtActionResult(nameof(GetExpert), nameof(UserController),
+            new { id = expert.Id }, _mapper.Map<ExpertFullDTO>(expert));
     }
 
     public async Task<ActionResult<IEnumerable<ExpertBaseDTO>>> GetExpertList()
@@ -157,7 +158,8 @@ public class UserService : IUserService
         _dbContext.Businesses.Add(business);
         await _dbContext.SaveChangesAsync();
         
-        return new CreatedAtActionResult(nameof(GetBusiness), nameof(UserController), new { id = business.Id }, business);
+        return new CreatedAtActionResult(nameof(GetBusiness), nameof(UserController),
+            new { id = business.Id }, business);
     }
 
     public async Task<ActionResult<IEnumerable<BusinessDTO>>> GetBusinessList()
@@ -254,7 +256,8 @@ public class UserService : IUserService
         _dbContext.Admins.Add(admin);
         await _dbContext.SaveChangesAsync();
         
-        return new CreatedAtActionResult(nameof(GetAdmin), nameof(UserController), new { id = admin.Id }, admin);
+        return new CreatedAtActionResult(nameof(GetAdmin), nameof(UserController),
+            new { id = admin.Id }, admin);
     }
 
     public async Task<ActionResult<IEnumerable<AdminDTO>>> GetAdminList()

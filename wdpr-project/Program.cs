@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using wdpr_project.Data;
 using wdpr_project.Services;
@@ -10,7 +11,11 @@ builder.Services.AddControllersWithViews();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+});
 
 // AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -18,6 +23,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Custom services
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IDisabilityService, DisabilityService>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
