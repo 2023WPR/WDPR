@@ -1,144 +1,185 @@
 import React, { Component } from 'react';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Button from 'react-bootstrap/Button';
 
 export class UserDetailPage extends Component {
     static displayName = UserDetailPage.name;
   
     render() {
         return (
-            <form>
-                <div class="row row-offset-top">
-                    <div class="col-2">
-                        <label for="given_name" class="col-form-label">Voornaam</label>
-                    </div>
-                    <div class="col-4">
-                        <input type="text" id="given_name" class="form-control" placeholder="Voornaam" />
-                    </div>
-                </div>
+            <Form>
+                <Form.Group as={Row} className="mb-3" controlId="given_name">
+                    <Form.Label column xs="2">
+                        Voornaam
+                    </Form.Label>
+                    <Col>
+                        <Form.Control type="text" placeholder="Voornaam" />
+                    </Col>
+                </Form.Group>
 
-                <div class="row row-offset-top">
-                    <div class="col-2">
-                        <label for="infix" class="col-form-label">Tussenvoegsel</label>
-                    </div>
-                    <div class="col-4">
-                        <input type="text" id="infix" class="form-control" placeholder="Tussenvoegsel" />
-                    </div>
+                <Row>
+                    <Col>
+                        <Form.Group as={Row} className="mb-3" controlId="infix">
+                            <Form.Label column xs="4">
+                                Tussenvoegsel
+                            </Form.Label>
+                            <Col>
+                                <Form.Control type="text" placeholder="Tussenvoegsel" />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                
+                    <Col>
+                        <Form.Group as={Row} className="mb-3" controlId="family_name">
+                            <Form.Label column xs="2">
+                                Achternaam
+                            </Form.Label>
+                            <Col>
+                                <Form.Control type="text" placeholder="Achternaam" />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                </Row>
 
-                    <div class="col-2">
-                        <label for="family_name" class="col-form-label">Achternaam</label>
-                    </div>
-                    <div class="col-4">
-                        <input type="text" id="family_name" class="form-control" placeholder="Achternaam" />
-                    </div>
-                </div>
+                <Row>
+                    <Col>
+                        <Form.Group as={Row} className="mb-3" controlId="street_name">
+                            <Form.Label column xs="4">
+                                Straatnaam
+                            </Form.Label>
+                            <Col>
+                                <Form.Control type="text" placeholder="Straatnaam" />
+                            </Col>
+                        </Form.Group>
+                    </Col>
                 
-                <div class="row row-offset-top">
-                    <div class="col-2">
-                        <label for="street_name" class="col-form-label">Straatnaam</label>
-                    </div>
-                    <div class="col-4">
-                        <input type="text" id="street_name" class="form-control" placeholder="Straatnaam" />
-                    </div>
-                    
-                    <div class="col-2">
-                        <label for="house_number" class="col-form-label">Huisnummer</label>
-                    </div>
-                    <div class="col-4">
-                        <input type="text" id="house_number" class="form-control" placeholder="Huisnummer" />
-                    </div>
-                </div>
-                
-                <div class="row row-offset-top">
-                    <div class="col-2">
-                        <label for="zip_code" class="col-form-label">Postcode</label>
-                    </div>
-                    <div class="col-4">
-                        <input type="text" id="zip_code" class="form-control" placeholder="Postcode" />
-                    </div>
-                </div>
-                
-                <div class="row row-offset-top">
-                    <div class="col-2">
-                        <label for="phone_number" class="col-form-label">Telefoonnummer</label>
-                    </div>
-                    <div class="col-4">
-                        <input type="text" id="phone_number" class="form-control" placeholder="Telefoonnummer" />
-                    </div>
-                </div>
-                
-                <div class="row row-offset-top">
-                    <div class="col-2">
-                        <label for="age" class="col-form-label">Leeftijd</label>
-                    </div>
-                    <div class="col-4">
-                        <input type="text" id="age" class="form-control" placeholder="Leeftijd" />
-                    </div>
-                </div>
-                
-                <div class="row row-offset-top">
-                    <div class="col-2">
-                        <label for="email_address" class="col-form-label">Emailadres</label>
-                    </div>
-                    <div class="col-4">
-                        <input type="text" id="email_address" class="form-control" placeholder="Emailadres" />
-                    </div>
-                </div>
-                
-                <div class="row row-offset-top">
-                    <div class="col-2">
-                        <label for="condition" class="col-form-label">Aandoening</label>
-                    </div>
-                    <div class="col-4">
-                        <input type="text" id="condition" class="form-control" placeholder="Aandoening" />
-                    </div>
-                </div>
-                
-                <div class="row row-offset-top">
-                    <div class="col-2">
-                        <label for="assistive_technologies" class="col-form-label">Hulpmiddelen</label>
-                    </div>
-                    <div class="col-4">
-                        <input type="text" id="assistive_technologies" class="form-control" placeholder="Hulpmiddelen" />
-                    </div>
-                </div>
+                    <Col>
+                        <Form.Group as={Row} className="mb-3" controlId="house_number">
+                            <Form.Label column xs="2">
+                                Huisnummer
+                            </Form.Label>
+                            <Col>
+                                <Form.Control type="text" placeholder="Huisnummer" />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                </Row>
 
-                <div class="row row-offset-top">
-                    <div class="col-2">
-                        <label>Dagen beschikbaar</label>
-                    </div>
+                <Form.Group as={Row} className="mb-3" controlId="zip_code">
+                    <Form.Label column xs="2">
+                        Postcode
+                    </Form.Label>
+                    <Col>
+                        <Form.Control type="text" placeholder="Postcode" />
+                    </Col>
+                </Form.Group>
 
-                    <div class="col-auto">
-                        <input type="checkbox" class="btn-check" id="btn_datepicker_monday" autocomplete="off" />
-                        <label class="btn btn-outline-primary" for="btn_datepicker_monday">Maandag</label>
-                    </div>
-                    <div class="col-auto">
-                        <input type="checkbox" class="btn-check" id="btn_datepicker_tuesday" autocomplete="off" />
-                        <label class="btn btn-outline-primary" for="btn_datepicker_tuesday">Dinsdag</label>
-                    </div>
-                    <div class="col-auto">
-                        <input type="checkbox" class="btn-check" id="btn_datepicker_wednesday" autocomplete="off" />
-                        <label class="btn btn-outline-primary" for="btn_datepicker_wednesday">Woensdag</label>
-                    </div>
-                    <div class="col-auto">
-                        <input type="checkbox" class="btn-check" id="btn_datepicker_thursday" autocomplete="off" />
-                        <label class="btn btn-outline-primary" for="btn_datepicker_thursday">Donderdag</label>
-                    </div>
-                    <div class="col-auto">
-                        <input type="checkbox" class="btn-check" id="btn_datepicker_friday" autocomplete="off" />
-                        <label class="btn btn-outline-primary" for="btn_datepicker_friday">Vrijdag</label>
-                    </div>
-                </div>
+                <Form.Group as={Row} className="mb-3" controlId="phone_number">
+                    <Form.Label column xs="2">
+                    Telefoonnummer
+                    </Form.Label>
+                    <Col>
+                        <Form.Control type="text" placeholder="Telefoonnummer" />
+                    </Col>
+                </Form.Group>
+                
+                <Form.Group as={Row} className="mb-3" controlId="age">
+                    <Form.Label column xs="2">
+                        Leeftijd
+                    </Form.Label>
+                    <Col>
+                        <Form.Control type="number" placeholder="Leeftijd" />
+                    </Col>
+                </Form.Group>
 
-                <div class="row row-offset-top">
-                    <div class="col-auto">
-                        <button class="btn btn-primary" type="alter_data">Wijzigen</button>
-                    </div>
-                    <div class="col-auto">
-                    <button class="btn btn-primary" type="save_data">Opslaan</button>
-                    </div>
+                <Form.Group as={Row} className="mb-3" controlId="email_address">
+                    <Form.Label column xs="2">
+                        E-mailadres
+                    </Form.Label>
+                    <Col>
+                        <Form.Control type="email" placeholder="E-mailadres" />
+                    </Col>
+                </Form.Group>
 
-                </div>
+                <Form.Group as={Row} className="mb-3" controlId="disabilities">
+                    <Form.Label column xs="2">
+                        Aandoening
+                    </Form.Label>
+                    <Col>
+                        <Form.Select aria-label="Default select example">
+                            <option>Selecteer uw aandoending</option>
+                            {/* TODO: dit in een forloopje doen ofzo */}
+                            <option value="1">One</option>
+                        </Form.Select>
+                    </Col>
+                </Form.Group>
 
-            </form>
+                <Form.Group as={Row} className="mb-3" controlId="assistive_technologies">
+                    <Form.Label column xs="2">
+                        Hulpmiddelen
+                    </Form.Label>
+                    <Col>
+                        <Form.Select aria-label="Default select example">
+                            <option>Selecteer uw hulpmiddelen</option>
+                            {/* TODO: dit in een forloopje doen ofzo */}
+                            <option value="1">One</option>
+                        </Form.Select>
+                    </Col>
+                </Form.Group>
+
+                <Form.Group as={Row} className="mb-3" controlId="availability">
+                    <Form.Label column xs="2">
+                        Tijden beschikbaar
+                    </Form.Label>
+                    <Col>
+                        {/* Weet niet zeker wat 'name' hier doet. Maar het stond in het voorbeeld dus ik kopiëer het gewoon. */}
+                        <Form.Check
+                            inline
+                            label="Maandag"
+                            name="monday"
+                            type="checkbox"
+                            id="monday"
+                        />
+                        <Form.Check
+                            inline
+                            label="Dinsdag"
+                            name="tuesday"
+                            type="checkbox"
+                            id="Dinsdag"
+                        />
+                        <Form.Check
+                            inline
+                            label="Woensdag"
+                            name="wednesday"
+                            type="checkbox"
+                            id="Woensdag"
+                        />
+                        <Form.Check
+                            inline
+                            label="Donderdag"
+                            name="thursday"
+                            type="checkbox"
+                            id="Donderdag"
+                        />
+                        <Form.Check
+                            inline
+                            label="Vrijdag"
+                            name="friday"
+                            type="checkbox"
+                            id="Vrijdag"
+                        />
+
+                    </Col>
+                </Form.Group>
+                
+                <Form.Group as={Row} className="mb-3">
+                    <Col>
+                        <Button type="submit">Opslaan</Button>
+                    </Col>
+                </Form.Group>
+            </Form>
         )
     }
 }
