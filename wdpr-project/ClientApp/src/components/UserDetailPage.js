@@ -3,6 +3,8 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
+import { useState } from 'react';
+
 
 export class UserDetailPage extends Component {
     static displayName = UserDetailPage.name;
@@ -15,7 +17,7 @@ export class UserDetailPage extends Component {
                         Voornaam
                     </Form.Label>
                     <Col>
-                        <Form.Control type="text" placeholder="Voornaam" />
+                        <Form.Control required type="text" placeholder="Voornaam" />
                     </Col>
                 </Form.Group>
 
@@ -37,7 +39,7 @@ export class UserDetailPage extends Component {
                                 Achternaam
                             </Form.Label>
                             <Col>
-                                <Form.Control type="text" placeholder="Achternaam" />
+                                <Form.Control required type="text" placeholder="Achternaam" />
                             </Col>
                         </Form.Group>
                     </Col>
@@ -50,7 +52,7 @@ export class UserDetailPage extends Component {
                                 Straatnaam
                             </Form.Label>
                             <Col>
-                                <Form.Control type="text" placeholder="Straatnaam" />
+                                <Form.Control required type="text" placeholder="Straatnaam" />
                             </Col>
                         </Form.Group>
                     </Col>
@@ -61,7 +63,7 @@ export class UserDetailPage extends Component {
                                 Huisnummer
                             </Form.Label>
                             <Col>
-                                <Form.Control type="text" placeholder="Huisnummer" />
+                                <Form.Control required type="text" placeholder="Huisnummer" />
                             </Col>
                         </Form.Group>
                     </Col>
@@ -72,7 +74,7 @@ export class UserDetailPage extends Component {
                         Postcode
                     </Form.Label>
                     <Col>
-                        <Form.Control type="text" placeholder="Postcode" />
+                        <Form.Control required type="text" placeholder="Postcode" />
                     </Col>
                 </Form.Group>
 
@@ -81,7 +83,7 @@ export class UserDetailPage extends Component {
                     Telefoonnummer
                     </Form.Label>
                     <Col>
-                        <Form.Control type="text" placeholder="Telefoonnummer" />
+                        <Form.Control required type="text" placeholder="Telefoonnummer" />
                     </Col>
                 </Form.Group>
                 
@@ -90,7 +92,7 @@ export class UserDetailPage extends Component {
                         Leeftijd
                     </Form.Label>
                     <Col>
-                        <Form.Control type="number" placeholder="Leeftijd" />
+                        <Form.Control required type="number" placeholder="Leeftijd" />
                     </Col>
                 </Form.Group>
 
@@ -99,7 +101,7 @@ export class UserDetailPage extends Component {
                         E-mailadres
                     </Form.Label>
                     <Col>
-                        <Form.Control type="email" placeholder="E-mailadres" />
+                        <Form.Control required type="email" placeholder="E-mailadres" />
                     </Col>
                 </Form.Group>
 

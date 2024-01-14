@@ -26,6 +26,7 @@ public class UserController : ControllerBase
     [HttpGet("Expert")]
     public async Task<ActionResult<IEnumerable<ExpertBaseDTO>>> ListExperts()
     {
+        Console.WriteLine("in get expert");
         return await _userService.GetExpertList();
     }
 
