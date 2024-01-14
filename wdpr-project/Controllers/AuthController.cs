@@ -40,7 +40,7 @@ public async Task<IActionResult> Login([FromBody] User user)
         if (result.Succeeded)
         {
             Console.WriteLine(user.UserName.ToString() + "2");
-            await _signManager.SignInAsync(userData, isPersistent: false);
+            await _signManager.SignInAsync(userData, isPersistent: true);
 
               var roles = await _userManager.GetRolesAsync(userData);
 
@@ -96,5 +96,26 @@ public async Task<ActionResult<User>> CreateExpert(User expert)
         return BadRequest(result.Errors);
     }
 }
+[HttpPost("create-Business")] 
+public async Task<ActionResult<User>> Createb(User business)
+{
+    if (!await _roleManager.RoleExistsAsync("Business"))
+    {
+        await _roleManager.CreateAsync(new IdentityRole { Name = "Business" });
+    }
 
+    // Create the user if it doesn't exist
+    var result = await _userManager.CreateAsync(business, business.Password);
+    if (result.Succeeded)
+    {
+        // Add the user to the "Expert" role
+        await _userManager.AddToRoleAsync(business, "Business");
+        return Ok();
+    }
+    else
+    {
+        // Handle user creation failure, return an error response, etc.
+        return BadRequest(result.Errors);
+    }
+}
 }
