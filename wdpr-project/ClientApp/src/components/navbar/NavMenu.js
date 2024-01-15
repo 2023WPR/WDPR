@@ -24,7 +24,6 @@ export class NavMenu extends Component {
 
   render() {
     return (
-      <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container light style={{ backgroundColor: '#2B50EC' }}>
           <NavbarBrand tag={Link} to="/">
           <Image src ={require('../navbar/logo.png')} className = "logo"alt="Logo of Stiching Accessebility" />
@@ -38,10 +37,12 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-light" to="/">Registreer</NavLink>
                 </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} className="text-light" to="/Onderzoeken">Onderzoeken</NavLink>
+                </NavItem>
               </ul>
             </Collapse>
         </Navbar>
-      </header>
     );
   }
 }

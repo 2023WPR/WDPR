@@ -2,6 +2,8 @@ import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
 import { Chat } from "./components/chat/Chat";
+import Research from "./components/Research/Research"
+import ResearchPage from "./components/Research/ResearchPage";
 
 const AppRoutes = [
   {
@@ -19,6 +21,14 @@ const AppRoutes = [
   {
     path: '/chat',
     element: <Chat />
+  },
+  {
+    path: '/onderzoeken',
+    element: <Research />
+  },
+  {
+    path: '/onderzoeken/:researchId',
+    element: <ResearchPage />
   }
 ];
 
