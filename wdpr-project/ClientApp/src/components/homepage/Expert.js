@@ -24,7 +24,7 @@ export class ExpertHome extends Component {
           <Card style={{ width: '18rem', marginBottom: '20px' }}>
             <Card.Body>
               <Card.Title>Onderzoek</Card.Title>
-              <Button variant="primary" href="/research">meld aan voor onderzoek</Button>
+              <Button variant="primary" href="/onderzoeken">meld aan voor onderzoek</Button>
             </Card.Body>
           </Card>
         </Col>
