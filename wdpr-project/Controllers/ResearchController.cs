@@ -9,12 +9,10 @@ namespace wdpr_project.Controllers_
     public class ResearchController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IEmailService _emailService;
 
-        public ResearchController(ApplicationDbContext context, IEmailService emailService)
+        public ResearchController(ApplicationDbContext context)
         {
             _context = context;
-            _emailService = emailService;
         }
 
         // GET: Research
@@ -64,10 +62,6 @@ namespace wdpr_project.Controllers_
             _context.Researches.Add(research);
             await _context.SaveChangesAsync();
 
-           if (research.ResearchCriterium != null)
-            {
-                await _emailService.SendEmailsToParticipants(research.ResearchCriterium.DisabilityId);
-            }
 
             return CreatedAtAction("GetOnderzoek", new { id = research.Id }, research);
         }

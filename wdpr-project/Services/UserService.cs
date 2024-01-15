@@ -54,7 +54,7 @@ public class UserService : IUserService
             .ToListAsync();
     }
 
-    public async Task<ActionResult<ExpertDetailDTO>> GetExpert(int id)
+    public async Task<ActionResult<ExpertDetailDTO>> GetExpert(string id)
     {
         if (_dbContext.Experts is null)
         {
@@ -76,7 +76,7 @@ public class UserService : IUserService
         return _mapper.Map<ExpertDetailDTO>(expert);
     }
 
-    public async Task<ActionResult> UpdateExpert(int id, ExpertFullDTO dto)
+    public async Task<ActionResult> UpdateExpert(string id, ExpertFullDTO dto)
     {
         if (id != dto.Id)
         {
@@ -125,7 +125,7 @@ public class UserService : IUserService
         return new NoContentResult();
     }
 
-    public async Task<ActionResult> DeleteExpert(int id)
+    public async Task<ActionResult> DeleteExpert(string id)
     {
         if (_dbContext.Experts is null)
         {
@@ -175,7 +175,7 @@ public class UserService : IUserService
             .ToListAsync();
     }
 
-    public async Task<ActionResult<BusinessDTO>> GetBusiness(int id)
+    public async Task<ActionResult<BusinessDTO>> GetBusiness(string id)
     {
         if (_dbContext.Businesses is null)
         {
@@ -194,7 +194,7 @@ public class UserService : IUserService
         return _mapper.Map<BusinessDTO>(business);
     }
 
-    public async Task<ActionResult> UpdateBusiness(int id, Business business)
+    public async Task<ActionResult> UpdateBusiness(string id, Business business)
     {
         if (id != business.Id)
         {
@@ -222,7 +222,7 @@ public class UserService : IUserService
         return new NoContentResult();
     }
 
-    public async Task<ActionResult> DeleteBusiness(int id)
+    public async Task<ActionResult> DeleteBusiness(string id)
     {
         if (_dbContext.Businesses is null)
         {
@@ -272,7 +272,7 @@ public class UserService : IUserService
             .ToListAsync();
     }
 
-    public async Task<ActionResult<AdminDTO>> GetAdmin(int id)
+    public async Task<ActionResult<AdminDTO>> GetAdmin(string id)
     {
         if (_dbContext.Admins is null)
         {
@@ -289,7 +289,7 @@ public class UserService : IUserService
         return _mapper.Map<AdminDTO>(admin);
     }
 
-    public async Task<ActionResult> UpdateAdmin(int id, Admin admin)
+    public async Task<ActionResult> UpdateAdmin(string id, Admin admin)
     {
         if (id != admin.Id)
         {
@@ -317,7 +317,7 @@ public class UserService : IUserService
         return new NoContentResult();
     }
 
-    public async Task<ActionResult> DeleteAdmin(int id)
+    public async Task<ActionResult> DeleteAdmin(string id)
     {
         if (_dbContext.Admins is null)
         {

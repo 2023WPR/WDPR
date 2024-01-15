@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using wdpr_project.Data;
 
 namespace wdpr_project.Models;
 
@@ -13,11 +16,11 @@ public class Expert : User
     
     public Expert(){}
 
-    // public Expert(int id)
-    // {
-    //     Id = id;
-    //     PersonalData = null!; // prevent the creation of new objects that EF will attempt to add to the DB
-    // }
+    public Expert(string id)
+    {
+        Id = id;
+        PersonalData = null!; // prevent the creation of new objects that EF will attempt to add to the DB
+    }
 
     public async Task<ActionResult?> UpdateFields(ExpertFullDTO dto, ApplicationDbContext dbContext) //TODO: Unit tests
     {
@@ -127,7 +130,7 @@ public class Expert : User
 
 public class ExpertBaseDTO
 {
-   // public int Id { get; set; }
+    public string Id { get; set; }
     public string Username { get; set; }
     public string Firstname { get; set; }
     public string? Middlenames { get; set; }
@@ -136,7 +139,7 @@ public class ExpertBaseDTO
 
 public class ExpertDetailDTO
 {
-    //public int Id { get; set; }
+    public string Id { get; set; }
     public string Username { get; set; }
     public string Firstname { get; set; }
     public string? Middlenames { get; set; }
@@ -152,7 +155,7 @@ public class ExpertDetailDTO
 
 public class ExpertFullDTO
 {
-   // public int Id { get; set; }
+   public string Id { get; set; }
     public string Username { get; set; }
     public string Password { get; set; }
     public bool ContactByPhone { get; set; }

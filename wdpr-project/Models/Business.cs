@@ -16,8 +16,8 @@ public class Business : User
     // {
     //     Id = id;
     // }
-    public Business(string UserName, string password, string name, string url = "") : base(UserName, password)
-    public Business(int id)
+   // public Business(string UserName, string password, string name, string url = "") : base(UserName, password);
+    public Business(string id)
     {
         Id = id;
     }
