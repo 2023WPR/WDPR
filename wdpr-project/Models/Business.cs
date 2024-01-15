@@ -10,7 +10,7 @@ public class Business : User
     
     public Business(){}
 
-    public Business(int id)
+    public Business(string id)
     {
         Id = id;
     }
@@ -23,7 +23,7 @@ public class Business : User
 
 public class BusinessDTO
 {
-    public int Id { get; set; }
+    public string Id { get; set; }
     public string Username { get; set; }
     public string Name { get; set; }
     public AddressDTO Adress { get; set; }

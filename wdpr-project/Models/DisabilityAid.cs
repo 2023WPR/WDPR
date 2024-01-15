@@ -6,14 +6,9 @@ public class DisabilityAid
 {
     public int Id { get; set; }
     public string Description { get; set; }
-    public List<Expert> AidUsers { get; set; }
+    public List<Expert> AidUsers { get; set; } = new List<Expert>();
 
     public DisabilityAid(){}
-/* TODO: Deletion of DisabilityAid only if it's not in use anywhere
-    public DisabilityAid(int id)
-    {
-        Id = id;
-    }*/
     public DisabilityAid(string description)
     {
         Description = description;
@@ -27,6 +22,11 @@ public class DisabilityAid
         }
         Description = dto.Description;
     }
+
+    public void UpdateFields(DisabilityAidDTO dto)
+    {
+        Description = dto.Description;
+    }
 }
 
 public class DisabilityAidDTO
@@ -38,7 +38,7 @@ public class DisabilityAidFullDTO
 {
     public int Id { get; set; }
     public string Description { get; set; }
-    public List<int> AidUserIds { get; set; }
+    public List<string> AidUserIds { get; set; }
 }
 
 public class DisabilityAidProfile : Profile
@@ -46,5 +46,8 @@ public class DisabilityAidProfile : Profile
     public DisabilityAidProfile()
     {
         CreateMap<DisabilityAid, DisabilityAidDTO>();
+        CreateMap<DisabilityAid, DisabilityAidFullDTO>()
+            .ForMember(dest => dest.AidUserIds,
+                opt => opt.MapFrom(src => src.AidUsers.Select(e => e.Id).ToList()));
     }
 }

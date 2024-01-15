@@ -26,24 +26,23 @@ public class UserController : ControllerBase
     [HttpGet("Expert")]
     public async Task<ActionResult<IEnumerable<ExpertBaseDTO>>> ListExperts()
     {
-        Console.WriteLine("in get expert");
         return await _userService.GetExpertList();
     }
 
     [HttpGet("Expert/{id}")]
-    public async Task<ActionResult<ExpertDetailDTO>> GetExpert(int id)
+    public async Task<ActionResult<ExpertDetailDTO>> GetExpert(string id)
     {
         return await _userService.GetExpert(id);
     }
 
     [HttpPut("Expert/{id}")]
-    public async Task<ActionResult> UpdateExpert(int id, ExpertFullDTO expert)
+    public async Task<ActionResult> UpdateExpert(string id, ExpertFullDTO expert)
     {
         return await _userService.UpdateExpert(id, expert);
     }
 
     [HttpDelete("Expert/{id}")]
-    public async Task<ActionResult> DeleteExpert(int id)
+    public async Task<ActionResult> DeleteExpert(string id)
     {
         return await _userService.DeleteExpert(id);
     }
@@ -63,19 +62,19 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("Business/{id}")]
-    public async Task<ActionResult<BusinessDTO>> GetBusiness(int id)
+    public async Task<ActionResult<BusinessDTO>> GetBusiness(string id)
     {
         return await _userService.GetBusiness(id);
     }
 
     [HttpPut("Business/{id}")]
-    public async Task<ActionResult> UpdateBusiness(int id, Business business)
+    public async Task<ActionResult> UpdateBusiness(string id, Business business)
     {
         return await _userService.UpdateBusiness(id, business);
     }
 
     [HttpDelete("Business/{id}")]
-    public async Task<ActionResult> DeleteBusiness(int id)
+    public async Task<ActionResult> DeleteBusiness(string id)
     {
         return await _userService.DeleteBusiness(id);
     }
@@ -95,19 +94,19 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("Admin/{id}")]
-    public async Task<ActionResult<AdminDTO>> GetAdmin(int id)
+    public async Task<ActionResult<AdminDTO>> GetAdmin(string id)
     {
         return await _userService.GetAdmin(id);
     }
 
     [HttpPut("Admin/{id}")]
-    public async Task<ActionResult> UpdateAdmin(int id, Admin admin)
+    public async Task<ActionResult> UpdateAdmin(string id, Admin admin)
     {
         return await _userService.UpdateAdmin(id, admin);
     }
 
     [HttpDelete("Admin/{id}")]
-    public async Task<ActionResult> DeleteAdmin(int id)
+    public async Task<ActionResult> DeleteAdmin(string id)
     {
         return await _userService.DeleteAdmin(id);
     }

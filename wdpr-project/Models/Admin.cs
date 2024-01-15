@@ -6,7 +6,7 @@ public class Admin : User
 {
     public Admin(){}
 
-    public Admin(int id)
+    public Admin(string id)
     {
         Id = id;
     }
@@ -15,7 +15,7 @@ public class Admin : User
 
 public class AdminDTO
 {
-    public int Id { get; set; }
+    public string Id { get; set; }
     public string Username { get; set; }
 }
 

@@ -17,47 +17,60 @@ export class UserDetailPage extends Component {
 
     componentDidMount ()
     {
-        this.fetchUsers();
+        console.log("componentDidMount");
+        // this.fetchUsers();
     }
 
     fetchUsers = async () =>
     {
-        //TODO: dit fixen
-        const response = await axios.get('http:localhost:5192/expert');
-        const data = response.data;
-        const persData = data.PersonalData;
+        console.log("fetchUsers");
+
+        //TODO: current user
+        const id = "38e32081-d943-45b5-81ad-01087833c26c";
+
+        const response = await axios.get("http://localhost:5192/expert/" + id);
+        const user = response.data;
+        console.log(user)
+
+        
+
+        return user;
     }
   
     render() {
-        //TODO: dit uit backend halen
-        var user = {
-            "id": 0,
-            "Firstname" : "jan",
-            "Middlenames": "",
-            "Lastname": "jansen",
-            "Address": {
-                "HouseNumber": 12,
-                "Addition": "a"
-            },
-            "Phonenumber": "061234567",
-            "Age": "31",
-            "Emailaddress": "bal@bla.nl",
-            "Disabilities": [
+        console.log("render");
 
-            ],
-            "Aids": [
+        // TODO: state gebruiken? en een hoop andere dingen
+        var user = this.fetchUsers();
 
-            ],
-            "Availability": {
-                "monday": false,
-                "tuesday": false,
-                "wednesday": false,
-                "thursday": false,
-                "friday": false,
-                "saturday": false,
-                "sunday": false
-            }
-        };
+        // var user = {
+        //     "id": 0,
+        //     "Firstname" : "jan",
+        //     "Middlenames": "",
+        //     "Lastname": "jansen",
+        //     "Address": {
+        //         "HouseNumber": 12,
+        //         "Addition": "a"
+        //     },
+        //     "Phonenumber": "061234567",
+        //     "Age": "31",
+        //     "Emailaddress": "bal@bla.nl",
+        //     "Disabilities": [
+
+        //     ],
+        //     "Aids": [
+
+        //     ],
+        //     "Availability": {
+        //         "monday": false,
+        //         "tuesday": false,
+        //         "wednesday": false,
+        //         "thursday": false,
+        //         "friday": false,
+        //         "saturday": false,
+        //         "sunday": false
+        //     }
+        // };
 
         return (
             <Form>
@@ -70,7 +83,7 @@ export class UserDetailPage extends Component {
                             required
                             type="text"
                             placeholder="Voornaam"
-                            value={user.Firstname}
+                            value={user.firstname}
                         />
                     </Col>
                 </Form.Group>
