@@ -29,6 +29,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddSignalR();
 
 // Custom services
+
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDisabilityService, DisabilityService>();
 
@@ -65,7 +66,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
- 
 }
 
 if (!app.Environment.IsDevelopment())
@@ -82,6 +82,15 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapHub<ChatHub>("/ChatHub");
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseCors(cors => cors //"MyAllowSpecificOrigins");
+        .AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod());
+}
+
 
 app.MapControllerRoute(
     name: "default",

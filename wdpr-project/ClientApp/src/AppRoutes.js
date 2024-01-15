@@ -1,6 +1,8 @@
 import Login  from "./components/login/Login";
 import { Home } from "./components/Home";
 import { Chat } from "./components/chat/Chat";
+import Research from "./components/Research/Research"
+import ResearchPage from "./components/Research/ResearchPage";
 import { Register } from "./components/register/Register";
 import { RegisterExpert } from "./components/register/RegisterExpert";
 import { RegisterSelection } from "./components/register/RegisterSelection";
@@ -45,6 +47,14 @@ const AppRoutes = [
   {
     path: '/chat',
     element: <Chat />
+  },
+  {
+    path: '/onderzoeken',
+    element: <Research />
+  },
+  {
+    path: '/onderzoeken/:researchId',
+    element: <ResearchPage />
   },
   {
     path: '/chatIndex',
