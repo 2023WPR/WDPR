@@ -9,13 +9,21 @@
 }
 
 html {
-  font-size: 1px;
+  font-size: 16px; /* Default font size for most devices */
 }
+
 @media (min-width: 320px) {
   html {
     font-size: 17px;
   }
 }
+
+@media (max-width: 767px) {
+  html {
+    font-size: 14px; /* Adjust font size for smaller screens */
+  }
+}
+
 
 .box-shadow {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
