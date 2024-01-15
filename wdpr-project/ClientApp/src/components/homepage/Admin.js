@@ -24,7 +24,7 @@ export class AdminHome extends Component {
           <Card style={{ width: '18rem', marginBottom: '20px' }}>
             <Card.Body>
               <Card.Title>Overzicht gebruikers</Card.Title>
-              <Button variant="primary" href="/research">bekijk gegevens gebruikers</Button>
+              <Button variant="primary" href="/onderzoeken">bekijk gegevens onderzoeken</Button>
             </Card.Body>
           </Card>
         </Col>
