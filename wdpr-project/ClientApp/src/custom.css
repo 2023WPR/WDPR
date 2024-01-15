@@ -16,3 +16,25 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.responsive {
+  width: 600px;
+  height: 400px;
+  padding-bottom: 10px
+}
+
+.wrapper {
+  padding: 20px;
+  background: #ffffff;
+  max-width: 600px;
+  margin: 5px auto;
+}
+
+.block {
+  padding: 10px;
+  background: #0366d6;
+  color: #ffffff;
+  
+  
+
+}
