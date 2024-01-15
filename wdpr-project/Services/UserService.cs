@@ -59,6 +59,7 @@ public class UserService : IUserService
         }
 
         var expert = await _dbContext.Experts
+            .Include(e => e.Availability)
             .Include(e => e.PersonalData)
             .Include(e => e.Caretaker)
             .Include(e => e.Disabilities).AsSplitQuery()

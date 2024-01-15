@@ -136,6 +136,7 @@ public class UserControllerTests : IntegrationTest
         _testOutputHelper.WriteLine(await response.Content.ReadAsStringAsync());
 
         var expertInDb = _context.Experts
+            .Include(e => e.Availability)
             .Include(e => e.PersonalData)
             .ThenInclude(p => p.Address)
             .Include(e => e.Caretaker)

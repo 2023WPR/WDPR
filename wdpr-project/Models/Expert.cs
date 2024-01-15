@@ -13,6 +13,7 @@ public class Expert : User
     public List<DisabilityAid> Aids { get; set; } = new List<DisabilityAid>();
     public PersonalData PersonalData { get; set; } = new PersonalData();
     public PersonalData? Caretaker { get; set; }
+    public Availability Availability { get; set; } = new Availability();
     
     public Expert(){}
 
@@ -28,6 +29,7 @@ public class Expert : User
         Password = dto.Password;
         ContactByPhone = dto.ContactByPhone;
         ContactByThirdParty = dto.ContactByThirdParty;
+        Availability.UpdateFields(dto.Availability);
         PersonalData.UpdateFields(dto.PersonalData);
         if (Caretaker is not null){
             if (dto.Caretaker is null)
@@ -152,6 +154,7 @@ public class ExpertDetailDTO
     public string? Emailaddress { get; set; }
     public string? Phonenumber { get; set; }
     public PersonalDataNameDTO? Caretaker { get; set; }
+    public AvailabilityDTO Availability { get; set; }
 }
 
 public class ExpertFullDTO
@@ -165,6 +168,7 @@ public class ExpertFullDTO
     public List<int> DisabilityAidIds { get; set; }
     public PersonalData PersonalData { get; set; }
     public PersonalData? Caretaker { get; set; }
+    public AvailabilityDTO Availability { get; set; }
 }
 
 public class ExpertProfile : Profile
@@ -180,16 +184,11 @@ public class ExpertProfile : Profile
             .ForMember(dest => dest.Firstname, opt => opt.MapFrom(src => src.PersonalData.Firstname))
             .ForMember(dest => dest.Middlenames, opt => opt.MapFrom(src => src.PersonalData.Middlenames))
             .ForMember(dest => dest.Lastname, opt => opt.MapFrom(src => src.PersonalData.Lastname))
-            .ForMember(dest => dest.Contactbyphone, opt => opt.MapFrom(src => src.ContactByPhone))
-            .ForMember(dest => dest.Contactbythirdparty, opt => opt.MapFrom(src => src.ContactByThirdParty))
-            .ForMember(dest => dest.Disabilities, opt => opt.MapFrom(src => src.Disabilities))
-            .ForMember(dest => dest.Aids, opt => opt.MapFrom(src => src.Aids))
             .ForMember(dest => dest.Emailaddress,
                 opt => opt.MapFrom(src => src.ContactByThirdParty ? src.PersonalData.Emailaddress : null))
             .ForMember(dest => dest.Phonenumber,
                 opt => opt.MapFrom(src =>
-                    src.ContactByThirdParty && src.ContactByPhone ? src.PersonalData.Phonenumber : null))
-            .ForMember(dest => dest.Caretaker, opt => opt.MapFrom(src => src.Caretaker));
+                    src.ContactByThirdParty && src.ContactByPhone ? src.PersonalData.Phonenumber : null));
 
         CreateMap<Expert, ExpertFullDTO>()
             .ForMember(dest => dest.DisabilityIds, opt => opt.MapFrom(src => src.Disabilities.Select(d => d.Id).ToList()))
