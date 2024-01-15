@@ -7,14 +7,9 @@ public class Disability
     public int Id { get; set; }
     public string Type { get; set; }
     public string Description { get; set; }
-    public List<Expert> DisabledExperts { get; set; }
+    public List<Expert> DisabledExperts { get; set; } = new List<Expert>();
 
     public Disability(){}
-/* TODO: Deletion of Disability only if it's not in use anywhere
-    public Disability(int id)
-    {
-        Id = id;
-    }*/
     public Disability(string type, string description)
     {
         Type = type;
@@ -27,6 +22,12 @@ public class Disability
         {
             return; //TODO: Throw error?
         }
+        Type = dto.Type;
+        Description = dto.Description;
+    }
+    
+    public void UpdateFields(DisabilityDTO dto)
+    {
         Type = dto.Type;
         Description = dto.Description;
     }
@@ -51,5 +52,8 @@ public class DisabilityProfile : Profile
     public DisabilityProfile()
     {
         CreateMap<Disability, DisabilityDTO>();
+        CreateMap<Disability, DisabilityFullDTO>()
+            .ForMember(dest => dest.DisabledExpertIds,
+                opt => opt.MapFrom(src => src.DisabledExperts.Select(e => e.Id).ToList()));
     }
 }
