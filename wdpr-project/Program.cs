@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-=======
 using System.Reflection;
->>>>>>> origin/main
+using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -35,16 +31,13 @@ builder.Services.AddSignalR();
 
 // Custom services
 builder.Services.AddScoped<IUserService, UserService>();
-<<<<<<< HEAD
 builder.Services.Configure<IdentityOptions>(options => options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier);
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireLoggedIn", policy => policy.RequireAuthenticatedUser());
 });
-=======
 builder.Services.AddScoped<IDisabilityService, DisabilityService>();
 
->>>>>>> origin/main
 builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();

@@ -40,12 +40,8 @@ public class UserService : IUserService
         _dbContext.Experts.Add(expert);
         await _dbContext.SaveChangesAsync();
         
-<<<<<<< HEAD
-        return new CreatedAtActionResult(nameof(GetExpert), nameof(UserController), new { id = expert.Id }, _mapper.Map<ExpertFullDTO>(expert));
-=======
         return new CreatedAtActionResult(nameof(GetExpert), nameof(UserController),
             new { id = expert.Id }, _mapper.Map<ExpertFullDTO>(expert));
->>>>>>> origin/main
     }
     public async Task<ActionResult<IEnumerable<ExpertBaseDTO>>> GetExpertList()
     {
@@ -81,11 +77,7 @@ public class UserService : IUserService
         return _mapper.Map<ExpertDetailDTO>(expert);
     }
 
-<<<<<<< HEAD
     public async Task<ActionResult> UpdateExpert(string id, ExpertFullDTO dto)
-=======
-    public async Task<ActionResult> UpdateExpert(int id, ExpertFullDTO dto)
->>>>>>> origin/main
     {
         if (id != dto.Id)
         {

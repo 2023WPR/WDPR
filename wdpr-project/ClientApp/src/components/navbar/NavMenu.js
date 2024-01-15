@@ -10,12 +10,8 @@ export class NavMenu extends Component {
   constructor(props) {
     
     super(props);
-<<<<<<< HEAD
     this.uitloggen = this.uitloggen.bind(this);
     this.redirect = this.redirect.bind(this);
-=======
-    this.signOut = this.uitloggen.bind(this);
->>>>>>> origin/main
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
       toegang: localStorage.getItem("toegang"),
@@ -57,7 +53,6 @@ export class NavMenu extends Component {
     window.location.reload();
   }
 
-<<<<<<< HEAD
    redirect()  {
     const userRole = localStorage.getItem("role");
     console.log(userRole)
@@ -76,8 +71,6 @@ export class NavMenu extends Component {
           this.props.history.push('/');
       }
   }}
-=======
->>>>>>> origin/main
   render() {
     const { isLoggedIn } = this.state;
 

@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 using AutoMapper;
 
-=======
->>>>>>> origin/main
 namespace wdpr_project.Models;
 
 public class Research
@@ -13,7 +10,6 @@ public class Research
     public int Reward {get;set;}
     public int Capacity {get;set;}
     public bool Status {get;set;}
-<<<<<<< HEAD
     public Business business {get;set;}
     public ResearchCriterium ResearchCriterium { get; set; }
 }
@@ -36,7 +32,4 @@ public class ResearchProfile : Profile
     {
         CreateMap<Research, ResearchDTO>();
     }
-=======
-    public ResearchCriterium ResearchCriterium { get; set; }
->>>>>>> origin/main
 }

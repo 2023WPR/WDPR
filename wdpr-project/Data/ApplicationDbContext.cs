@@ -22,11 +22,8 @@ namespace wdpr_project.Data
         public DbSet<ResearchCriterium> ResearchCriteria { get; set; }      
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Message> Messages { get; set; }
-<<<<<<< HEAD
         public DbSet<UserChat> UserChats { get; set; }
 
-=======
->>>>>>> origin/main
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().ToTable("Users");
@@ -38,7 +35,6 @@ namespace wdpr_project.Data
             modelBuilder.Entity<Business>().HasBaseType<User>();
             modelBuilder.Entity<Expert>().HasBaseType<User>();
 
-<<<<<<< HEAD
             modelBuilder.Entity<UserChat>()
                 .HasKey(uc => new { uc.UserId, uc.ChatId });
 
@@ -52,8 +48,6 @@ namespace wdpr_project.Data
                 .WithMany(c => c.UserChats)
                 .HasForeignKey(uc => uc.ChatId);
       
-=======
->>>>>>> origin/main
              base.OnModelCreating(modelBuilder);
 
             // Specify primary key for IdentityUserLogin<string>

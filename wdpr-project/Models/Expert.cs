@@ -155,11 +155,7 @@ public class ExpertDetailDTO
 
 public class ExpertFullDTO
 {
-<<<<<<< HEAD
    public string Id { get; set; }
-=======
-    public int Id { get; set; }
->>>>>>> origin/main
     public string Username { get; set; }
     public string Password { get; set; }
     public bool ContactByPhone { get; set; }
