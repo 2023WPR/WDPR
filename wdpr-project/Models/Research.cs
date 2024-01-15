@@ -22,7 +22,7 @@ public class ResearchDTO{
     public int Reward {get;set;}
     public int Capacity {get;set;}
     public bool Status {get;set;}
-    public int businessId {get;set;}
+    public string businessId {get;set;}
     public int ResearchCriteriumId {get;set;}
 }
 

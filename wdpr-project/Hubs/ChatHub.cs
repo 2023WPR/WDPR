@@ -35,17 +35,15 @@ public async Task SendMessage(string senderUsesId, string receiverUserId, string
         int chatRoomId = await CreateOrGetChatRoomIdAsync(senderUser.Id, receiverUser.Id);
         Console.WriteLine($"Chat Room ID: {chatRoomId}");
 
+          // Ensure that the sender is part of the chat group
+        await JoinGroup(new ChatUser { ChatId = chatRoomId });
+
         // Save the message to the chat room
         await SaveMessageAsync(chatRoomId, senderUser.Id, messageContent);
         string formattedDateTime = DateTime.Now.ToString("HH,mm");
-
-        Console.WriteLine(Clients.Group(chatRoomId.ToString()));
         
         // Broadcast the message to clients in the chat room
         await Clients.Group(chatRoomId.ToString()).SendAsync("newMessage", messageContent, formattedDateTime);
-        
-        // Send the message back to the sender
-        await Clients.Caller.SendAsync("newMessage", messageContent, formattedDateTime);
 
         Console.WriteLine($"Sent message from {senderUser.Id} to {receiverUser.Id}: {messageContent}");
     }
@@ -54,7 +52,10 @@ public async Task SendMessage(string senderUsesId, string receiverUserId, string
         Console.WriteLine("Sender or receiver not found.");
     }
 }
-
+ public async Task JoinGroup(ChatUser userConnection)
+    {
+        await Groups.AddToGroupAsync(Context.ConnectionId, userConnection.ChatId.ToString());
+    }
 
 private async Task<int> CreateOrGetChatRoomIdAsync(string user1Id, string user2Id)
 {

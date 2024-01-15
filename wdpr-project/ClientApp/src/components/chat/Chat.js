@@ -19,15 +19,20 @@ export class Chat extends Component {
     }
 
     componentDidMount() {
-    const { selectedUser, currentUser } = this.props;
-
+        const { selectedUser, currentUser } = this.props;
+    
         const newConnection = new signalR.HubConnectionBuilder()
-        .withUrl('http://localhost:5192/ChatHub')
-        .build();
+            .withUrl('http://localhost:5192/ChatHub', {
+                transport: signalR.HttpTransportType.LongPolling // Use Long Polling
+            })  
+            .build();
+    
         this.setState({ connection: newConnection }, () => {
             this.startConnection(selectedUser, currentUser);
         });
     }
+    
+    
 
     startConnection = (selectedUser, currentUser) => {
         const { connection } = this.state;

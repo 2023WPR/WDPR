@@ -8,15 +8,9 @@ public class Business : User
     public string Name { get; set; }
     public Address Address { get; set; }
 
-    public ICollection<Research> researches {get;set;}
+    public ICollection<Research> researches {get;set;} = new List<Research>();
     
     public Business(){}
-
-    // public Business(int id)
-    // {
-    //     Id = id;
-    // }
-   // public Business(string UserName, string password, string name, string url = "") : base(UserName, password);
     public Business(string id)
     {
         Id = id;
@@ -35,7 +29,7 @@ public class BusinessDTO
     public string Name { get; set; }
     public AddressDTO Adress { get; set; }
     public string URL { get; set; }
-    public ICollection<Research> researches {get;set;}
+    public ICollection<Research> researches {get;set;} 
 
 }
 
