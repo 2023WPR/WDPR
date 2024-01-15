@@ -15,7 +15,7 @@ public class Admin : User
 
 public class AdminDTO
 {
-    public int Id { get; set; }
+  //  public int Id { get; set; }
     public string Username { get; set; }
 }
 

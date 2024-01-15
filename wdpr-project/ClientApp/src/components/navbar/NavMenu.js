@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import Image from 'react-bootstrap/Image';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import '../navbar/NavMenu.css';
 
 export class NavMenu extends Component {
@@ -9,7 +9,8 @@ export class NavMenu extends Component {
 
   constructor (props) {
     super(props);
-
+    this.uitloggen = this.uitloggen.bind(this);
+    this.redirect = this.redirect.bind(this);
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
       collapsed: true
@@ -22,24 +23,87 @@ export class NavMenu extends Component {
     });
   }
 
+  checkLoginStatus() {
+    try {
+      let token = localStorage.getItem('token');  
+      const isLoggedIn = token != null;
+      
+      this.setState({
+        isLoggedIn,
+      });
+    } catch {
+      this.setState({
+        isLoggedIn: false,
+      });
+    }
+  }
+  uitloggen() {
+    localStorage.removeItem("token");
+    this.setState({
+      toegang: localStorage.getItem("toegang"),
+    });
+    window.location.reload();
+  }
+
+   redirect()  {
+    const userRole = localStorage.getItem("role");
+    console.log(userRole)
+    if (userRole) {
+      switch (userRole) {
+        case 'Expert':
+          this.props.history.push('/expertHome');
+          break;
+        case 'Business':
+          this.props.history.push('/businessHome');
+          break;
+        case 'Admin':
+          this.props.history.push('/adminHome');
+          break;
+        default:
+          this.props.history.push('/');
+      }
+  }}
   render() {
+    const { isLoggedIn } = this.state;
+
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container light style={{ backgroundColor: '#2B50EC' }}>
           <NavbarBrand tag={Link} to="/">
-          <Image src ={require('../navbar/logo.png')} className = "logo"alt="Logo of Stiching Accessebility" />
+            <Image src={require('../navbar/logo.png')} className="logo" alt="Logo of Stichting Accessibility" />
           </NavbarBrand>
-           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-            <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
-              <ul className="navbar-nav flex-grow">
-                <NavItem>
-                  <NavLink tag={Link} className="text-light" to="/">Login</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-light" to="/">Registreer</NavLink>
-                </NavItem>
-              </ul>
-            </Collapse>
+          <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
+          <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
+            <ul className="navbar-nav flex-grow">
+              {isLoggedIn ? (
+                <>
+                  <NavItem>
+                  <NavLink tag={Link} id='signOut' className="text-light"  to="/" onClick={this.uitloggen}>
+                      Logout
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink tag={Link} className="text-light" to="/myprofile">
+                      Mijn gegevens
+                    </NavLink>
+                  </NavItem>
+                </>
+              ) : (
+                <>
+                  <NavItem>
+                    <NavLink tag={Link} className="text-light" to="/login">
+                      Login
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink tag={Link} className="text-light" to="/register/select">
+                      Registreer
+                    </NavLink>
+                  </NavItem>
+                </>
+              )}
+            </ul>
+          </Collapse>
         </Navbar>
       </header>
     );

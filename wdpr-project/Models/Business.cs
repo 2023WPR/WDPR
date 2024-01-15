@@ -7,9 +7,16 @@ public class Business : User
     public string? URL { get; set; }
     public string Name { get; set; }
     public Address Address { get; set; }
+
+    public ICollection<Research> researches {get;set;}
     
     public Business(){}
 
+    // public Business(int id)
+    // {
+    //     Id = id;
+    // }
+    public Business(string UserName, string password, string name, string url = "") : base(UserName, password)
     public Business(int id)
     {
         Id = id;
@@ -23,11 +30,13 @@ public class Business : User
 
 public class BusinessDTO
 {
-    public int Id { get; set; }
+   // public int Id { get; set; }
     public string Username { get; set; }
     public string Name { get; set; }
     public AddressDTO Adress { get; set; }
     public string URL { get; set; }
+    public ICollection<Research> researches {get;set;}
+
 }
 
 public class BusinessProfile : Profile

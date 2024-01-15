@@ -1,5 +1,6 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using wdpr_project.Controllers;
@@ -13,23 +14,34 @@ public class UserService : IUserService
 
     private readonly ApplicationDbContext _dbContext;
     private readonly IMapper _mapper;
-
-    public UserService(ApplicationDbContext dbContext, IMapper mapper)
+    private readonly UserManager<User> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
+    public UserService(ApplicationDbContext dbContext, IMapper mapper, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
     {
         _dbContext = dbContext;
         _mapper = mapper;
+        _roleManager = roleManager;
+        _userManager = userManager;
     }
 
-    //Expert
+//     //Expert
     
-    public async Task<ActionResult<ExpertDetailDTO>> CreateExpert(Expert expert)
+    public async Task<ActionResult<ExpertDetailDTO>> CreateExpert(ExpertFullDTO dto)
     {
+        Expert expert = new Expert();
+
+        ActionResult? syncError = await expert.UpdateFields(dto, _dbContext);
+
+        if (syncError is not null)
+        {
+            return syncError;
+        }
+
         _dbContext.Experts.Add(expert);
         await _dbContext.SaveChangesAsync();
         
-        return new CreatedAtActionResult(nameof(GetExpert), nameof(UserController), new { id = expert.Id }, expert);
+        return new CreatedAtActionResult(nameof(GetExpert), nameof(UserController), new { id = expert.Id }, _mapper.Map<ExpertFullDTO>(expert));
     }
-
     public async Task<ActionResult<IEnumerable<ExpertBaseDTO>>> GetExpertList()
     {
         if (_dbContext.Experts is null)
@@ -64,11 +76,32 @@ public class UserService : IUserService
         return _mapper.Map<ExpertDetailDTO>(expert);
     }
 
-    public async Task<ActionResult> UpdateExpert(int id, Expert expert)
+    public async Task<ActionResult> UpdateExpert(int id, ExpertFullDTO dto)
     {
-        if (id != expert.Id)
+        if (id != dto.Id)
         {
             return new BadRequestResult();
+        }
+        
+        Expert expert = await _dbContext.Experts
+            .Include(e => e.PersonalData)
+            .ThenInclude(p => p.Address)
+            .Include(e => e.Caretaker)
+            .ThenInclude(p => p.Address)
+            .Include(e => e.Disabilities).AsSplitQuery()
+            .Include(e => e.Aids).AsSplitQuery()
+            .FirstOrDefaultAsync(a => a.Id == dto.Id);
+
+        if (expert is null)
+        {
+            return new NotFoundResult();
+        }
+
+        ActionResult? syncError = await expert.UpdateFields(dto, _dbContext);
+
+        if (syncError is not null)
+        {
+            return syncError;
         }
 
         _dbContext.Entry(expert).State = EntityState.Modified;

@@ -13,15 +13,121 @@ public class Expert : User
     
     public Expert(){}
 
-    public Expert(int id)
+    // public Expert(int id)
+    // {
+    //     Id = id;
+    //     PersonalData = null!; // prevent the creation of new objects that EF will attempt to add to the DB
+    // }
+
+    public async Task<ActionResult?> UpdateFields(ExpertFullDTO dto, ApplicationDbContext dbContext) //TODO: Unit tests
     {
-        Id = id;
+        Password = dto.Password;
+        ContactByPhone = dto.ContactByPhone;
+        ContactByThirdParty = dto.ContactByThirdParty;
+        PersonalData.UpdateFields(dto.PersonalData);
+        if (Caretaker is not null){
+            if (dto.Caretaker is null)
+            {
+                Caretaker = null;
+                if (Caretaker is not null)
+                { 
+                    dbContext.PersonalData.Remove(Caretaker!);
+                }
+            }
+            else
+            {
+                Caretaker.UpdateFields(dto.Caretaker);
+            }
+        }
+        else
+        {
+            Caretaker = dto.Caretaker;
+        }
+
+        return await SyncExpert(dto, dbContext);
+    }
+
+    public async Task<ActionResult?> SyncExpert(ExpertFullDTO dto, ApplicationDbContext dbContext) //TODO: Unit tests
+    {
+        string? errorMessage = null;
+        
+        Disabilities.Clear();
+        Aids.Clear();
+
+        if (dto.DisabilityIds.Count > 0)
+        {
+            List<int> invalidIds = new List<int>();
+            List<Disability> availableDisabilities = await dbContext.Disabilities.ToListAsync();
+            foreach (int id in dto.DisabilityIds)
+            {
+                Disability? disability = availableDisabilities.FirstOrDefault(d => d.Id == id);
+
+                if (disability is null)
+                {
+                    invalidIds.Add(id);
+                    continue;
+                }
+                
+                Disabilities.Add(disability);
+            }
+
+            if (invalidIds.Count > 0)
+            {
+                string errorString = $"Unable to find disabilities with the following id(s): [{string.Join<int>(",",invalidIds)}]";
+                if (errorMessage is null)
+                {
+                    errorMessage = errorString;
+                }
+                else
+                {
+                    errorMessage += "\n" + errorString;
+                }
+            }
+        }
+
+        if (dto.DisabilityAidIds.Count > 0)
+        {
+            List<int> invalidIds = new List<int>();
+            List<DisabilityAid> availableAids = await dbContext.DisabilityAids.ToListAsync();
+            foreach (int id in dto.DisabilityAidIds)
+            {
+                DisabilityAid? disabilityAid = availableAids.FirstOrDefault(d => d.Id == id);
+
+                if (disabilityAid is null)
+                {
+                    invalidIds.Add(id);
+                    continue;
+                }
+                
+                Aids.Add(disabilityAid);
+            }
+
+            if (invalidIds.Count > 0)
+            {
+                string errorString = $"Unable to find disabilities aids with the following id(s): [{string.Join<int>(",",invalidIds)}]";
+                if (errorMessage is null)
+                {
+                    errorMessage = errorString;
+                }
+                else
+                {
+                    errorMessage += "\n" + errorString;
+                }
+            }
+        }
+
+        if (errorMessage is not null)
+        {
+            return new ConflictObjectResult(errorMessage);
+        }
+
+        return null;
     }
 }
 
 public class ExpertBaseDTO
 {
-    public int Id { get; set; }
+   // public int Id { get; set; }
     public string Username { get; set; }
     public string Firstname { get; set; }
     public string? Middlenames { get; set; }
@@ -30,7 +136,7 @@ public class ExpertBaseDTO
 
 public class ExpertDetailDTO
 {
-    public int Id { get; set; }
+    //public int Id { get; set; }
     public string Username { get; set; }
     public string Firstname { get; set; }
     public string? Middlenames { get; set; }
@@ -42,6 +148,19 @@ public class ExpertDetailDTO
     public string? Emailaddress { get; set; }
     public string? Phonenumber { get; set; }
     public PersonalDataNameDTO? Caretaker { get; set; }
+}
+
+public class ExpertFullDTO
+{
+   // public int Id { get; set; }
+    public string Username { get; set; }
+    public string Password { get; set; }
+    public bool ContactByPhone { get; set; }
+    public bool ContactByThirdParty { get; set; }
+    public List<int> DisabilityIds { get; set; }
+    public List<int> DisabilityAidIds { get; set; }
+    public PersonalData PersonalData { get; set; }
+    public PersonalData? Caretaker { get; set; }
 }
 
 public class ExpertProfile : Profile
