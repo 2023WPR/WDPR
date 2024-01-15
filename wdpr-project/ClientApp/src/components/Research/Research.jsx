@@ -7,7 +7,7 @@ const Research = () => {
     
     const [researches, setResearches] = useState([]);
     useEffect(() => {
-        fetch('https://localhost:7276/Research')
+        fetch('https://stichingaccessebility.azurewebsites.net:7276/Research')
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);

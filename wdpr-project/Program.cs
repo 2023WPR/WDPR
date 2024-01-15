@@ -46,8 +46,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = "https://localhost:7047",
-            ValidAudience = "https://localhost:7047",
+            ValidIssuer = "https://stichingaccessebility.azurewebsites.net:7047",
+            ValidAudience = "https://stichingaccessebility.azurewebsites.net:7047",
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("awef98awef978haweof8g7aw789efhh789awef8h9awh89efh98f89uawef9j8aw89hefawef"))
         };
     });
