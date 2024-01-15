@@ -3,13 +3,62 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
-import { useState } from 'react';
+import axios from 'axios';
 
 
 export class UserDetailPage extends Component {
     static displayName = UserDetailPage.name;
+
+    constructor (props)
+    {
+        super(props);
+        this.fetchUsers = this.fetchUsers.bind(this);
+    }
+
+    componentDidMount ()
+    {
+        this.fetchUsers();
+    }
+
+    fetchUsers = async () =>
+    {
+        //TODO: dit fixen
+        const response = await axios.get('http:localhost:5192/expert');
+        const data = response.data;
+        const persData = data.PersonalData;
+    }
   
     render() {
+        //TODO: dit uit backend halen
+        var user = {
+            "id": 0,
+            "Firstname" : "jan",
+            "Middlenames": "",
+            "Lastname": "jansen",
+            "Address": {
+                "HouseNumber": 12,
+                "Addition": "a"
+            },
+            "Phonenumber": "061234567",
+            "Age": "31",
+            "Emailaddress": "bal@bla.nl",
+            "Disabilities": [
+
+            ],
+            "Aids": [
+
+            ],
+            "Availability": {
+                "monday": false,
+                "tuesday": false,
+                "wednesday": false,
+                "thursday": false,
+                "friday": false,
+                "saturday": false,
+                "sunday": false
+            }
+        };
+
         return (
             <Form>
                 <Form.Group as={Row} className="mb-3" controlId="given_name">
@@ -17,7 +66,12 @@ export class UserDetailPage extends Component {
                         Voornaam
                     </Form.Label>
                     <Col>
-                        <Form.Control required type="text" placeholder="Voornaam" />
+                        <Form.Control
+                            required
+                            type="text"
+                            placeholder="Voornaam"
+                            value={user.Firstname}
+                        />
                     </Col>
                 </Form.Group>
 
@@ -28,7 +82,7 @@ export class UserDetailPage extends Component {
                                 Tussenvoegsel
                             </Form.Label>
                             <Col>
-                                <Form.Control type="text" placeholder="Tussenvoegsel" />
+                                <Form.Control type="text" placeholder="Tussenvoegsel" value={user.Middlenames} />
                             </Col>
                         </Form.Group>
                     </Col>
@@ -39,31 +93,7 @@ export class UserDetailPage extends Component {
                                 Achternaam
                             </Form.Label>
                             <Col>
-                                <Form.Control required type="text" placeholder="Achternaam" />
-                            </Col>
-                        </Form.Group>
-                    </Col>
-                </Row>
-
-                <Row>
-                    <Col>
-                        <Form.Group as={Row} className="mb-3" controlId="street_name">
-                            <Form.Label column xs="4">
-                                Straatnaam
-                            </Form.Label>
-                            <Col>
-                                <Form.Control required type="text" placeholder="Straatnaam" />
-                            </Col>
-                        </Form.Group>
-                    </Col>
-                
-                    <Col>
-                        <Form.Group as={Row} className="mb-3" controlId="house_number">
-                            <Form.Label column xs="2">
-                                Huisnummer
-                            </Form.Label>
-                            <Col>
-                                <Form.Control required type="text" placeholder="Huisnummer" />
+                                <Form.Control required type="text" placeholder="Achternaam" value={user.Lastname} />
                             </Col>
                         </Form.Group>
                     </Col>
@@ -74,16 +104,40 @@ export class UserDetailPage extends Component {
                         Postcode
                     </Form.Label>
                     <Col>
-                        <Form.Control required type="text" placeholder="Postcode" />
+                        <Form.Control required type="text" placeholder="Postcode" value={user.zip_code} />
                     </Col>
                 </Form.Group>
+
+                <Row>
+                    <Col>
+                        <Form.Group as={Row} className="mb-3" controlId="infix">
+                            <Form.Label column xs="4">
+                                Huisnummer
+                            </Form.Label>
+                            <Col>
+                                <Form.Control type="text" placeholder="Huisnummer" value={user.Address.HouseNumber} />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                
+                    <Col>
+                        <Form.Group as={Row} className="mb-3" controlId="family_name">
+                            <Form.Label column xs="2">
+                                Toevoegsel
+                            </Form.Label>
+                            <Col>
+                                <Form.Control required type="text" placeholder="Toevoegsel" value={user.Address.Addition} />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                </Row>
 
                 <Form.Group as={Row} className="mb-3" controlId="phone_number">
                     <Form.Label column xs="2">
                     Telefoonnummer
                     </Form.Label>
                     <Col>
-                        <Form.Control required type="text" placeholder="Telefoonnummer" />
+                        <Form.Control required type="text" placeholder="Telefoonnummer" value={user.Phonenumber} />
                     </Col>
                 </Form.Group>
                 
@@ -92,7 +146,7 @@ export class UserDetailPage extends Component {
                         Leeftijd
                     </Form.Label>
                     <Col>
-                        <Form.Control required type="number" placeholder="Leeftijd" />
+                        <Form.Control required type="number" placeholder="Leeftijd" value={user.Age} />
                     </Col>
                 </Form.Group>
 
@@ -101,7 +155,7 @@ export class UserDetailPage extends Component {
                         E-mailadres
                     </Form.Label>
                     <Col>
-                        <Form.Control required type="email" placeholder="E-mailadres" />
+                        <Form.Control required type="email" placeholder="E-mailadres" value={user.Emailaddress} />
                     </Col>
                 </Form.Group>
 
@@ -113,7 +167,7 @@ export class UserDetailPage extends Component {
                         <Form.Select aria-label="Default select example">
                             <option>Selecteer uw aandoending</option>
                             {/* TODO: dit in een forloopje doen ofzo */}
-                            <option value="1">One</option>
+                            <option selected value="1">Blind</option>
                         </Form.Select>
                     </Col>
                 </Form.Group>
@@ -126,7 +180,7 @@ export class UserDetailPage extends Component {
                         <Form.Select aria-label="Default select example">
                             <option>Selecteer uw hulpmiddelen</option>
                             {/* TODO: dit in een forloopje doen ofzo */}
-                            <option value="1">One</option>
+                            <option selected value="1">Schermlezer</option>
                         </Form.Select>
                     </Col>
                 </Form.Group>
@@ -152,6 +206,7 @@ export class UserDetailPage extends Component {
                             id="Dinsdag"
                         />
                         <Form.Check
+                            checked
                             inline
                             label="Woensdag"
                             name="wednesday"
@@ -159,6 +214,7 @@ export class UserDetailPage extends Component {
                             id="Woensdag"
                         />
                         <Form.Check
+                            checked
                             inline
                             label="Donderdag"
                             name="thursday"

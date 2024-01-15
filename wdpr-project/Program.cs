@@ -24,7 +24,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddSignalR();
 
 // Custom services
-//builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

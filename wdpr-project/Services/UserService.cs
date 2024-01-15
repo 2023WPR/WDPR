@@ -49,9 +49,14 @@ public class UserService : IUserService
             return new NotFoundResult();
         }
 
-        return await _dbContext.Experts
-            .ProjectTo<ExpertBaseDTO>(_mapper.ConfigurationProvider)
+        List<Expert> experts = await _dbContext.Experts
             .ToListAsync();
+
+        List<ExpertBaseDTO> dtos = new List<ExpertBaseDTO>();
+        foreach (Expert expert in experts){
+            dtos.Add(_mapper.Map<ExpertBaseDTO>(expert));
+        }
+        return dtos;
     }
 
     public async Task<ActionResult<ExpertDetailDTO>> GetExpert(int id)

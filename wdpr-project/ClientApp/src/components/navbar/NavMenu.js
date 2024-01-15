@@ -72,7 +72,7 @@ export class NavMenu extends Component {
                     </NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink tag={Link} className="text-light" to="/myprofile">
+                    <NavLink tag={Link} className="text-light" to="/user-detail-page">
                       Mijn gegevens
                     </NavLink>
                   </NavItem>
