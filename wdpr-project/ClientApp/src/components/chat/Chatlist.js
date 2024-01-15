@@ -2,24 +2,34 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { Chat } from './Chat';
+<<<<<<< HEAD
 import { jwtDecode } from 'jwt-decode';
 import Card from 'react-bootstrap/Card';
 import '../chat/Chat';
+=======
+
+>>>>>>> origin/main
 export class ChatList extends Component {
   constructor(props) {
     super(props);
     this.fetchUsers = this.fetchUsers.bind(this);
+<<<<<<< HEAD
     this.fetchChats = this.fetchChats.bind(this);
     this.extractCurrentUser = this.extractCurrentUser.bind(this);
     this.state = {
       users: [],
       chats: [],
+=======
+    this.state = {
+      users: [],
+>>>>>>> origin/main
       selectedUser: null,
     };
   }
 
   componentDidMount() {
     this.fetchUsers();
+<<<<<<< HEAD
     this.extractCurrentUser();
     this.fetchChats();
   }
@@ -47,6 +57,13 @@ export class ChatList extends Component {
   fetchUsers = async () => {
     try {
       const response = await axios.get('http://localhost:5192/chat/expert');
+=======
+  }
+
+  fetchUsers = async () => {
+    try {
+      const response = await axios.get('https://stichingaccessebility.azurewebsites.net/chat/expert');
+>>>>>>> origin/main
       const data = response.data;
       console.log('Fetched Users:', data);
       data.forEach((user) => console.log('User ID:', user.id));
@@ -55,6 +72,7 @@ export class ChatList extends Component {
       console.error('Error fetching users:', error.message);
     }
   };
+<<<<<<< HEAD
 
   createChat = async (userToId) => {
     const authToken = localStorage.getItem('token');
@@ -110,6 +128,31 @@ export class ChatList extends Component {
     return (
       <div>
         <h2>Beschikbare gebruikers</h2>
+=======
+//     createChat = async (userToId, currentUserId) => {
+//     const authToken = localStorage.getItem('authToken');
+//     const user = jwtDecode(authToken)
+//     var token = user.payload.currentUserId;
+//     console.log(token);
+//     try {
+//         await axios.post('http://localhost:5192/chat/create', { userToId,token  });
+//     } catch (error) {
+//         console.error('Error creating chat:', error);
+//     }
+// };
+
+  handleUserClick = async (userId) => {
+    this.setState({ selectedUser: userId });
+    //await this.createChat(userId);
+  };
+
+  render() {
+    const { users, selectedUser } = this.state;
+
+    return (
+      <div>
+        <h2>Available Users</h2>
+>>>>>>> origin/main
         <ul>
          
         </ul>
@@ -125,6 +168,7 @@ export class ChatList extends Component {
             </ListGroup.Item>
         ))}
         </ListGroup>
+<<<<<<< HEAD
         <h3>Bestaande gesprekken</h3>
         <ul>
          
@@ -161,6 +205,12 @@ export class ChatList extends Component {
             </ul>
 
             <Chat selectedUser={selectedUser} currentUser={currentUser} chatRoomId={chatRoomId} messages={messages}/>
+=======
+        {selectedUser && (
+          <div>
+            <h3>Chatting with {selectedUser}</h3>
+            <Chat selectedUser={selectedUser} />
+>>>>>>> origin/main
           </div>
         )}
       </div>

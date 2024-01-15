@@ -18,7 +18,7 @@ public class UserController : ControllerBase
     //Expert
 
     [HttpPost("Expert")]
-    public async Task<ActionResult<ExpertDetailDTO>> PostExpert(Expert expert)
+    public async Task<ActionResult<ExpertDetailDTO>> PostExpert(ExpertFullDTO expert)
     {
         return await _userService.CreateExpert(expert);
     }
@@ -36,7 +36,11 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("Expert/{id}")]
+<<<<<<< HEAD
     public async Task<ActionResult> UpdateExpert(string id, Expert expert)
+=======
+    public async Task<ActionResult> UpdateExpert(int id, ExpertFullDTO expert)
+>>>>>>> origin/main
     {
         return await _userService.UpdateExpert(id, expert);
     }

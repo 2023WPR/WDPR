@@ -73,6 +73,7 @@ namespace wdpr_project.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+<<<<<<< HEAD
                     b.Property<int>("ChatId")
                         .HasColumnType("int");
 
@@ -87,6 +88,21 @@ namespace wdpr_project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+=======
+                    b.Property<int?>("ChatId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ChatRoomId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("date")
+                        .HasColumnType("datetime2");
+
+>>>>>>> origin/main
                     b.Property<string>("message")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -95,8 +111,11 @@ namespace wdpr_project.Migrations
 
                     b.HasIndex("ChatId");
 
+<<<<<<< HEAD
                     b.HasIndex("UserId");
 
+=======
+>>>>>>> origin/main
                     b.ToTable("Messages");
                 });
 
@@ -268,6 +287,7 @@ namespace wdpr_project.Migrations
                     b.ToTable("ResearchCriteria");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("UserChat", b =>
                 {
                     b.Property<string>("UserId")
@@ -283,6 +303,8 @@ namespace wdpr_project.Migrations
                     b.ToTable("UserChats");
                 });
 
+=======
+>>>>>>> origin/main
             modelBuilder.Entity("wdpr_project.Models.Address", b =>
                 {
                     b.Property<int>("Id")
@@ -318,16 +340,11 @@ namespace wdpr_project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ExpertId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ExpertId");
 
                     b.ToTable("Disabilities");
                 });
@@ -344,12 +361,7 @@ namespace wdpr_project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ExpertId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ExpertId");
 
                     b.ToTable("DisabilityAids");
                 });
@@ -394,7 +406,7 @@ namespace wdpr_project.Migrations
                     b.ToTable("PersonalData");
                 });
 
-            modelBuilder.Entity("wdpr_project.Models.User", b =>
+            modelBuilder.Entity("wdpr_project.Models.Research", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -402,14 +414,72 @@ namespace wdpr_project.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Reward")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Researches");
+                });
+
+            modelBuilder.Entity("wdpr_project.Models.User", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ChatId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Username")
-                        .IsRequired()
+                    b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
+<<<<<<< HEAD
                     b.Property<string>("businessId")
                         .HasColumnType("nvarchar(450)");
 
@@ -419,13 +489,18 @@ namespace wdpr_project.Migrations
 
                     b.ToTable("Researches");
                 });
+=======
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
-            modelBuilder.Entity("wdpr_project.Models.WeatherForecast", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+>>>>>>> origin/main
 
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+<<<<<<< HEAD
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -470,12 +545,22 @@ namespace wdpr_project.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
+=======
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+>>>>>>> origin/main
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
+<<<<<<< HEAD
+=======
+                    b.HasIndex("ChatId");
+
+>>>>>>> origin/main
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -536,15 +621,29 @@ namespace wdpr_project.Migrations
                     b.ToTable("Experts", (string)null);
                 });
 
-            modelBuilder.Entity("wdpr_project.Models.Disability", b =>
+            modelBuilder.Entity("DisabilityAidExpert", b =>
                 {
                     b.HasOne("wdpr_project.Models.Expert", null)
-                        .WithMany("Disabilities")
-                        .HasForeignKey("ExpertId");
+                        .WithMany()
+                        .HasForeignKey("AidUsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("wdpr_project.Models.DisabilityAid", null)
+                        .WithMany()
+                        .HasForeignKey("AidsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("wdpr_project.Models.DisabilityAid", b =>
+            modelBuilder.Entity("DisabilityExpert", b =>
                 {
+                    b.HasOne("wdpr_project.Models.Disability", null)
+                        .WithMany()
+                        .HasForeignKey("DisabilitiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("wdpr_project.Models.Expert", null)
                         .WithMany()
                         .HasForeignKey("DisabledExpertsId")
@@ -554,6 +653,7 @@ namespace wdpr_project.Migrations
 
             modelBuilder.Entity("Message", b =>
                 {
+<<<<<<< HEAD
                     b.HasOne("Chat", "Chat")
                         .WithMany("Messages")
                         .HasForeignKey("ChatId")
@@ -569,6 +669,11 @@ namespace wdpr_project.Migrations
                     b.Navigation("Chat");
 
                     b.Navigation("User");
+=======
+                    b.HasOne("Chat", null)
+                        .WithMany("Messages")
+                        .HasForeignKey("ChatId");
+>>>>>>> origin/main
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -647,6 +752,7 @@ namespace wdpr_project.Migrations
                     b.Navigation("Disability");
 
                     b.Navigation("Research");
+<<<<<<< HEAD
                 });
 
             modelBuilder.Entity("UserChat", b =>
@@ -666,6 +772,8 @@ namespace wdpr_project.Migrations
                     b.Navigation("Chat");
 
                     b.Navigation("User");
+=======
+>>>>>>> origin/main
                 });
 
             modelBuilder.Entity("wdpr_project.Models.PersonalData", b =>
@@ -679,6 +787,7 @@ namespace wdpr_project.Migrations
                     b.Navigation("Address");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("wdpr_project.Models.Research", b =>
                 {
                     b.HasOne("wdpr_project.Models.Business", "business")
@@ -686,6 +795,13 @@ namespace wdpr_project.Migrations
                         .HasForeignKey("businessId");
 
                     b.Navigation("business");
+=======
+            modelBuilder.Entity("wdpr_project.Models.User", b =>
+                {
+                    b.HasOne("Chat", null)
+                        .WithMany("Users")
+                        .HasForeignKey("ChatId");
+>>>>>>> origin/main
                 });
 
             modelBuilder.Entity("wdpr_project.Models.Admin", b =>
@@ -737,17 +853,22 @@ namespace wdpr_project.Migrations
                     b.Navigation("PersonalData");
                 });
 
-            modelBuilder.Entity("wdpr_project.Models.Expert", b =>
+            modelBuilder.Entity("Chat", b =>
                 {
-                    b.Navigation("Aids");
+                    b.Navigation("Messages");
 
+<<<<<<< HEAD
                     b.Navigation("UserChats");
+=======
+                    b.Navigation("Users");
+>>>>>>> origin/main
                 });
 
             modelBuilder.Entity("wdpr_project.Models.Research", b =>
                 {
                     b.Navigation("ResearchCriterium")
                         .IsRequired();
+<<<<<<< HEAD
                 });
 
             modelBuilder.Entity("wdpr_project.Models.User", b =>
@@ -758,6 +879,8 @@ namespace wdpr_project.Migrations
             modelBuilder.Entity("wdpr_project.Models.Business", b =>
                 {
                     b.Navigation("researches");
+=======
+>>>>>>> origin/main
                 });
 #pragma warning restore 612, 618
         }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using wdpr_project.Models;
 
 public class Message
@@ -14,3 +15,13 @@ public class Message
     public User User { get; set; }
     public Chat Chat { get; set; }
 }
+=======
+public class Message
+{ 
+        public int Id {get; set;}
+        public string message{get;set;}
+        public string UserId{get;set;}
+        public int ChatRoomId {get;set;}
+        public DateTime date{get;set;}
+}
+>>>>>>> origin/main

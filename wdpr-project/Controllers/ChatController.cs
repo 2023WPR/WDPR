@@ -1,13 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
+<<<<<<< HEAD
+=======
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+>>>>>>> origin/main
 using Microsoft.AspNetCore.Identity;
 using wdpr_project.Models;
 using wdpr_project.Data;
 using Microsoft.EntityFrameworkCore;
+<<<<<<< HEAD
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using wdpr_project.DTOs;
 using System.Security.Claims;
 using Newtonsoft.Json.Linq;
+=======
+>>>>>>> origin/main
 
 
 [ApiController]
@@ -16,16 +26,24 @@ public class ChatController : ControllerBase
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+<<<<<<< HEAD
     private readonly IMapper _mapper;
 
     private readonly ApplicationDbContext _dbContext;
 
      public ChatController(UserManager<User> userManager,IMapper mapper, RoleManager<IdentityRole> roleManager,ApplicationDbContext dbContext,SignInManager<User> signManager)
+=======
+
+    private readonly ApplicationDbContext _dbContext;
+
+     public ChatController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager,ApplicationDbContext dbContext,SignInManager<User> signManager)
+>>>>>>> origin/main
     { 
         _userManager = userManager;
         _signManager = signManager;
         _dbContext = dbContext;
         _roleManager = roleManager;
+<<<<<<< HEAD
         _mapper= mapper;
     }
 
@@ -56,20 +74,47 @@ public class ChatController : ControllerBase
         //     // Handle the case where the current user ID claim is not found
         //     return StatusCode(400, "Current user ID not found in claims.");
         // }
+=======
+    }
+
+     // GET: users  
+    [HttpGet("chat/expert")]
+public async Task<ActionResult<IEnumerable<User>>> ListChatOfAll()
+{
+    try
+    {
+        // Get the current user ID from the claims
+        var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        // Retrieve all users excluding the current user
+        return await _dbContext.Users.ToListAsync();
+>>>>>>> origin/main
     }
     catch (Exception)
     {
         return StatusCode(500, "Internal Server Error");
     }
 }
+<<<<<<< HEAD
 
 [HttpPost("chat/create")]
 public async Task<ActionResult<ChatDTO>> CreateChat([FromBody] ChatRequest chatRequest)
+=======
+[HttpPost("chat/create")]
+public async Task<ActionResult<Chat>> CreateChat([FromBody] ChatRequest chatRequest)
+>>>>>>> origin/main
 {
     try
     {
         // Get the current user ID from the claims
+<<<<<<< HEAD
         var currentUser = await _dbContext.Users.FindAsync(chatRequest.CurrentUserId);
+=======
+        var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        // Check if the users exist
+        var currentUser = await _dbContext.Users.FindAsync(currentUserId);
+>>>>>>> origin/main
         var userTo = await _dbContext.Users.FindAsync(chatRequest.UserToId);
 
         if (currentUser == null || userTo == null)
@@ -77,6 +122,7 @@ public async Task<ActionResult<ChatDTO>> CreateChat([FromBody] ChatRequest chatR
             return NotFound("One or both users not found");
         }
 
+<<<<<<< HEAD
         // Check if a chat room already exists for the two users
         var existingChatRoom = await _dbContext.Chats
             .Include(c => c.Messages)
@@ -100,6 +146,12 @@ public async Task<ActionResult<ChatDTO>> CreateChat([FromBody] ChatRequest chatR
                 new UserChat { User = currentUser },
                 new UserChat { User = userTo }
             },
+=======
+        // Create a new chat
+        var chat = new Chat
+        {
+            Users = new List<User> { currentUser, userTo },
+>>>>>>> origin/main
             Messages = new List<Message>(), // Assuming you have a Message class
             // Add any additional chat properties here
         };
@@ -107,10 +159,14 @@ public async Task<ActionResult<ChatDTO>> CreateChat([FromBody] ChatRequest chatR
         _dbContext.Chats.Add(chat);
         await _dbContext.SaveChangesAsync();
 
+<<<<<<< HEAD
         // Map Chat entity to ChatDTO using AutoMapper
         var newChatDTO = _mapper.Map<ChatDTO>(chat);
 
         return Ok(newChatDTO);
+=======
+        return Ok(chat);
+>>>>>>> origin/main
     }
     catch (Exception)
     {
@@ -118,7 +174,10 @@ public async Task<ActionResult<ChatDTO>> CreateChat([FromBody] ChatRequest chatR
     }
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 public class ChatRequest
 {
     public string UserToId { get; set; }
@@ -126,6 +185,7 @@ public class ChatRequest
 }
 
 
+<<<<<<< HEAD
 // Inside your ChatController or relevant service class
 
 [HttpPost("chat/all")]
@@ -163,4 +223,16 @@ public async Task<ActionResult<IEnumerable<Chat>>> GetAllChatsForUser([FromBody]
     }
 }
 
+=======
+    // GET: users  
+        [HttpGet("chat/business")]
+        public async Task<ActionResult<IEnumerable<User>>> ListChatOfResponded()
+        {
+             if (_dbContext.Experts == null)
+          {
+              return NotFound();
+          }
+            return await _dbContext.Users.ToListAsync();
+        }
+>>>>>>> origin/main
 }

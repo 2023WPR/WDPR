@@ -6,7 +6,10 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using wdpr_project.Models;
 using wdpr_project.Data;
+<<<<<<< HEAD
 using System.ComponentModel.DataAnnotations;
+=======
+>>>>>>> origin/main
 
 
 [ApiController]
@@ -30,24 +33,48 @@ public class AurhorizatiomController : ControllerBase
 public async Task<IActionResult> Login([FromBody] User user)
 {
     var userData = await _userManager.FindByNameAsync(user.UserName);
+<<<<<<< HEAD
 
     if (await _userManager.CheckPasswordAsync(userData, user.Password))
     {
+=======
+            Console.WriteLine(user.UserName.ToString() + "1");
+
+    if (await _userManager.CheckPasswordAsync(userData, user.Password))
+    {
+         Console.WriteLine( "5");
+
+>>>>>>> origin/main
         var result = await _signManager.PasswordSignInAsync(userData, user.Password,isPersistent: true, lockoutOnFailure: false);
 
         if (result.Succeeded)
         {
+<<<<<<< HEAD
            // await _signManager.SignInAsync(userData, isPersistent: true);
             var roles = await _userManager.GetRolesAsync(userData);
+=======
+            Console.WriteLine(user.UserName.ToString() + "2");
+            await _signManager.SignInAsync(userData, isPersistent: true);
+
+              var roles = await _userManager.GetRolesAsync(userData);
+>>>>>>> origin/main
 
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, user.UserName),
+<<<<<<< HEAD
             new Claim(ClaimTypes.NameIdentifier, userData.Id.ToString())
+=======
+>>>>>>> origin/main
         };
 
         foreach (var role in roles)
         {
+<<<<<<< HEAD
+=======
+    Console.WriteLine(user.UserName.ToString()+"3");
+
+>>>>>>> origin/main
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
 

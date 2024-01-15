@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+=======
+using System.Reflection;
+>>>>>>> origin/main
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -17,20 +21,30 @@ builder.Services.AddControllersWithViews();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+});
 
 // AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddSignalR();
 
 // Custom services
 builder.Services.AddScoped<IUserService, UserService>();
+<<<<<<< HEAD
 builder.Services.Configure<IdentityOptions>(options => options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier);
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireLoggedIn", policy => policy.RequireAuthenticatedUser());
 });
+=======
+builder.Services.AddScoped<IDisabilityService, DisabilityService>();
+
+>>>>>>> origin/main
 builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -52,33 +66,34 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
   
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
 var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-    app.UseCors(x => x
+   app.UseCors(x => x
         .AllowAnyMethod()
         .AllowAnyHeader()
         .SetIsOriginAllowed(origin => true) // allow any origin
         .AllowCredentials());
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+ 
 }
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+    
 }
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapHub<ChatHub>("/ChatHub");
 
 app.MapControllerRoute(
@@ -88,3 +103,5 @@ app.MapControllerRoute(
 app.MapFallbackToFile("index.html");
 
 app.Run();
+
+public partial class Program {} // Make Program public for testing

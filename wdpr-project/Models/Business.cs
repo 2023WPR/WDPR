@@ -21,7 +21,7 @@ public class Business : User
     {
         Id = id;
     }
-    public Business(string username, string password, string name, string url = "") : base(username, password)
+    public Business(string UserName, string password, string name, string url = "") : base(UserName, password)
     {
         URL = url;
         Name = name;

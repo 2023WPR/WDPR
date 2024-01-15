@@ -6,20 +6,32 @@ import '../navbar/NavMenu.css';
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
-
-  constructor (props) {
+  
+  constructor(props) {
+    
     super(props);
+<<<<<<< HEAD
     this.uitloggen = this.uitloggen.bind(this);
     this.redirect = this.redirect.bind(this);
+=======
+    this.signOut = this.uitloggen.bind(this);
+>>>>>>> origin/main
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
-      collapsed: true
+      toegang: localStorage.getItem("toegang"),
+      collapsed: true,
+      isLoggedIn: false,
     };
   }
 
-  toggleNavbar () {
+  componentDidMount() {
+    // Check if the user is logged in when the component mounts
+    this.checkLoginStatus();
+  }
+
+  toggleNavbar() {
     this.setState({
-      collapsed: !this.state.collapsed
+      collapsed: !this.state.collapsed,
     });
   }
 
@@ -45,6 +57,7 @@ export class NavMenu extends Component {
     window.location.reload();
   }
 
+<<<<<<< HEAD
    redirect()  {
     const userRole = localStorage.getItem("role");
     console.log(userRole)
@@ -63,6 +76,8 @@ export class NavMenu extends Component {
           this.props.history.push('/');
       }
   }}
+=======
+>>>>>>> origin/main
   render() {
     const { isLoggedIn } = this.state;
 

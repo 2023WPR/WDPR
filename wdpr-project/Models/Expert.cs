@@ -9,9 +9,9 @@ public class Expert : User
 {
     public bool ContactByPhone { get; set; }
     public bool ContactByThirdParty { get; set; }
-    public List<Disability> Disabilities { get; set; }
-    public List<DisabilityAid> Aids { get; set; }
-    public PersonalData PersonalData { get; set; }
+    public List<Disability> Disabilities { get; set; } = new List<Disability>();
+    public List<DisabilityAid> Aids { get; set; } = new List<DisabilityAid>();
+    public PersonalData PersonalData { get; set; } = new PersonalData();
     public PersonalData? Caretaker { get; set; }
     
     public Expert(){}
@@ -155,7 +155,11 @@ public class ExpertDetailDTO
 
 public class ExpertFullDTO
 {
+<<<<<<< HEAD
    public string Id { get; set; }
+=======
+    public int Id { get; set; }
+>>>>>>> origin/main
     public string Username { get; set; }
     public string Password { get; set; }
     public bool ContactByPhone { get; set; }
@@ -190,5 +194,11 @@ public class ExpertProfile : Profile
                     src.ContactByThirdParty && src.ContactByPhone ? src.PersonalData.Phonenumber : null))
             .ForMember(dest => dest.Caretaker, opt => opt.MapFrom(src => src.Caretaker));
 
+        CreateMap<Expert, ExpertFullDTO>()
+            .ForMember(dest => dest.DisabilityIds, opt => opt.MapFrom(src => src.Disabilities.Select(d => d.Id).ToList()))
+            .ForMember(dest => dest.DisabilityIds, opt => opt.MapFrom(src => src.Aids.Select(d => d.Id).ToList()));
+        CreateMap<ExpertFullDTO, Expert>()
+            .ForMember(dest => dest.Aids, opt => opt.Ignore())
+            .ForMember(dest => dest.Disabilities, opt => opt.Ignore());
     }
 }

@@ -9,10 +9,19 @@ namespace wdpr_project.Controllers_
     public class ResearchController : Controller
     {
         private readonly ApplicationDbContext _context;
+<<<<<<< HEAD
 
         public ResearchController(ApplicationDbContext context)
         {
             _context = context;
+=======
+        private readonly IEmailService _emailService;
+
+        public ResearchController(ApplicationDbContext context, IEmailService emailService)
+        {
+            _context = context;
+            _emailService = emailService;
+>>>>>>> origin/main
         }
 
         // GET: Research
@@ -47,6 +56,7 @@ namespace wdpr_project.Controllers_
         }
 
         [HttpPost("Create-Research")]
+<<<<<<< HEAD
         public async Task<ActionResult<ResearchDTO>> CreateResearch([FromBody] ResearchDTO researchdto)
         {  
             var research = new Research{
@@ -62,6 +72,17 @@ namespace wdpr_project.Controllers_
             _context.Researches.Add(research);
             await _context.SaveChangesAsync();
 
+=======
+        public async Task<ActionResult<Research>> CreateResearch([FromBody] Research research)
+        {  
+            _context.Researches.Add(research);
+            await _context.SaveChangesAsync();
+
+           if (research.ResearchCriterium != null)
+            {
+                await _emailService.SendEmailsToParticipants(research.ResearchCriterium.DisabilityId);
+            }
+>>>>>>> origin/main
 
             return CreatedAtAction("GetOnderzoek", new { id = research.Id }, research);
         }

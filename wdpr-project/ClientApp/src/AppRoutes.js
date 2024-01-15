@@ -1,5 +1,9 @@
 import Login  from "./components/login/Login";
+<<<<<<< HEAD
 import  Home  from "./components/Home";
+=======
+import { Home } from "./components/Home";
+>>>>>>> origin/main
 import { Chat } from "./components/chat/Chat";
 import { Register } from "./components/register/Register";
 import { RegisterExpert } from "./components/register/RegisterExpert";
