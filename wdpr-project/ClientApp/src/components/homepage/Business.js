@@ -24,7 +24,7 @@ export class BusinessHome extends Component {
           <Card style={{ width: '18rem', marginBottom: '20px' }}>
             <Card.Body>
               <Card.Title>Onderzoek</Card.Title>
-              <Button variant="primary" href="/research">bekijk overzicht van onderzoek</Button>
+              <Button variant="primary" href="/onderzoeken">bekijk overzicht van onderzoek</Button>
             </Card.Body>
           </Card>
         </Col>

@@ -57,8 +57,8 @@ public async Task<IActionResult> Login([FromBody] User user)
         }
 
         var token = new JwtSecurityToken(
-            issuer: "https://localhost:7047",
-            audience: "https://localhost:7047",
+            issuer: "https://stichingaccessebility.azurewebsites.net:7047",
+            audience: "https://stichingaccessebility.azurewebsites.net:7047",
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(15), 
             signingCredentials: new SigningCredentials(

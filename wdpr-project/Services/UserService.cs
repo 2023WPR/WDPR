@@ -67,17 +67,40 @@ public class UserService : IUserService
             return new NotFoundResult();
         }
 
+        // TODO: adres meenemen vanuit personal data
+        // TODO: tijden beschikbaar?
         var expert = await _dbContext.Experts
             .Include(e => e.PersonalData)
+            // .ThenInclude(e => e.Address)
+            .Include(e => e.PersonalData.Address)
             .Include(e => e.Caretaker)
             .Include(e => e.Disabilities).AsSplitQuery()
             .Include(e => e.Aids).AsSplitQuery()
             .FirstOrDefaultAsync(e => e.Id == id);
 
+        //Console.WriteLine("\n\n\n\naddrId:\t" + expert.PersonalData.Address.Postcode);
+        
         if (expert is null)
         {
             return new NotFoundResult();
         }
+
+        var persData = expert.PersonalData;
+        Console.WriteLine("\n\n\n\npersDataId:\t" + persData.Id);
+
+        
+
+        var address = await _dbContext.Addresses.FirstOrDefaultAsync(a => persData.Address.Id == a.Id);
+        
+        Console.WriteLine("\n\n\n\naddrId:\t" + address.Id);
+        
+        Console.WriteLine(address.Postcode);
+        Console.WriteLine(expert.PersonalData.Postcode);
+        
+        // Console.WriteLine(address.HouseNumber);
+
+        // expert.PersonalData.Address.Postcode = address.Postcode;
+        
 
         return _mapper.Map<ExpertDetailDTO>(expert);
     }

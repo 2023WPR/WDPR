@@ -11,6 +11,9 @@ public class PersonalData
     public string Emailaddress { get; set; }
     public string Phonenumber { get; set; }
     public int? Age { get; set; }
+    public string Postcode {get; set; } 
+    
+    public string HouseNumber {get; set;}
     public Address Address { get; set; } = new Address();
     
     public void UpdateFields(PersonalData updated)

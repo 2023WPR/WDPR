@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import Image from 'react-bootstrap/Image';
 import { Link } from 'react-router-dom';
-import '../navbar/NavMenu.css';
+import './NavMenu.css';
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -56,7 +56,6 @@ export class NavMenu extends Component {
     const { isLoggedIn } = this.state;
 
     return (
-      <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container light style={{ backgroundColor: '#2B50EC' }}>
           <NavbarBrand tag={Link} to="/">
             <Image src={require('../navbar/logo.png')} className="logo" alt="Logo of Stichting Accessibility" />
@@ -94,7 +93,6 @@ export class NavMenu extends Component {
             </ul>
           </Collapse>
         </Navbar>
-      </header>
     );
   }
 }

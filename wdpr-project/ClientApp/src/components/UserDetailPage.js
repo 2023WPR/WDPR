@@ -12,7 +12,7 @@ export class UserDetailPage extends Component {
     constructor (props)
     {
         super(props);
-        this.fetchUsers = this.fetchUsers.bind(this);
+        // this.fetchUsers = this.fetchUsers.bind(this);
     }
 
     componentDidMount ()
@@ -28,11 +28,17 @@ export class UserDetailPage extends Component {
         //TODO: current user
         const id = "38e32081-d943-45b5-81ad-01087833c26c";
 
-        const response = await axios.get("http://localhost:5192/expert/" + id);
+        const response = await axios.get("http://localhost:5056/expert/" + id);
         const user = response.data;
-        console.log(user)
+        console.log(user);
 
-        
+        console.log("user.address:\t" +  user.Address);
+
+        console.log("username:\t" + localStorage.getItem("username"));
+
+        //TOFIX: user heeft geen adres
+        //TOFIX: user disability
+        //TOFIX: user disability aides
 
         return user;
     }
@@ -40,9 +46,9 @@ export class UserDetailPage extends Component {
     render() {
         console.log("render");
 
-        // TODO: state gebruiken? en een hoop andere dingen
+        // TODO: formulier invullen bij het laden
         var user = this.fetchUsers();
-
+        // console.log(user);
         // var user = {
         //     "id": 0,
         //     "Firstname" : "jan",
@@ -128,7 +134,7 @@ export class UserDetailPage extends Component {
                                 Huisnummer
                             </Form.Label>
                             <Col>
-                                <Form.Control type="text" placeholder="Huisnummer" value={user.Address.HouseNumber} />
+                                <Form.Control type="text" placeholder="Huisnummer" value={user.Address?.HouseNumber ?? "address.defaultValue"} />
                             </Col>
                         </Form.Group>
                     </Col>
@@ -139,7 +145,7 @@ export class UserDetailPage extends Component {
                                 Toevoegsel
                             </Form.Label>
                             <Col>
-                                <Form.Control required type="text" placeholder="Toevoegsel" value={user.Address.Addition} />
+                                <Form.Control required type="text" placeholder="Toevoegsel" value={user.Address?.Addition ?? "address.defaultValue"} />
                             </Col>
                         </Form.Group>
                     </Col>

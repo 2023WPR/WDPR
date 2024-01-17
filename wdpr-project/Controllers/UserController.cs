@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using wdpr_project.Services;
 using wdpr_project.Models;
+using NuGet.Protocol;
 
 namespace wdpr_project.Controllers;
 
@@ -32,7 +33,9 @@ public class UserController : ControllerBase
     [HttpGet("Expert/{id}")]
     public async Task<ActionResult<ExpertDetailDTO>> GetExpert(string id)
     {
-        return await _userService.GetExpert(id);
+        var exp = await _userService.GetExpert(id);
+        Console.WriteLine(exp.ToJson());
+        return exp;
     }
 
     [HttpPut("Expert/{id}")]
