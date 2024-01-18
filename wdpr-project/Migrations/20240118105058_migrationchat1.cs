@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace wdpr_project.Migrations
 {
-    public partial class migrationchat : Migration
+    public partial class migrationchat1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -465,6 +465,32 @@ namespace wdpr_project.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ResearchExpert",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ResearchId = table.Column<int>(type: "int", nullable: false),
+                    ExpertId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ResearchExpert", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ResearchExpert_Experts_ExpertId",
+                        column: x => x.ExpertId,
+                        principalTable: "Experts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ResearchExpert_Researches_ResearchId",
+                        column: x => x.ResearchId,
+                        principalTable: "Researches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -566,6 +592,17 @@ namespace wdpr_project.Migrations
                 column: "businessId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ResearchExpert_ExpertId",
+                table: "ResearchExpert",
+                column: "ExpertId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ResearchExpert_ResearchId",
+                table: "ResearchExpert",
+                column: "ResearchId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserChats_ChatId",
                 table: "UserChats",
                 column: "ChatId");
@@ -604,6 +641,9 @@ namespace wdpr_project.Migrations
                 name: "ResearchCriteria");
 
             migrationBuilder.DropTable(
+                name: "ResearchExpert");
+
+            migrationBuilder.DropTable(
                 name: "UserChats");
 
             migrationBuilder.DropTable(
@@ -613,10 +653,10 @@ namespace wdpr_project.Migrations
                 name: "DisabilityAids");
 
             migrationBuilder.DropTable(
-                name: "Experts");
+                name: "Disabilities");
 
             migrationBuilder.DropTable(
-                name: "Disabilities");
+                name: "Experts");
 
             migrationBuilder.DropTable(
                 name: "Researches");

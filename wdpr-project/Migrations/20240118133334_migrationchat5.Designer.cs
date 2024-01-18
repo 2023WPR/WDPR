@@ -12,8 +12,8 @@ using wdpr_project.Data;
 namespace wdpr_project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240115141247_migrationchat13")]
-    partial class migrationchat13
+    [Migration("20240118133334_migrationchat5")]
+    partial class migrationchat5
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -264,10 +264,34 @@ namespace wdpr_project.Migrations
 
                     b.HasIndex("DisabilityId");
 
-                    b.HasIndex("ResearchId")
-                        .IsUnique();
+                    b.HasIndex("ResearchId");
 
                     b.ToTable("ResearchCriteria");
+                });
+
+            modelBuilder.Entity("ResearchExpert", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ExpertId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ResearchId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpertId")
+                        .IsUnique();
+
+                    b.HasIndex("ResearchId");
+
+                    b.ToTable("ResearchExpert");
                 });
 
             modelBuilder.Entity("UserChat", b =>
@@ -293,11 +317,9 @@ namespace wdpr_project.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Addition")
+                    b.Property<string>("Adress")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("HouseNumber")
-                        .HasColumnType("int");
 
                     b.Property<string>("Postcode")
                         .IsRequired()
@@ -654,14 +676,33 @@ namespace wdpr_project.Migrations
                         .IsRequired();
 
                     b.HasOne("wdpr_project.Models.Research", "Research")
-                        .WithOne("ResearchCriterium")
-                        .HasForeignKey("ResearchCriterium", "ResearchId")
+                        .WithMany()
+                        .HasForeignKey("ResearchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Address");
 
                     b.Navigation("Disability");
+
+                    b.Navigation("Research");
+                });
+
+            modelBuilder.Entity("ResearchExpert", b =>
+                {
+                    b.HasOne("wdpr_project.Models.Expert", "Expert")
+                        .WithOne("ResearchExperts")
+                        .HasForeignKey("ResearchExpert", "ExpertId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("wdpr_project.Models.Research", "Research")
+                        .WithMany("ResearchExperts")
+                        .HasForeignKey("ResearchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Expert");
 
                     b.Navigation("Research");
                 });
@@ -699,7 +740,7 @@ namespace wdpr_project.Migrations
             modelBuilder.Entity("wdpr_project.Models.Research", b =>
                 {
                     b.HasOne("wdpr_project.Models.Business", "business")
-                        .WithMany("researches")
+                        .WithMany()
                         .HasForeignKey("businessId");
 
                     b.Navigation("business");
@@ -763,8 +804,7 @@ namespace wdpr_project.Migrations
 
             modelBuilder.Entity("wdpr_project.Models.Research", b =>
                 {
-                    b.Navigation("ResearchCriterium")
-                        .IsRequired();
+                    b.Navigation("ResearchExperts");
                 });
 
             modelBuilder.Entity("wdpr_project.Models.User", b =>
@@ -772,9 +812,10 @@ namespace wdpr_project.Migrations
                     b.Navigation("UserChats");
                 });
 
-            modelBuilder.Entity("wdpr_project.Models.Business", b =>
+            modelBuilder.Entity("wdpr_project.Models.Expert", b =>
                 {
-                    b.Navigation("researches");
+                    b.Navigation("ResearchExperts")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

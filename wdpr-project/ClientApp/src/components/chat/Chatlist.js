@@ -60,11 +60,13 @@ export class ChatList extends Component {
     const authToken = localStorage.getItem('token');
     try {
       const currentUserId = this.extractCurrentUser();
+      console.log("Current user id create chat: "+ currentUserId)
       const response = await axios.post('https://localhost:7192/chat/create', { userToId , currentUserId: currentUserId}, {
         headers: {
           Authorization: `Bearer ${authToken}`
         }
       });
+      console.log(authToken)
       const chatRoomId = response.data.id;
       const messages = response.data.messages;
       const chat = response.data.chat;
@@ -158,9 +160,9 @@ export class ChatList extends Component {
                 </div>
                   </li>
                 ))}
+            <Chat selectedUser={selectedUser} currentUser={currentUser} chatRoomId={chatRoomId} messages={messages}/>
             </ul>
 
-            <Chat selectedUser={selectedUser} currentUser={currentUser} chatRoomId={chatRoomId} messages={messages}/>
           </div>
         )}
       </div>

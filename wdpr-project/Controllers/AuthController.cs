@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using wdpr_project.Models;
 using wdpr_project.Data;
 using System.ComponentModel.DataAnnotations;
+using wdpr_project.Services;
+using AutoMapper;
 
 
 [ApiController]
@@ -15,15 +17,19 @@ public class AurhorizatiomController : ControllerBase
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly IUserService _userService;
+    private readonly IMapper _mapper;
 
     private readonly ApplicationDbContext _dbContext;
 
-     public AurhorizatiomController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager,ApplicationDbContext dbContext,SignInManager<User> signManager)
+     public AurhorizatiomController(UserManager<User> userManager,IMapper mapper, IUserService userService, RoleManager<IdentityRole> roleManager,ApplicationDbContext dbContext,SignInManager<User> signManager)
     { 
         _userManager = userManager;
         _signManager = signManager;
         _dbContext = dbContext;
+        _userService = userService;
         _roleManager = roleManager;
+        _mapper = mapper;
     }
 
 [HttpPost("Login")]
@@ -66,7 +72,7 @@ public async Task<IActionResult> Login([FromBody] User user)
         }
     }
 
-    return Unauthorized("Invalid UserName or password");
+    return Unauthorized("Invalide gebruikersnaam of wachtwoord");
 }
 
 [HttpPost("create")] 
@@ -92,7 +98,7 @@ public async Task<ActionResult<User>> CreateExpert(User expert)
     }
 }
 [HttpPost("create-Business")] 
-public async Task<ActionResult<User>> Createb(User business)
+public async Task<ActionResult<User>> CreateBusiness(Business business)
 {
     if (!await _roleManager.RoleExistsAsync("Business"))
     {
@@ -103,9 +109,29 @@ public async Task<ActionResult<User>> Createb(User business)
     var result = await _userManager.CreateAsync(business, business.Password);
     if (result.Succeeded)
     {
-        // Add the user to the "Expert" role
-        await _userManager.AddToRoleAsync(business, "Business");
-        return Ok();
+        // Now that the user is created, retrieve the user with the generated Id
+        var createdUser = await _userManager.FindByNameAsync(business.UserName);
+
+        // Create a corresponding entry in the Businesses table
+        var businessEntity = new Business
+        {
+            Id = createdUser.Id,
+            URL = business.URL,
+            Name = business.Name,
+            // You need to handle the AddressId properly based on your data model
+            // For simplicity, assuming AddressId is a property in Business
+            Address = business.Address 
+        };
+
+        _dbContext.Businesses.Add(businessEntity);
+        await _dbContext.SaveChangesAsync();
+
+        // Add the user to the "Business" role
+        await _userManager.AddToRoleAsync(createdUser, "Business");
+
+        // You might want to return the created BusinessDTO or any other response
+        var businessDto = _mapper.Map<BusinessDTO>(businessEntity);
+        return Ok(businessDto);
     }
     else
     {
@@ -113,4 +139,5 @@ public async Task<ActionResult<User>> Createb(User business)
         return BadRequest(result.Errors);
     }
 }
+
 }

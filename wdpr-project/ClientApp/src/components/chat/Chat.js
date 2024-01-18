@@ -85,6 +85,7 @@ export class Chat extends Component {
                                     <Card.Body>
                                     <p>Bericht: {msg.message}</p>
                                     <p>Datum: {msg.date}</p>
+                                    <p>Datum: {msg.currentUser}</p>
                                     </Card.Body>
                                 </Card>
                             </div>

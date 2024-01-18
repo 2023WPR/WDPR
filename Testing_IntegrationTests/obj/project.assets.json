@@ -779,6 +779,22 @@
       "MessagePackAnalyzer/2.1.152": {
         "type": "package"
       },
+      "Microsoft.AspNetCore.Authentication.Google/6.0.26": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Microsoft.AspNetCore.Authentication.Google.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.AspNetCore.Authentication.Google.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "Microsoft.AspNetCore.Authentication.JwtBearer/6.0.26": {
         "type": "package",
         "dependencies": {
@@ -5305,6 +5321,7 @@
         "dependencies": {
           "AutoMapper": "12.0.1",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
+          "Microsoft.AspNetCore.Authentication.Google": "6.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.0",
           "Microsoft.AspNetCore.Cors": "2.2.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.25",
@@ -6320,6 +6337,21 @@
         "messagepackanalyzer.nuspec",
         "tools/install.ps1",
         "tools/uninstall.ps1"
+      ]
+    },
+    "Microsoft.AspNetCore.Authentication.Google/6.0.26": {
+      "sha512": "jKHZ9qL7IcVtsxFRy7E4N+dAAgUTM6QhlGSCWS0GSNL0mU/JifQzDDMUOouY5NPnOH/idv+dJZRttDV/jEx6Dw==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.authentication.google/6.0.26",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net6.0/Microsoft.AspNetCore.Authentication.Google.dll",
+        "lib/net6.0/Microsoft.AspNetCore.Authentication.Google.xml",
+        "microsoft.aspnetcore.authentication.google.6.0.26.nupkg.sha512",
+        "microsoft.aspnetcore.authentication.google.nuspec"
       ]
     },
     "Microsoft.AspNetCore.Authentication.JwtBearer/6.0.26": {

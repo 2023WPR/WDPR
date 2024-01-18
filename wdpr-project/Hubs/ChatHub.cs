@@ -32,14 +32,14 @@ public async Task SendMessage(string senderUsesId, string receiverUserId, string
         Console.WriteLine($"Receiver ID: {receiverUser.Id}");
 
         // Get the chat room ID for the two users (create if doesn't exist)
-        int chatRoomId = await CreateOrGetChatRoomIdAsync(senderUser.Id, receiverUser.Id);
+        int chatRoomId = await CreateOrGetChatRoomIdAsync(receiverUser.Id,senderUser.Id);
         Console.WriteLine($"Chat Room ID: {chatRoomId}");
 
           // Ensure that the sender is part of the chat group
         await JoinGroup(new ChatUser { ChatId = chatRoomId });
 
         // Save the message to the chat room
-        await SaveMessageAsync(chatRoomId, senderUser.Id, messageContent);
+        await SaveMessageAsync(chatRoomId, receiverUser.Id, messageContent);
         string formattedDateTime = DateTime.Now.ToString("HH,mm");
         
         // Broadcast the message to clients in the chat room
@@ -104,20 +104,20 @@ private async Task<int> CreateChatRoomAsync(string user1Id, string user2Id)
 }
 
 
-private async Task SaveMessageAsync(int chatRoomId, string userId, string messageContent)
+private async Task SaveMessageAsync(int chatRoomId, string senderUser, string messageContent)
 {
     var chatRoom = await _context.Chats
         .Include(c => c.UserChats)
         .Include(c => c.Messages)
         .FirstOrDefaultAsync(c => c.Id == chatRoomId);
-    var username = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-
+    var username = await _context.Users.FirstOrDefaultAsync(u => u.Id == senderUser);
+        Console.WriteLine("current user username: "+ senderUser);
     if (chatRoom != null)
     {
          var newMessage = new Message
         {
             message = Regex.Replace(messageContent, @"<.*?>", string.Empty),
-            UserId = userId,
+            UserId = senderUser,
             ChatId = chatRoomId,
             Username = username.UserName,
             Date = DateTime.Now

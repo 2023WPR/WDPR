@@ -55,7 +55,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = "https://localhost:7047",
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("awef98awef978haweof8g7aw789efhh789awef8h9awh89efh98f89uawef9j8aw89hefawef"))
         };
-    });
+    }).AddGoogle(options =>
+{
+    options.ClientId = "1012765062649-rchsk8hcpet6055qpdbm7opu4t4nvefm.apps.googleusercontent.com";
+    options.ClientSecret = "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";
+});;
+
+    
   
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

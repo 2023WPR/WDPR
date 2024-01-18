@@ -71,7 +71,7 @@ public async Task<ActionResult<ChatDTO>> CreateChat([FromBody] ChatRequest chatR
         // Get the current user ID from the claims
         var currentUser = await _dbContext.Users.FindAsync(chatRequest.CurrentUserId);
         var userTo = await _dbContext.Users.FindAsync(chatRequest.UserToId);
-
+            Console.WriteLine("current userID: "+ chatRequest.CurrentUserId);
         if (currentUser == null || userTo == null)
         {
             return NotFound("One or both users not found");
@@ -161,5 +161,29 @@ public async Task<ActionResult<IEnumerable<Chat>>> GetAllChatsForUser([FromBody]
         return StatusCode(500, "Internal Server Error");
     }
 }
+
+[HttpGet("{researchId}/company")]
+public async Task<ActionResult<Business>> GetBusinessForResearch(int researchId)
+{
+    try
+    {
+        var research = await _dbContext.Researches
+            .Include(r => r.business) // Include the related business// Include the associated user
+            .FirstOrDefaultAsync(r => r.Id == researchId);
+
+        if (research == null || research.business == null)
+        {
+            return NotFound();
+        }
+
+        return research.business; // Return the connected business with its associated user
+    }
+    catch (Exception ex)
+    {
+        // Handle exceptions appropriately (e.g., log, return a specific error response)
+        return StatusCode(500, $"Internal server error: {ex.Message}");
+    }
+}
+
 
 }

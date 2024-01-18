@@ -8,7 +8,6 @@ public class Business : User
     public string Name { get; set; }
     public Address Address { get; set; }
 
-    public ICollection<Research> researches {get;set;} = new List<Research>();
     
     public Business(){}
     public Business(string id)
