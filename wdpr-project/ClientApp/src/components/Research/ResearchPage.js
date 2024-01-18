@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {useParams} from "react-router-dom";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -23,34 +23,34 @@ const ResearchPage = () => {
     return (
         <Stack>
             <Row>
-                <Col xs={6} md={4} xl={2}><h2>{research.title}</h2></Col>
+                <Col xs={6} md={4} xl={2}><h1>{research.title}</h1></Col>
             </Row>
             <Row>
-                <Col xs={6} md={4} xl={2}><b>Opdrachtgever</b></Col>
+                <Col xs={6} md={4} xl={2}><h2>Opdrachtgever</h2></Col>
                 <Col>niet in object</Col>
             </Row>
             <Row>
-                <Col xs={6} md={4} xl={2}>Datum</Col>
+                <Col xs={6} md={4} xl={2}><h2>Datum</h2></Col>
                 <Col>niet in object</Col>
             </Row>
             <Row>
-                <Col xs={6} md={4} xl={2}>Locatie</Col>
+                <Col xs={6} md={4} xl={2}><h2>Locatie</h2></Col>
                 <Col>waar vandaan halen?</Col>
             </Row>
             <Row>
-                <Col xs={6} md={4} xl={2}>Vergoeding</Col>
+                <Col xs={6} md={4} xl={2}><h2>Vergoeding</h2></Col>
                 <Col>€{research.reward}</Col>
             </Row>
             <Row>
-                <Col xs={6} md={4} xl={2}>Aangemeld</Col>
+                <Col xs={6} md={4} xl={2}><h2>Aangemeld</h2></Col>
                 <Col>todo</Col>
             </Row>
             <Row>
-                <Col xs={6} md={4} xl={2}>Soort onderzoek</Col>
+                <Col xs={6} md={4} xl={2}><h2>Soort onderzoek</h2></Col>
                 <Col>niet in object</Col>
             </Row>
             <Row>
-                <Col xs={6} md={4} xl={2}>Beschrijving</Col>
+                <Col xs={6} md={4} xl={2}><h2>Beschrijving</h2></Col>
                 <Col>{research.description}</Col>
             </Row>
         </Stack>

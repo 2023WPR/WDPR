@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import ResearchCard from "./ResearchCard";
@@ -20,6 +20,7 @@ const Research = () => {
     
         return (
             <Container className="Research-container">
+                <h1>Onderzoeken</h1>
                 <Row>
                     {researches.map((research => {
                         return (
