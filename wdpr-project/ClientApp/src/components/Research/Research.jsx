@@ -7,7 +7,7 @@ const Research = () => {
     
     const [researches, setResearches] = useState([]);
     useEffect(() => {
-        fetch('https://stichingaccessebility.azurewebsites.net:7276/Research')
+        fetch(process.env.REACT_APP_API_URL + '/Research')
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
