@@ -49,7 +49,8 @@ public async Task<IActionResult> Login([FromBody] User user)
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.NameIdentifier, userData.Id.ToString())
+            new Claim(ClaimTypes.NameIdentifier, userData.Id.ToString()),
+            new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
         foreach (var role in roles)

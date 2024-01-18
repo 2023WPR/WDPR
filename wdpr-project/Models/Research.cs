@@ -11,6 +11,7 @@ public class Research
     public int Capacity {get;set;}
     public bool Status {get;set;}
     public Business business {get;set;}
+    public ICollection<ResearchExpert> ResearchExperts { get; set; } 
     public ResearchCriterium ResearchCriterium { get; set; }
 }
 
@@ -23,7 +24,9 @@ public class ResearchDTO{
     public int Capacity {get;set;}
     public bool Status {get;set;}
     public string businessId {get;set;}
-    public int ResearchCriteriumId {get;set;}
+   public ICollection<string> ExpertIds { get; set; } // Represents multiple expert IDs
+    public ResearchCriterium ResearchCriterium { get; set; }
+
 }
 
 public class ResearchProfile : Profile

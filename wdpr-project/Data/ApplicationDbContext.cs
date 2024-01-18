@@ -23,6 +23,8 @@ namespace wdpr_project.Data
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<UserChat> UserChats { get; set; }
+        public DbSet<ResearchExpert> ResearchExperts { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
