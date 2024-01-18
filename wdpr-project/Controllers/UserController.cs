@@ -33,9 +33,7 @@ public class UserController : ControllerBase
     [HttpGet("Expert/{id}")]
     public async Task<ActionResult<ExpertDetailDTO>> GetExpert(string id)
     {
-        var exp = await _userService.GetExpert(id);
-        Console.WriteLine(exp.ToJson());
-        return exp;
+        return await _userService.GetExpert(id);
     }
 
     [HttpPut("Expert/{id}")]

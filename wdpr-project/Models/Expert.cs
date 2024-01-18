@@ -157,6 +157,7 @@ public class ExpertDetailDTO
     public string? PostCode {get; set;} 
 
     public string? HouseNumber {get; set; }
+    public string? Addition {get; set; }
     public PersonalDataNameDTO? Caretaker { get; set; }
 
     public Address Address { get; set; }
@@ -186,12 +187,12 @@ public class ExpertProfile : Profile
 
         CreateMap<Expert, ExpertDetailDTO>()
             .ForMember(dest => dest.Firstname, opt => opt.MapFrom(src => src.PersonalData.Firstname))
-            .ForMember(dest => dest.PostCode, opt => opt.MapFrom(src => src.PersonalData.Address.Postcode))
-            .ForMember(dest => dest.HouseNumber, opt => opt.MapFrom(src => src.PersonalData.Address.HouseNumber))
-
-
             .ForMember(dest => dest.Middlenames, opt => opt.MapFrom(src => src.PersonalData.Middlenames))
             .ForMember(dest => dest.Lastname, opt => opt.MapFrom(src => src.PersonalData.Lastname))
+            .ForMember(dest => dest.PostCode, opt => opt.MapFrom(src => src.PersonalData.Address.Postcode))
+            .ForMember(dest => dest.HouseNumber, opt => opt.MapFrom(src => src.PersonalData.Address.HouseNumber))
+            .ForMember(dest => dest.Addition, opt => opt.MapFrom(src => src.PersonalData.Address.Addition))
+            .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.PersonalData.Age))
             .ForMember(dest => dest.Contactbyphone, opt => opt.MapFrom(src => src.ContactByPhone))
             .ForMember(dest => dest.Contactbythirdparty, opt => opt.MapFrom(src => src.ContactByThirdParty))
             .ForMember(dest => dest.Disabilities, opt => opt.MapFrom(src => src.Disabilities))
