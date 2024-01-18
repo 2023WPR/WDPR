@@ -10,7 +10,7 @@ const ResearchPage = () => {
 
     const [research, setResearch] = useState([]);
     useEffect(() => {
-        fetch('https://stichingaccessebility.azurewebsites.net:7276/Research/Details/' + researchId)
+        fetch(process.env.REACT_APP_API_URL + '/Research/Details/' + researchId)
             .then((response) => response.json())
             .then((data) => {
                 setResearch(data);
