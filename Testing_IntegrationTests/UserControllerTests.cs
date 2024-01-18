@@ -195,7 +195,7 @@ public class UserControllerTests : IntegrationTest
         await _context.SaveChangesAsync();
         
         expertdto.Id = expert.Id;
-        expertdto.Username = newUsername;
+        // expertdto.Username = newUsername;
 
         //Act
         var response = await _client.PutAsJsonAsync($"/Expert/{expertdto.Id}", expertdto);

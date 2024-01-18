@@ -15,6 +15,7 @@ export class UserDetailPage extends Component {
         
         this.fetchDetails = this.fetchDetails.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.onFormSubmit = this.onFormSubmit.bind(this);
 
         this.state = {
             user: null,
@@ -28,7 +29,7 @@ export class UserDetailPage extends Component {
         this.fetchDetails();
     }
 
-    handleChange (event)
+    handleChange = async (event) =>
     {
         var target = event.target;
         var value = target.value;
@@ -43,6 +44,7 @@ export class UserDetailPage extends Component {
 
     getCurrentUserId ()
     {
+        console.log("getCurrentUserId");
         const authToken = localStorage.getItem('token');
 
         console.log("authToken:\t", authToken);
@@ -84,6 +86,24 @@ export class UserDetailPage extends Component {
         //TOFIX: user disability
         //TOFIX: user disability aides
     }
+
+    onFormSubmit = async (e) =>
+    {
+        console.log("onFormSubmit");
+        e.preventDefault();
+
+        const formData = {
+            ...this.state.user,
+            id: "38e32081-d943-45b5-81ad-01087833c26c"
+          };
+
+        console.log("formData:\t", formData);
+        
+        const response = await axios.put("http://localhost:5056/expert/" + this.getCurrentUserId(), formData);
+
+        // console.log("response:\t", response);
+
+    }
   
     render() {
         console.log("render");
@@ -96,7 +116,7 @@ export class UserDetailPage extends Component {
                 <span>Laden...</span>
                 :
                 <Form>
-                    <Form.Group as={Row} className="mb-3" controlId="firstname">
+                    <Form.Group as={Row} className="mb-3" controlId="firstname" >
                         <Form.Label column xs="2">
                             Voornaam
                         </Form.Label>
@@ -317,7 +337,7 @@ export class UserDetailPage extends Component {
                     
                     <Form.Group as={Row} className="mb-3">
                         <Col>
-                            <Button type="submit">Opslaan</Button>
+                            <Button type="submit" onClick={this.onFormSubmit}>Opslaan</Button>
                         </Col>
                     </Form.Group>
                 </Form>

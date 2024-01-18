@@ -24,7 +24,7 @@ public class Expert : User
 
     public async Task<ActionResult?> UpdateFields(ExpertFullDTO dto, ApplicationDbContext dbContext) //TODO: Unit tests
     {
-        Password = dto.Password;
+        // Password = dto.Password;
         ContactByPhone = dto.ContactByPhone;
         ContactByThirdParty = dto.ContactByThirdParty;
         PersonalData.UpdateFields(dto.PersonalData);
@@ -140,7 +140,7 @@ public class ExpertBaseDTO
 public class ExpertDetailDTO
 {
     public string Id { get; set; }
-    public string Username { get; set; }
+    // public string Username { get; set; }
     public string Firstname { get; set; }
     public string? Middlenames { get; set; }
     public string Lastname { get; set; }
@@ -166,8 +166,8 @@ public class ExpertDetailDTO
 public class ExpertFullDTO
 {
     public string Id { get; set; }
-    public string Username { get; set; }
-    public string Password { get; set; }
+    // public string Username { get; set; }
+    // public string Password { get; set; }
     public bool ContactByPhone { get; set; }
     public bool ContactByThirdParty { get; set; }
     public List<int> DisabilityIds { get; set; }

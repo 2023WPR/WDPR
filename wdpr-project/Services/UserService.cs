@@ -67,7 +67,6 @@ public class UserService : IUserService
             return new NotFoundResult();
         }
 
-        // TODO: adres meenemen vanuit personal data
         // TODO: tijden beschikbaar?
         var expert = await _dbContext.Experts
             .Include(e => e.PersonalData)
