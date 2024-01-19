@@ -3,9 +3,9 @@ import { Button, Form, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Access from './Access';
-import { useGoogleLogin } from "@react-oauth/google";
+//import { useGoogleLogin } from "@react-oauth/google";
 const Login = () => {
-  const [google, setGoogle] = useState();
+ // const [google, setGoogle] = useState();
   const history = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -50,33 +50,33 @@ const handleSubmit = async (event) => {
   }
 };
 
-const login = useGoogleLogin({
-  onSuccess: async (response) => {
-    try {
-      const data = await axios.get(
-        "https://www.googleapis.com/oauth2/v1/userinfo",
-        {
-          headers: {
-            Authorization: `Bearer ${response.access_token}`,
-          },
-        }
-      );
-      sessionStorage.setItem("authenticated", false);
-      sessionStorage.setItem("role", "ervaringsDeskundige");
+// const login = useGoogleLogin({
+//   onSuccess: async (response) => {
+//     try {
+//       const data = await axios.get(
+//         "https://www.googleapis.com/oauth2/v1/userinfo",
+//         {
+//           headers: {
+//             Authorization: `Bearer ${response.access_token}`,
+//           },
+//         }
+//       );
+//       sessionStorage.setItem("authenticated", false);
+//       sessionStorage.setItem("role", "ervaringsDeskundige");
 
-      const googleAcountData = data.data;
+//       const googleAcountData = data.data;
 
-      setGoogle(googleAcountData);
+//       setGoogle(googleAcountData);
 
-      sessionStorage.setItem(
-        "googleAccount",
-        JSON.stringify(googleAcountData)
-      );
-    } catch (err) {
-      console.log(err);
-    }
-  },
-});
+//       sessionStorage.setItem(
+//         "googleAccount",
+//         JSON.stringify(googleAcountData)
+//       );
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   },
+// });
 
 
   const redirect = () => {
