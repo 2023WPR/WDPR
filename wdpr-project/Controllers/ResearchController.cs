@@ -30,19 +30,21 @@ namespace wdpr_project.Controllers_
           }
             return await _context.Researches.ToListAsync();
         }
-        [HttpGet("Research/{id}")]
-        public async Task<ActionResult<IEnumerable<Research>>> ListResearchById(int id)
+      [HttpGet("Research/{id}")]
+        public async Task<ActionResult<Research>> ListResearchById(int id)
         {
-           Research research =  await _context.Researches.FirstOrDefaultAsync(r => r.Id == id);
+            Research research = await _context.Researches.FirstOrDefaultAsync(r => r.Id == id);
 
-             if(research != null)
-             {
-                return await _context.Researches.ToListAsync();
-             }
-            else{
-                throw new InvalidOperationException($"Research with ID {id} not found");
+            if (research != null)
+            {
+                return research;  // Return the specific research item.
+            }
+            else
+            {
+                return NotFound();  // Return a 404 response if the research item is not found.
             }
         }
+
 
         [HttpPost("research/{researchId}/participate")]
 public async Task<ActionResult> ParticipateInResearch(int researchId, [FromBody] ExpertDTO expert)
