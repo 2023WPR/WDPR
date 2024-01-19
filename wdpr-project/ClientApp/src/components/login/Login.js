@@ -23,7 +23,7 @@ const Login = () => {
 const handleSubmit = async (event) => {
   event.preventDefault();
 
-  const backendEndpoint = 'https://stichingaccessebility.azurewebsites.net/login';
+    const backendEndpoint = process.env.REACT_APP_API_URL +'/login';
 
   const formData = {
     UserName: username,

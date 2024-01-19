@@ -21,15 +21,16 @@ public class AurhorizatiomController : ControllerBase
     private readonly IMapper _mapper;
 
     private readonly ApplicationDbContext _dbContext;
+    private readonly IConfiguration _configuration;
 
-     public AurhorizatiomController(UserManager<User> userManager,IMapper mapper, IUserService userService, RoleManager<IdentityRole> roleManager,ApplicationDbContext dbContext,SignInManager<User> signManager)
+     public AurhorizatiomController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager,ApplicationDbContext dbContext,SignInManager<User> signManager,IConfiguration configuration)
     { 
         _userManager = userManager;
         _signManager = signManager;
         _dbContext = dbContext;
         _userService = userService;
         _roleManager = roleManager;
-        _mapper = mapper;
+        _configuration = configuration;
     }
 
 [HttpPost("Login")]
@@ -59,8 +60,8 @@ public async Task<IActionResult> Login([FromBody] User user)
         }
 
         var token = new JwtSecurityToken(
-            issuer: "https://stichingaccessebility.azurewebsites.net:7047",
-            audience: "https://stichingaccessebility.azurewebsites.net/:7047",
+            issuer: _configuration.GetValue<string>("JwtUrl"),
+            audience: _configuration.GetValue<string>("JwtUrl"),
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(15), 
             signingCredentials: new SigningCredentials(

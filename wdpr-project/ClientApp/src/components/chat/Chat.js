@@ -22,11 +22,10 @@ export class Chat extends Component {
         const { selectedUser, currentUser } = this.props;
     
         const newConnection = new signalR.HubConnectionBuilder()
-            .withUrl('https://stichingaccessebility.azurewebsites.net/ChatHub', {
-                transport: signalR.HttpTransportType.LongPolling // Use Long Polling
-            })  
-            .build();
-    
+        .withUrl(process.env.REACT_APP_API_URL + '/ChatHub', {
+            transport: signalR.HttpTransportType.LongPolling // or signalR.HttpTransportType.ServerSentEvents
+        })
+        .build();
         this.setState({ connection: newConnection }, () => {
             this.startConnection(selectedUser, currentUser);
         });
