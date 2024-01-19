@@ -97,14 +97,6 @@ const login = useGoogleLogin({
   };
   return (
     <>
-          // <div className="right flex-column">
-          //   <button
-          //     className="inlog-button google-button full-size"
-          //     onClick={() => login()}
-          //   >
-          //     Google Login
-          //   </button>
-          // </div>
     <Form onSubmit={handleSubmit}>
       {error && <Alert variant="danger">{error}</Alert>}
       <Form.Group className="mb-3" controlId="formBasicUserName">
