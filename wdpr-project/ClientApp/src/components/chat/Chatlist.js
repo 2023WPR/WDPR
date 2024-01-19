@@ -29,7 +29,7 @@ export class ChatList extends Component {
       const currentUserId = this.extractCurrentUser();
       console.log('Fetched Chats:', currentUserId);
   
-      const response = await axios.post('http://localhost:5192/chat/all', { current: currentUserId }, {
+      const response = await axios.post('https://stichingaccessebility.azurewebsites.net/chat/all', { current: currentUserId }, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -46,7 +46,7 @@ export class ChatList extends Component {
 
   fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:5192/chat/expert');
+      const response = await axios.get('https://stichingaccessebility.azurewebsites.net/chat/expert');
       const data = response.data;
       console.log('Fetched Users:', data);
       data.forEach((user) => console.log('User ID:', user.id));
@@ -61,7 +61,7 @@ export class ChatList extends Component {
     try {
       const currentUserId = this.extractCurrentUser();
       console.log("Current user id create chat: "+ currentUserId)
-      const response = await axios.post('https://localhost:7192/chat/create', { userToId , currentUserId: currentUserId}, {
+      const response = await axios.post('https://stichingaccessebility.azurewebsites.net/chat/create', { userToId , currentUserId: currentUserId}, {
         headers: {
           Authorization: `Bearer ${authToken}`
         }

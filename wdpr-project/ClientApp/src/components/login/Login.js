@@ -23,7 +23,7 @@ const Login = () => {
 const handleSubmit = async (event) => {
   event.preventDefault();
 
-  const backendEndpoint = 'http://localhost:5192/login';
+  const backendEndpoint = 'https://stichingaccessebility.azurewebsites.net/login';
 
   const formData = {
     UserName: username,
