@@ -4,7 +4,7 @@
 
 namespace wdpr_project.Migrations
 {
-    public partial class YourMigrationName21 : Migration
+    public partial class migrationchat3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

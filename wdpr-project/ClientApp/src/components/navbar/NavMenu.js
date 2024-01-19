@@ -10,7 +10,8 @@ export class NavMenu extends Component {
   constructor(props) {
     
     super(props);
-    this.signOut = this.uitloggen.bind(this);
+    this.uitloggen = this.uitloggen.bind(this);
+    this.redirect = this.redirect.bind(this);
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
       toegang: localStorage.getItem("toegang"),
@@ -52,6 +53,24 @@ export class NavMenu extends Component {
     window.location.reload();
   }
 
+   redirect()  {
+    const userRole = localStorage.getItem("role");
+    console.log(userRole)
+    if (userRole) {
+      switch (userRole) {
+        case 'Expert':
+          this.props.history.push('/expertHome');
+          break;
+        case 'Business':
+          this.props.history.push('/businessHome');
+          break;
+        case 'Admin':
+          this.props.history.push('/adminHome');
+          break;
+        default:
+          this.props.history.push('/');
+      }
+  }}
   render() {
     const { isLoggedIn } = this.state;
 

@@ -3,43 +3,34 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import '../register/register.css';
 import axios from 'axios';
-
+import * as patterns from '../contraints/Constraints';
 
 export class Register extends Component {
     static displayName = Register.name;
     constructor(props) {
         super(props);
         this.state = {
-            currentPage: 1,
-            url:'',
             homeNumber:'',
             street:'',
-            state:'',
             UserName:'',
             password:'',
-            city:'',
-            email:'',
+            postCode:'',
+            URL:'',
+            isValidConstraint: true
         };
         this.submit = this.submit.bind(this);
         this.handlePostCodeChange = this.handlePostCodeChange.bind(this);
+        this.handleURLChange = this.handleURLChange.bind(this);
         this.handleHomeNumberChange = this.handleHomeNumberChange.bind(this);
         this.handleHomeStreetChange = this.handleHomeStreetChange.bind(this);
         this.handleUserNameChange = this.handleUserNameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
-        this.handleCityChange = this.handleCityChange.bind(this);
-        this.handleEmailChange = this.handleEmailChange.bind(this);
       }
       handleUserNameChange = (event) => {
         this.setState({ UserName: event.target.value });
       };
       handlePasswordChange = (event) => {
         this.setState({ password: event.target.value });
-      };
-      handlePhoneNumberChange = (event) => {
-        this.setState({ phoneNumber: event.target.value });
-      };
-      handleStateChange = (event) => {
-        this.setState({ state: event.target.value });
       };
       handleHomeStreetChange = (event) => {
         this.setState({ street: event.target.value });
@@ -50,27 +41,12 @@ export class Register extends Component {
       handlePostCodeChange = (event) => {
         this.setState({ postCode: event.target.value });
       };
-      handleCityChange = (event) => {
-        this.setState({ city: event.target.value });
-      };
-      handleEmailChange = (event) => {
-        this.setState({ email: event.target.value });
-      };
-
-      nextPage = () => {
-        this.setState((prevState) => ({
-          currentPage: prevState.currentPage + 1,
-        }));
-      };
-    
-      previousPage = () => {
-        this.setState((prevState) => ({
-          currentPage: prevState.currentPage - 1,
-        }));
+      handleURLChange = (event) => {
+        this.setState({ URL: event.target.value });
       };
 
       submit = () => {
-        const backendEndpoint = 'https://stichingaccessebility.azurewebsites.net/create-Business'; //https://stichingaccessebility.azurewebsites.net/create-Business'
+        const backendEndpoint = 'http://localhost:5192/create-Business'; //https://stichingaccessebility.azurewebsites.net/create-Business'
         const formData = {
           UserName: this.state.UserName,
           Password: this.state.password,
@@ -84,33 +60,41 @@ export class Register extends Component {
           });
       };      
 
+      HandleConstraintsChange = (event, validationPattern) => {
+        const { value } = event.target;
+
+        // Validate the input against the provided pattern
+        const isValid = validationPattern.test(value);
+
+        // Customize the error message based on the type of constraint
+        const errorMessage = isValid ? "" : "Invalid input";
+          console.log("helllooo"+errorMessage)
+        this.setState({
+            isValidConstraint: isValid,
+            errorMessage: errorMessage,
+        });
+    }
     render(){
-        const { currentPage } = this.state;
         return(
             <div>
                 <h1>Registreer</h1>
             <Form className="custom-form-control">
-           
-            {currentPage === 1 && (
                 <>
+                {!this.state.isValidConstraint && ( <Form.Text className="text-danger">{this.state.errorMessage}</Form.Text>  )}
                     <Form.Group className="mb-3 " controlId="formBasicPostalCode">
-                        <Form.Label>Vul je Postcode in</Form.Label>
-                        <Form.Control type="postalCode" value={this.state.postCode} onChange={this.handlePostCodeChange} placeholder="vul in Postcode" />
+                            <Form.Label>Vul je Postcode in</Form.Label>
+                            <Form.Control type="postalCode" pattern={patterns.postalCodePattern} required value={this.state.postCode} 
+                            onChange={(event) => this.handlePostCodeChange(event, patterns.postalCodePattern)}
+                            placeholder="vul in Postcode"/>
+                    </Form.Group>
+                    <Form.Group className="mb-3 " controlId="formBasicHome">
                         <Form.Label>Vul je Huisnummer in</Form.Label>
                         <Form.Control type="homeNumber" value={this.state.homeNumber} onChange={this.handleHomeNumberChange} placeholder="vul in Huisnummer" />
                         <Form.Label>Vul je Straatnaam in</Form.Label>
                         <Form.Control type="street" value={this.state.street} onChange={this.handleHomeStreetChange} placeholder="vul in straatnaam " />
-                        <Form.Label>Vul je stad in</Form.Label>
-                        <Form.Control type="city" value={this.state.city} onChange={this.handleCityChange} placeholder="vul in stad" />
-                        <Form.Label>Vul je provincie in</Form.Label>
-                        <Form.Control type="state" value={this.state.state} onChange={this.handleStateChange} placeholder="vul in provincie" />
+                        <Form.Label>Vul je website url in</Form.Label>
+                        <Form.Control type="URL" value={this.state.URL} onChange={this.handleURLtChange} placeholder="vul in URL " />
                     </Form.Group>
-                    <Button variant="primary" type="button" onClick={this.previousPage }> Vorige </Button>
-                    <Button variant="primary" type="button" onClick={this.nextPage}> Volgende</Button>
-                </>
-             )}  
-            {currentPage === 2 && (
-                <>
                     <Form.Group className="mb-3" controlId="formBasicUserName">
                         <Form.Label>Vul je gebruikersnaam in</Form.Label>
                         <Form.Control type="UserName" value={this.state.UserName} onChange={this.handleUserNameChange} placeholder="vul in gebruikersnaam" />
@@ -122,7 +106,6 @@ export class Register extends Component {
                     <Button variant="primary" type="button" onClick={this.previousPage }> Vorige </Button>
                     <Button variant="primary" type="button"  onClick={this.submit}> Registreer </Button>
                 </>
-             )}  
             </Form> 
             </div>
         );

@@ -6,16 +6,15 @@ public class Address
 {
     public int Id { get; set; } //TODO add to UML | added as a foreign key, because a composite key is not guaranteed to be unique
     public string Postcode { get; set; }
-    public int HouseNumber { get; set; }
-    public string? Addition { get; set; }
+    public string Adress { get; set; }
+    
 
     public Address(){}
 
-    public Address(string postcode, int houseNumber, string addition = "")
+    public Address(string postcode, string adress)
     {
         Postcode = postcode;
-        HouseNumber = houseNumber;
-        Addition = addition;
+        Adress = adress;
     }
 
     public void UpdateFields(Address updated)
@@ -25,8 +24,7 @@ public class Address
             return; //TODO: Throw error?
         }
         Postcode = updated.Postcode;
-        HouseNumber = updated.HouseNumber;
-        Addition = updated.Addition;
+        Adress = updated.Adress;
     }
 }
 
@@ -34,8 +32,7 @@ public class AddressDTO
 {
     public int Id { get; set; }
     public string Postcode { get; set; }
-    public int HouseNumber { get; set; }
-    public string? Addition { get; set; }
+    public string Adress { get; set; }
 }
 
 public class AddressProfile : Profile
