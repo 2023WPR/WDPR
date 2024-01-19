@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using wdpr_project.Data;
 
@@ -11,9 +12,10 @@ using wdpr_project.Data;
 namespace wdpr_project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240119073615_migrationchat10")]
+    partial class migrationchat10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -241,9 +243,8 @@ namespace wdpr_project.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
 
                     b.Property<int>("DisabilityId")
                         .HasColumnType("int");
@@ -258,6 +259,8 @@ namespace wdpr_project.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("DisabilityId");
 
@@ -661,19 +664,29 @@ namespace wdpr_project.Migrations
 
             modelBuilder.Entity("ResearchCriterium", b =>
                 {
+                    b.HasOne("wdpr_project.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("wdpr_project.Models.Disability", "Disability")
                         .WithMany()
                         .HasForeignKey("DisabilityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("wdpr_project.Models.Research", null)
+                    b.HasOne("wdpr_project.Models.Research", "Research")
                         .WithOne("ResearchCriterium")
                         .HasForeignKey("ResearchCriterium", "ResearchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Address");
+
                     b.Navigation("Disability");
+
+                    b.Navigation("Research");
                 });
 
             modelBuilder.Entity("ResearchExpert", b =>
