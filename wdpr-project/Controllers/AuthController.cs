@@ -6,6 +6,9 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using wdpr_project.Models;
 using wdpr_project.Data;
+using System.ComponentModel.DataAnnotations;
+using wdpr_project.Services;
+using AutoMapper;
 
 
 [ApiController]
@@ -14,6 +17,8 @@ public class AurhorizatiomController : ControllerBase
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly IUserService _userService;
+    private readonly IMapper _mapper;
 
     private readonly ApplicationDbContext _dbContext;
     private readonly IConfiguration _configuration;
@@ -23,6 +28,7 @@ public class AurhorizatiomController : ControllerBase
         _userManager = userManager;
         _signManager = signManager;
         _dbContext = dbContext;
+        _userService = userService;
         _roleManager = roleManager;
         _configuration = configuration;
     }
@@ -31,30 +37,25 @@ public class AurhorizatiomController : ControllerBase
 public async Task<IActionResult> Login([FromBody] User user)
 {
     var userData = await _userManager.FindByNameAsync(user.UserName);
-            Console.WriteLine(user.UserName.ToString() + "1");
 
     if (await _userManager.CheckPasswordAsync(userData, user.Password))
     {
-         Console.WriteLine( "5");
-
         var result = await _signManager.PasswordSignInAsync(userData, user.Password,isPersistent: true, lockoutOnFailure: false);
 
         if (result.Succeeded)
         {
-            Console.WriteLine(user.UserName.ToString() + "2");
-            await _signManager.SignInAsync(userData, isPersistent: true);
-
-              var roles = await _userManager.GetRolesAsync(userData);
+           // await _signManager.SignInAsync(userData, isPersistent: true);
+            var roles = await _userManager.GetRolesAsync(userData);
 
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(ClaimTypes.NameIdentifier, userData.Id.ToString()),
+            new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
         foreach (var role in roles)
         {
-    Console.WriteLine(user.UserName.ToString()+"3");
-
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
 
@@ -73,7 +74,7 @@ public async Task<IActionResult> Login([FromBody] User user)
         }
     }
 
-    return Unauthorized("Invalid UserName or password");
+    return Unauthorized("Invalide gebruikersnaam of wachtwoord");
 }
 
 [HttpPost("create")] 
@@ -99,7 +100,7 @@ public async Task<ActionResult<User>> CreateExpert(User expert)
     }
 }
 [HttpPost("create-Business")] 
-public async Task<ActionResult<User>> Createb(User business)
+public async Task<ActionResult<User>> CreateBusiness(Business business)
 {
     if (!await _roleManager.RoleExistsAsync("Business"))
     {
@@ -110,9 +111,29 @@ public async Task<ActionResult<User>> Createb(User business)
     var result = await _userManager.CreateAsync(business, business.Password);
     if (result.Succeeded)
     {
-        // Add the user to the "Expert" role
-        await _userManager.AddToRoleAsync(business, "Business");
-        return Ok();
+        // Now that the user is created, retrieve the user with the generated Id
+        var createdUser = await _userManager.FindByNameAsync(business.UserName);
+
+        // Create a corresponding entry in the Businesses table
+        var businessEntity = new Business
+        {
+            Id = createdUser.Id,
+            URL = business.URL,
+            Name = business.Name,
+            // You need to handle the AddressId properly based on your data model
+            // For simplicity, assuming AddressId is a property in Business
+            Address = business.Address 
+        };
+
+        _dbContext.Businesses.Add(businessEntity);
+        await _dbContext.SaveChangesAsync();
+
+        // Add the user to the "Business" role
+        await _userManager.AddToRoleAsync(createdUser, "Business");
+
+        // You might want to return the created BusinessDTO or any other response
+        var businessDto = _mapper.Map<BusinessDTO>(businessEntity);
+        return Ok(businessDto);
     }
     else
     {
@@ -120,4 +141,5 @@ public async Task<ActionResult<User>> Createb(User business)
         return BadRequest(result.Errors);
     }
 }
+
 }

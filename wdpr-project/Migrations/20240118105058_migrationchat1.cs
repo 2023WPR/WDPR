@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace wdpr_project.Migrations
 {
-    public partial class YourMigrationName1 : Migration
+    public partial class migrationchat1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -65,6 +65,18 @@ namespace wdpr_project.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Chats",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Chats", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Disabilities",
                 columns: table => new
                 {
@@ -89,23 +101,6 @@ namespace wdpr_project.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DisabilityAids", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Researches",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Reward = table.Column<int>(type: "int", nullable: false),
-                    Capacity = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Researches", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -281,36 +276,54 @@ namespace wdpr_project.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ResearchCriteria",
+                name: "Messages",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MinmumAge = table.Column<int>(type: "int", nullable: false),
-                    MaximumAge = table.Column<int>(type: "int", nullable: false),
-                    AddressId = table.Column<int>(type: "int", nullable: false),
-                    DisabilityId = table.Column<int>(type: "int", nullable: false),
-                    ResearchId = table.Column<int>(type: "int", nullable: false)
+                    message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ChatId = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ResearchCriteria", x => x.Id);
+                    table.PrimaryKey("PK_Messages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ResearchCriteria_Addresses_AddressId",
-                        column: x => x.AddressId,
-                        principalTable: "Addresses",
+                        name: "FK_Messages_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ResearchCriteria_Disabilities_DisabilityId",
-                        column: x => x.DisabilityId,
-                        principalTable: "Disabilities",
+                        name: "FK_Messages_Chats_ChatId",
+                        column: x => x.ChatId,
+                        principalTable: "Chats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserChats",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ChatId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserChats", x => new { x.UserId, x.ChatId });
+                    table.ForeignKey(
+                        name: "FK_UserChats_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ResearchCriteria_Researches_ResearchId",
-                        column: x => x.ResearchId,
-                        principalTable: "Researches",
+                        name: "FK_UserChats_Chats_ChatId",
+                        column: x => x.ChatId,
+                        principalTable: "Chats",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -344,6 +357,29 @@ namespace wdpr_project.Migrations
                         principalTable: "PersonalData",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Researches",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Reward = table.Column<int>(type: "int", nullable: false),
+                    Capacity = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    businessId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Researches", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Researches_Businesses_businessId",
+                        column: x => x.businessId,
+                        principalTable: "Businesses",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -390,6 +426,67 @@ namespace wdpr_project.Migrations
                         name: "FK_DisabilityExpert_Experts_DisabledExpertsId",
                         column: x => x.DisabledExpertsId,
                         principalTable: "Experts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ResearchCriteria",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MinmumAge = table.Column<int>(type: "int", nullable: false),
+                    MaximumAge = table.Column<int>(type: "int", nullable: false),
+                    AddressId = table.Column<int>(type: "int", nullable: false),
+                    DisabilityId = table.Column<int>(type: "int", nullable: false),
+                    ResearchId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ResearchCriteria", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ResearchCriteria_Addresses_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Addresses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ResearchCriteria_Disabilities_DisabilityId",
+                        column: x => x.DisabilityId,
+                        principalTable: "Disabilities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ResearchCriteria_Researches_ResearchId",
+                        column: x => x.ResearchId,
+                        principalTable: "Researches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ResearchExpert",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ResearchId = table.Column<int>(type: "int", nullable: false),
+                    ExpertId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ResearchExpert", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ResearchExpert_Experts_ExpertId",
+                        column: x => x.ExpertId,
+                        principalTable: "Experts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ResearchExpert_Researches_ResearchId",
+                        column: x => x.ResearchId,
+                        principalTable: "Researches",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -459,6 +556,16 @@ namespace wdpr_project.Migrations
                 column: "PersonalDataId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Messages_ChatId",
+                table: "Messages",
+                column: "ChatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_UserId",
+                table: "Messages",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PersonalData_AddressId",
                 table: "PersonalData",
                 column: "AddressId");
@@ -478,6 +585,27 @@ namespace wdpr_project.Migrations
                 table: "ResearchCriteria",
                 column: "ResearchId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Researches_businessId",
+                table: "Researches",
+                column: "businessId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ResearchExpert_ExpertId",
+                table: "ResearchExpert",
+                column: "ExpertId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ResearchExpert_ResearchId",
+                table: "ResearchExpert",
+                column: "ResearchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserChats_ChatId",
+                table: "UserChats",
+                column: "ChatId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -501,16 +629,22 @@ namespace wdpr_project.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Businesses");
-
-            migrationBuilder.DropTable(
                 name: "DisabilityAidExpert");
 
             migrationBuilder.DropTable(
                 name: "DisabilityExpert");
 
             migrationBuilder.DropTable(
+                name: "Messages");
+
+            migrationBuilder.DropTable(
                 name: "ResearchCriteria");
+
+            migrationBuilder.DropTable(
+                name: "ResearchExpert");
+
+            migrationBuilder.DropTable(
+                name: "UserChats");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -519,22 +653,28 @@ namespace wdpr_project.Migrations
                 name: "DisabilityAids");
 
             migrationBuilder.DropTable(
-                name: "Experts");
+                name: "Disabilities");
 
             migrationBuilder.DropTable(
-                name: "Disabilities");
+                name: "Experts");
 
             migrationBuilder.DropTable(
                 name: "Researches");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Chats");
 
             migrationBuilder.DropTable(
                 name: "PersonalData");
 
             migrationBuilder.DropTable(
+                name: "Businesses");
+
+            migrationBuilder.DropTable(
                 name: "Addresses");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }
