@@ -30,7 +30,7 @@ namespace wdpr_project.Controllers_
           }
             return await _context.Researches.ToListAsync();
         }
-         [HttpGet("{id}")]
+        [HttpGet("Research/{id}")]
         public async Task<ActionResult<IEnumerable<Research>>> ListResearchById(int id)
         {
            Research research =  await _context.Researches.FirstOrDefaultAsync(r => r.Id == id);
