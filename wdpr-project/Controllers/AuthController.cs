@@ -17,7 +17,6 @@ public class AurhorizatiomController : ControllerBase
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signManager;
     private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly IUserService _userService;
     private readonly IMapper _mapper;
 
     private readonly ApplicationDbContext _dbContext;
@@ -28,7 +27,6 @@ public class AurhorizatiomController : ControllerBase
         _userManager = userManager;
         _signManager = signManager;
         _dbContext = dbContext;
-        _userService = userService;
         _roleManager = roleManager;
         _configuration = configuration;
     }
