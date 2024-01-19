@@ -46,6 +46,7 @@ export class Register extends Component {
       };
 
       submit = () => {
+
         const backendEndpoint = process.env.REACT_APP_API_URL + '/create-Business';
         const formData = {
           UserName: this.state.UserName,

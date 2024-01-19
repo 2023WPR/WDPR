@@ -152,7 +152,7 @@ export class ChatList extends Component {
                     <Card.Body>
                       <p>Bericht: {message.message}</p>
                       <p>
-                        Van gebruiker: <span role="username">{message.username}</span>
+                      Van gebruiker: <span>{message.username}</span>
                       </p>
                       <p>Datum: {message.date}</p>
                     </Card.Body>
