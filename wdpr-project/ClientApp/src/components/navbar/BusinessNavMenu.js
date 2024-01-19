@@ -1,4 +1,4 @@
-﻿import {NavItem, NavLink} from "reactstrap";
+import {NavItem, NavLink} from "reactstrap";
 import { Link } from 'react-router-dom';
 
 const BusinessNavMenu = () => {
@@ -17,7 +17,7 @@ const BusinessNavMenu = () => {
             <NavLink tag={Link} className="text-light" to="/business/profile">
                 Mijn gegevens
             </NavLink>
-        </NavItem>
+        </NavItem> 
         <NavItem>
             <NavLink tag={Link} id='signOut' className="text-light"  to="/" onClick={this.uitloggen}>
                 Logout

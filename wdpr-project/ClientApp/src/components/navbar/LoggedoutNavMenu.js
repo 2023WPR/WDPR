@@ -1,4 +1,4 @@
-﻿import {NavItem, NavLink} from "reactstrap";
+import {NavItem, NavLink} from "reactstrap";
 import {Link} from "react-router-dom";
 import React from "react";
 
@@ -13,7 +13,7 @@ const LoggedoutNavMenu = () => {
             <NavLink tag={Link} className="text-light" to="/register/select">
                 Registreer
             </NavLink>
-        </NavItem>
+        </NavItem> 
     </>)
 }
 

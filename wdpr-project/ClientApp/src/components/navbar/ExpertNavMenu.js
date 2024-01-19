@@ -1,4 +1,4 @@
-﻿import {NavItem, NavLink} from "reactstrap";
+import {NavItem, NavLink} from "reactstrap";
 import { Link } from 'react-router-dom';
 
 const uitloggen = () => {
@@ -14,7 +14,7 @@ const ExpertNavMenu = () => {
         <NavItem>
             <NavLink tag={Link} className="text-light" to="/expert/onderzoek">
                 Onderzoeken
-            </NavLink>
+            </NavLink> 
         </NavItem>
         <NavItem>
             <NavLink tag={Link} className="text-light" to="/chatIndex">
@@ -27,7 +27,7 @@ const ExpertNavMenu = () => {
             </NavLink>
         </NavItem>
         <NavItem>
-            <NavLink tag={Link} id='signOut' className="text-light"  to="/" onClick={uitloggen}>
+            <NavLink tag={Link} id='signOut' className="text-light"  to="/" onClick={uitloggen} >
                 Logout
             </NavLink>
         </NavItem>

@@ -1,4 +1,4 @@
-﻿import {NavItem, NavLink} from "reactstrap";
+import {NavItem, NavLink} from "reactstrap";
 import { Link } from 'react-router-dom';
 
 const AdminNavMenu = () => {
@@ -17,7 +17,7 @@ const AdminNavMenu = () => {
             <NavLink tag={Link} id='signOut' className="text-light"  to="/" onClick={this.uitloggen}>
                 Logout
             </NavLink>
-        </NavItem>
+        </NavItem> 
     </>)
 }
 
