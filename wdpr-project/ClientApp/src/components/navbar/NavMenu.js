@@ -3,6 +3,11 @@ import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from '
 import Image from 'react-bootstrap/Image';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
+import LoggedoutNavMenu from "./LoggedoutNavMenu";
+import {jwtDecode} from "jwt-decode";
+import ExpertNavMenu from "./ExpertNavMenu";
+import AdminNavMenu from "./AdminNavMenu";
+import BusinessNavMenu from "./BusinessNavMenu";
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -17,6 +22,7 @@ export class NavMenu extends Component {
       toegang: localStorage.getItem("toegang"),
       collapsed: true,
       isLoggedIn: false,
+      userRole: null
     };
   }
 
@@ -35,13 +41,16 @@ export class NavMenu extends Component {
     try {
       let token = localStorage.getItem('token');  
       const isLoggedIn = token != null;
+      const userRole = jwtDecode(token)["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
       
       this.setState({
         isLoggedIn,
+        userRole
       });
     } catch {
       this.setState({
         isLoggedIn: false,
+        userRole: null
       });
     }
   }
@@ -51,6 +60,26 @@ export class NavMenu extends Component {
       toegang: localStorage.getItem("toegang"),
     });
     window.location.reload();
+  }
+  
+  renderSwitch() {
+    var userRole = this.state.userRole;
+    switch(userRole){
+      case "Expert":
+        return <ExpertNavMenu/>
+      case "Admin":
+        return <AdminNavMenu/>
+      case "Business":
+        return <BusinessNavMenu/>
+      default:
+        return <>
+          <NavItem>
+            <NavLink tag={Link} id='signOut' className="text-light"  to="/" onClick={this.uitloggen}>
+              Logout
+            </NavLink>
+          </NavItem>
+        </>
+    }
   }
 
    redirect()  {
@@ -72,9 +101,9 @@ export class NavMenu extends Component {
       }
   }}
   render() {
-    const { isLoggedIn } = this.state;
+     const { isLoggedIn } = this.state;
 
-    return (
+     return (
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" container light style={{ backgroundColor: '#2B50EC' }}>
           <NavbarBrand tag={Link} to="/">
             <Image src={require('../navbar/logo.png')} className="logo" alt="Logo of Stichting Accessibility" />
@@ -82,33 +111,9 @@ export class NavMenu extends Component {
           <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
             <ul className="navbar-nav flex-grow">
-              {isLoggedIn ? (
-                <>
-                  <NavItem>
-                  <NavLink tag={Link} id='signOut' className="text-light"  to="/" onClick={this.uitloggen}>
-                      Logout
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink tag={Link} className="text-light" to="/myprofile">
-                      Mijn gegevens
-                    </NavLink>
-                  </NavItem>
-                </>
-              ) : (
-                <>
-                  <NavItem>
-                    <NavLink tag={Link} className="text-light" to="/login">
-                      Login
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink tag={Link} className="text-light" to="/register/select">
-                      Registreer
-                    </NavLink>
-                  </NavItem>
-                </>
-              )}
+              {isLoggedIn ? (this.renderSwitch()) : (
+                <LoggedoutNavMenu/>
+                )}
             </ul>
           </Collapse>
         </Navbar>
