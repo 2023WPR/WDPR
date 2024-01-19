@@ -18,7 +18,7 @@ const ResearchPage = () => {
             .catch((err) => {
                 console.log(err.message);
             });
-    }, []);
+    }, [researchId]);
 
     return (
         <Stack>
