@@ -46,7 +46,7 @@ export class Register extends Component {
       };
 
       submit = () => {
-        const backendEndpoint = 'http://localhost:5192/create-Business'; //https://stichingaccessebility.azurewebsites.net/create-Business'
+        const backendEndpoint = 'https://stichingaccessebility.azurewebsites.net/create-Business'; //https://stichingaccessebility.azurewebsites.net/create-Business'
         const formData = {
           UserName: this.state.UserName,
           Password: this.state.password,
