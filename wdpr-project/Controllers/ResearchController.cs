@@ -191,7 +191,8 @@ public async Task<ActionResult<ResearchDTO>> CreateResearch([FromBody] ResearchD
             Reward = researchdto.Reward, 
             Capacity = researchdto.Capacity,
             Status = researchdto.Status,
-            business = business
+            business = business, 
+            ResearchCriterium = researchdto.ResearchCriterium
         };
 
         // var researchCriteria = new ResearchCriterium
