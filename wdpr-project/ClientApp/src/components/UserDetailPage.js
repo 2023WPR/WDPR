@@ -99,7 +99,7 @@ export class UserDetailPage extends Component {
 
         console.log("formData:\t", formData);
         
-        const response = await axios.put("http://localhost:5056/expert/" + this.getCurrentUserId(), formData);
+        // const response = await axios.put("http://localhost:5056/expert/" + this.getCurrentUserId(), formData);
 
         // console.log("response:\t", response);
 
@@ -110,10 +110,11 @@ export class UserDetailPage extends Component {
     
         return (
             <>
+            <h1>Persoonsgegevens</h1>
             {
                 (this.state.user == null) 
                 ?
-                <span>Laden...</span>
+                <h2>Aan het laden.</h2>
                 :
                 <Form>
                     <Form.Group as={Row} className="mb-3" controlId="firstname" >
