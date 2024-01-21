@@ -73,18 +73,19 @@ namespace wdpr_project.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("ChatId")
+                    b.Property<int>("ChatId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ChatRoomId")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("date")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("message")
                         .IsRequired()
@@ -93,6 +94,8 @@ namespace wdpr_project.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ChatId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Messages");
                 });
@@ -238,8 +241,9 @@ namespace wdpr_project.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("AddressId")
-                        .HasColumnType("int");
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DisabilityId")
                         .HasColumnType("int");
@@ -255,14 +259,52 @@ namespace wdpr_project.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
-
                     b.HasIndex("DisabilityId");
 
                     b.HasIndex("ResearchId")
                         .IsUnique();
 
                     b.ToTable("ResearchCriteria");
+                });
+
+            modelBuilder.Entity("ResearchExpert", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ExpertId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ResearchId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpertId")
+                        .IsUnique();
+
+                    b.HasIndex("ResearchId");
+
+                    b.ToTable("ResearchExperts");
+                });
+
+            modelBuilder.Entity("UserChat", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ChatId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "ChatId");
+
+                    b.HasIndex("ChatId");
+
+                    b.ToTable("UserChats");
                 });
 
             modelBuilder.Entity("wdpr_project.Models.Address", b =>
@@ -273,11 +315,9 @@ namespace wdpr_project.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Addition")
+                    b.Property<string>("Adress")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("HouseNumber")
-                        .HasColumnType("int");
 
                     b.Property<string>("Postcode")
                         .IsRequired()
@@ -399,7 +439,12 @@ namespace wdpr_project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("businessId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("businessId");
 
                     b.ToTable("Researches");
                 });
@@ -410,9 +455,6 @@ namespace wdpr_project.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ChatId")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -464,8 +506,6 @@ namespace wdpr_project.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ChatId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -559,9 +599,21 @@ namespace wdpr_project.Migrations
 
             modelBuilder.Entity("Message", b =>
                 {
-                    b.HasOne("Chat", null)
+                    b.HasOne("Chat", "Chat")
                         .WithMany("Messages")
-                        .HasForeignKey("ChatId");
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("wdpr_project.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chat");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -617,29 +669,57 @@ namespace wdpr_project.Migrations
 
             modelBuilder.Entity("ResearchCriterium", b =>
                 {
-                    b.HasOne("wdpr_project.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("wdpr_project.Models.Disability", "Disability")
                         .WithMany()
                         .HasForeignKey("DisabilityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("wdpr_project.Models.Research", "Research")
+                    b.HasOne("wdpr_project.Models.Research", null)
                         .WithOne("ResearchCriterium")
                         .HasForeignKey("ResearchCriterium", "ResearchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Address");
-
                     b.Navigation("Disability");
+                });
+
+            modelBuilder.Entity("ResearchExpert", b =>
+                {
+                    b.HasOne("wdpr_project.Models.Expert", "Expert")
+                        .WithOne("ResearchExperts")
+                        .HasForeignKey("ResearchExpert", "ExpertId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("wdpr_project.Models.Research", "Research")
+                        .WithMany("ResearchExperts")
+                        .HasForeignKey("ResearchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Expert");
 
                     b.Navigation("Research");
+                });
+
+            modelBuilder.Entity("UserChat", b =>
+                {
+                    b.HasOne("Chat", "Chat")
+                        .WithMany("UserChats")
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("wdpr_project.Models.User", "User")
+                        .WithMany("UserChats")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chat");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("wdpr_project.Models.PersonalData", b =>
@@ -653,11 +733,13 @@ namespace wdpr_project.Migrations
                     b.Navigation("Address");
                 });
 
-            modelBuilder.Entity("wdpr_project.Models.User", b =>
+            modelBuilder.Entity("wdpr_project.Models.Research", b =>
                 {
-                    b.HasOne("Chat", null)
-                        .WithMany("Users")
-                        .HasForeignKey("ChatId");
+                    b.HasOne("wdpr_project.Models.Business", "business")
+                        .WithMany()
+                        .HasForeignKey("businessId");
+
+                    b.Navigation("business");
                 });
 
             modelBuilder.Entity("wdpr_project.Models.Admin", b =>
@@ -713,12 +795,25 @@ namespace wdpr_project.Migrations
                 {
                     b.Navigation("Messages");
 
-                    b.Navigation("Users");
+                    b.Navigation("UserChats");
                 });
 
             modelBuilder.Entity("wdpr_project.Models.Research", b =>
                 {
                     b.Navigation("ResearchCriterium")
+                        .IsRequired();
+
+                    b.Navigation("ResearchExperts");
+                });
+
+            modelBuilder.Entity("wdpr_project.Models.User", b =>
+                {
+                    b.Navigation("UserChats");
+                });
+
+            modelBuilder.Entity("wdpr_project.Models.Expert", b =>
+                {
+                    b.Navigation("ResearchExperts")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

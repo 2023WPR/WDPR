@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -29,8 +30,12 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddSignalR();
 
 // Custom services
-
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.Configure<IdentityOptions>(options => options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier);
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireLoggedIn", policy => policy.RequireAuthenticatedUser());
+});
 builder.Services.AddScoped<IDisabilityService, DisabilityService>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
@@ -46,11 +51,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
+
             ValidIssuer = builder.Configuration["JwtUrl"],
             ValidAudience = builder.Configuration["JwtUrl"],
+
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("awef98awef978haweof8g7aw789efhh789awef8h9awh89efh98f89uawef9j8aw89hefawef"))
         };
-    });
+    }).AddGoogle(options =>
+{
+    options.ClientId = "1012765062649-rchsk8hcpet6055qpdbm7opu4t4nvefm.apps.googleusercontent.com";
+    options.ClientSecret = "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";
+});;
+
+    
   
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -66,6 +79,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+ 
 }
 
 if (!app.Environment.IsDevelopment())
@@ -82,15 +96,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapHub<ChatHub>("/ChatHub");
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseCors(cors => cors //"MyAllowSpecificOrigins");
-        .AllowAnyOrigin()
-        .AllowAnyHeader()
-        .AllowAnyMethod());
-}
-
 
 app.MapControllerRoute(
     name: "default",

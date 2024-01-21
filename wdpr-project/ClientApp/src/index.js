@@ -5,16 +5,20 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
-
+import { GoogleOAuthProvider } from "@react-oauth/google";
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
 
 root.render(
-  <BrowserRouter basename={baseUrl}>
-    <App />
-  </BrowserRouter>);
-
+   <React.StrictMode>
+      <BrowserRouter basename={baseUrl}>
+      <GoogleOAuthProvider clientId="1012765062649-rchsk8hcpet6055qpdbm7opu4t4nvefm.apps.googleusercontent.com">
+        <App />
+      </GoogleOAuthProvider>
+    </BrowserRouter>
+  </React.StrictMode>
+);
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://cra.link/PWA

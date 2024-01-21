@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as signalR from '@microsoft/signalr';
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 
 export class Chat extends Component {
     static displayName = Chat.name;
@@ -11,35 +12,38 @@ export class Chat extends Component {
         this.state = {
             connection: null,
             messages: [],
-            user: '',
+            date:[],
+            currentUser: '',
             message: '',
         };
     }
 
     componentDidMount() {
-    const { selectedUser } = this.props;
-
+        const { selectedUser, currentUser } = this.props;
+    
         const newConnection = new signalR.HubConnectionBuilder()
         .withUrl(process.env.REACT_APP_API_URL + '/ChatHub', {
             transport: signalR.HttpTransportType.LongPolling // or signalR.HttpTransportType.ServerSentEvents
         })
         .build();
         this.setState({ connection: newConnection }, () => {
-            this.startConnection(selectedUser);
+            this.startConnection(selectedUser, currentUser);
         });
     }
+    
+    
 
-    startConnection = (selectedUser) => {
+    startConnection = (selectedUser, currentUser) => {
         const { connection } = this.state;
     
         if (connection) {
             connection.start().then(() => {
-                connection.on('ReceiveMessage', (user, message) => {
-                    console.log(`Received message: ${user} - ${message}`);
+                connection.on('newMessage', ( message, date) => {
+                    console.log(`newMessage:  - ${message} `);
                     this.setState((prevState) => ({
-                        messages: [...prevState.messages, { user, message }],
-                    }));                    
-                });
+                        messages: [...prevState.messages, { currentUser, message, date }]
+                    }));
+                });                
             });
         }
     };
@@ -49,7 +53,7 @@ export class Chat extends Component {
         const { connection, message } = this.state;
         
         if (connection) {
-            await connection.invoke('SendMessage', this.props.selectedUser, message);
+            await connection.invoke('SendMessage', this.props.selectedUser,this.props.currentUser, message);
             this.setState({ message: '' });
         }
     };
@@ -57,7 +61,7 @@ export class Chat extends Component {
     
 
     handleUserChange = (e) => {
-        this.setState({ user: e.target.value });
+        this.setState({ currentUser: e.target.value });
     };
 
     handleMessageChange = (e) => {
@@ -69,14 +73,24 @@ export class Chat extends Component {
 
         return (
             <div className="chat-container">
-                <div className="chat-header">Modern Chat Room</div>
+                <div className="chat-header"></div>
                 <div className="chat-box">
                 <div className="chat-messages">
                     {messages.map((msg, index) => (
                         <div key={index} className="message">
-                            <span className="user">{msg.user}:</span> {msg.message}
+
+                            <div role="listitem" tabIndex="0">
+                                <Card>
+                                    <Card.Body>
+                                    <p>Bericht: {msg.message}</p>
+                                    <p>Datum: {msg.date}</p>
+                                    <p>Datum: {msg.currentUser}</p>
+                                    </Card.Body>
+                                </Card>
+                            </div>
                         </div>
                     ))}
+                     
                 </div>
 
                 </div>

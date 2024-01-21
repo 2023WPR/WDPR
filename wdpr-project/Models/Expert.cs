@@ -13,6 +13,7 @@ public class Expert : User
     public List<DisabilityAid> Aids { get; set; } = new List<DisabilityAid>();
     public PersonalData PersonalData { get; set; } = new PersonalData();
     public PersonalData? Caretaker { get; set; }
+    public ResearchExpert ResearchExperts { get; set; } = new ResearchExpert();// Represents many-to-many relationship
     
     public Expert(){}
 
@@ -140,7 +141,7 @@ public class ExpertBaseDTO
 public class ExpertDetailDTO
 {
     public string Id { get; set; }
-    // public string Username { get; set; }
+    public string Username { get; set; }
     public string Firstname { get; set; }
     public string? Middlenames { get; set; }
     public string Lastname { get; set; }
@@ -165,9 +166,9 @@ public class ExpertDetailDTO
 
 public class ExpertFullDTO
 {
-    public string Id { get; set; }
-    // public string Username { get; set; }
-    // public string Password { get; set; }
+   public string Id { get; set; }
+    public string Username { get; set; }
+    public string Password { get; set; }
     public bool ContactByPhone { get; set; }
     public bool ContactByThirdParty { get; set; }
     public List<int> DisabilityIds { get; set; }

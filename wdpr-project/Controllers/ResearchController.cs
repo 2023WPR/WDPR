@@ -1,3 +1,6 @@
+using System.Security.Claims;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using wdpr_project.Data;
@@ -9,12 +12,12 @@ namespace wdpr_project.Controllers_
     public class ResearchController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IEmailService _emailService;
+         private readonly IMapper _mapper;
 
-        public ResearchController(ApplicationDbContext context, IEmailService emailService)
+        public ResearchController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
-            _emailService = emailService;
+            _mapper = mapper;
         }
 
         // GET: Research
@@ -27,6 +30,127 @@ namespace wdpr_project.Controllers_
           }
             return await _context.Researches.ToListAsync();
         }
+      [HttpGet("Research/{id}")]
+        public async Task<ActionResult<Research>> ListResearchById(int id)
+        {
+            Research research = await _context.Researches.FirstOrDefaultAsync(r => r.Id == id);
+
+            if (research != null)
+            {
+                return research;  // Return the specific research item.
+            }
+            else
+            {
+                return NotFound();  // Return a 404 response if the research item is not found.
+            }
+        }
+
+
+        [HttpPost("research/{researchId}/participate")]
+public async Task<ActionResult> ParticipateInResearch(int researchId, [FromBody] ExpertDTO expert)
+{
+    try
+    {
+        // Find the research
+        var research = await _context.Researches.FindAsync(researchId);
+
+        if (research == null)
+        {
+            return NotFound("Onderzoek niet gevonden");
+        }
+
+        // Find the expert (assuming you have a way to identify the expert, like using expertId)
+        var existingExpert = await _context.Experts.FindAsync(expert.Id);
+
+        if (existingExpert == null)
+        {
+            return NotFound("Ervaringsdeskundige niet gevonden.");
+        }
+        research.ResearchExperts ??= new List<ResearchExpert>();
+
+        // Check if the expert is already participating in the research
+        if (research.ResearchExperts.Any(e => e.ExpertId == existingExpert.Id))
+        {
+            return BadRequest("Ervaringsdeskundige heeft zich al aangemeld aan het onderzoek");
+        }
+
+        var researchExpert = new ResearchExpert
+        {
+            Research = research,
+            Expert = existingExpert
+        };
+
+        // Add the expert to the research
+        research.ResearchExperts.Add(researchExpert);
+
+        // Update the database
+        await _context.SaveChangesAsync();
+
+        return Ok("Ervaringsdeskundige is toegevoegd aan het onderzoek");
+    }
+    catch (Exception ex)
+    {
+        // Handle exceptions appropriately (e.g., log, return a specific error response)
+        return StatusCode(500, $" server error: {ex.Message}");
+    }
+}
+public class ExpertDTO{
+    public string Id{get;set;}
+}
+
+[HttpPost("researchess")]
+public async Task<ActionResult<IEnumerable<Research>>> GetResearchesWithParticipants([FromBody] CurrentUser currentUser)
+{
+  try
+    {
+        // Get the ID of the current business account (adjust this based on your authentication mechanism)
+       // var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        // var bedrijfId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+       // Assuming userId is the current user's ID
+        var business = await _context.Businesses.FirstOrDefaultAsync(b => b.Id == currentUser.CurrentUserId);
+        bool value = false;
+     
+      if (business != null && business.Id != null)
+        {
+            // Retrieve the researches for the current business
+            var researches = await _context.Researches
+                .Include(r => r.ResearchExperts)
+                    .ThenInclude(re => re.Expert)
+                .Where(r => r.business.Id == business.Id)
+                .Select(r => new ResearchDTO
+                {
+                    Id = r.Id,
+                    Title = r.Title,
+                    Description = r.Description,
+                    Reward = r.Reward,
+                    Capacity = r.Capacity,
+                    Status = r.Status,
+                    businessId = r.business.Id,
+                    ExpertIds = r.ResearchExperts.Select(re => re.Expert.Id).ToList(), // Assuming Expert has an Id property
+                })
+                .ToListAsync();
+
+            return Ok(researches);
+        }
+        else
+        {
+            throw new Exception("Bedrijf niet gevonden");
+        }
+
+
+        // Handle the case where business or business.Id is null
+        return NotFound("Business not found or invalid business ID.");
+
+    }
+    catch (Exception ex)
+    {
+        // Handle exceptions appropriately (e.g., log, return a specific error response)
+        return StatusCode(500, $"Internal server error: {ex.Message}");
+    }
+}
+public class CurrentUser{
+    public string CurrentUserId{get;set;}
+}
 
         [HttpGet("Research/Details/{id}")]
         public async Task<IActionResult> GetResearchDetails(int id)
@@ -48,19 +172,53 @@ namespace wdpr_project.Controllers_
             return Ok();
         }
 
-        [HttpPost("Create-Research")]
-        public async Task<ActionResult<Research>> CreateResearch([FromBody] Research research)
-        {  
-            _context.Researches.Add(research);
-            await _context.SaveChangesAsync();
-
-           if (research.ResearchCriterium != null)
-            {
-                await _emailService.SendEmailsToParticipants(research.ResearchCriterium.DisabilityId);
-            }
-
-            return CreatedAtAction("GetOnderzoek", new { id = research.Id }, research);
+[HttpPost("Create-Research")]
+public async Task<ActionResult<ResearchDTO>> CreateResearch([FromBody] ResearchDTO researchdto)
+{  
+    try
+    {
+        var business = await _context.Businesses.FirstOrDefaultAsync(b => b.Id == researchdto.businessId);
+       
+        if (business == null)
+        {
+            return NotFound("Business not found"); // Adjust this according to your error handling strategy
         }
+
+
+        var research = new Research
+        {
+            Id = researchdto.Id,
+            Title = researchdto.Title,
+            Description = researchdto.Description,
+            Reward = researchdto.Reward, 
+            Capacity = researchdto.Capacity,
+            Status = researchdto.Status,
+            business = business, 
+            ResearchCriterium = researchdto.ResearchCriterium
+        };
+
+        // var researchCriteria = new ResearchCriterium
+        // {
+        //     Id = researchdto.ResearchCriterium.Id,
+        //     MinmumAge = researchdto.ResearchCriterium.MinmumAge,
+        //     MaximumAge = researchdto.ResearchCriterium.MaximumAge,
+        //     Address = researchdto.ResearchCriterium.Address,
+        //     Disability = researchdto.ResearchCriterium.Disability,
+        // };
+
+        _context.Researches.Add(research);
+        //_context.ResearchCriteria.Add(researchCriteria);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction("GetOnderzoek", new { id = research.Id }, research);
+    }
+    catch (Exception ex)
+    {
+        // Log the exception or return an appropriate error response
+        return StatusCode(500, $"Internal server error: {ex.Message}");
+    }
+}
+
                 
         [HttpGet("Edit/{id}")]
         public async Task<IActionResult> GetResearchForEdit(int id)

@@ -78,8 +78,8 @@ public class DisabilityService : IDisabilityService
         }
 
         List<string> disabledExpertsIds = disability.DisabledExperts.Select(e => e.Id).ToList();
-        if (!(disabledExpertsIds.All(dto.DisabledExpertIds.Contains) &&
-              disabledExpertsIds.Count == dto.DisabledExpertIds.Count)) // Check for equality of disabledExperts, modification of those is not allowed via this endpoint
+        if (
+              disabledExpertsIds.Count == dto.DisabledExpertIds.Count) // Check for equality of disabledExperts, modification of those is not allowed via this endpoint
         {
             return new ConflictObjectResult("Modification of the DisabledExperts property is not allowed via this endpoint, please update the relevant expert(s) at /api/Expert/{id}");
         }
@@ -208,8 +208,8 @@ public class DisabilityService : IDisabilityService
         }
 
         List<string> AidUsersIds = aid.AidUsers.Select(e => e.Id).ToList();
-        if (!(AidUsersIds.All(dto.AidUserIds.Contains) &&
-              AidUsersIds.Count == dto.AidUserIds.Count)) // Check for equality of disabledExperts, modification of those is not allowed via this endpoint
+        if (
+              AidUsersIds.Count == dto.AidUserIds.Count) // Check for equality of disabledExperts, modification of those is not allowed via this endpoint
         {
             return new ConflictObjectResult("Modification of the AidUsers property is not allowed via this endpoint, please update the relevant expert(s) at /api/Expert/{id}");
         }

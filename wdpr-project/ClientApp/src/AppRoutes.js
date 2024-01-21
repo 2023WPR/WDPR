@@ -1,5 +1,5 @@
 import Login  from "./components/login/Login";
-import { Home } from "./components/Home";
+import  {Home}  from "./components/Home";
 import { Chat } from "./components/chat/Chat";
 import Research from "./components/Research/Research"
 import ResearchPage from "./components/Research/ResearchPage";
