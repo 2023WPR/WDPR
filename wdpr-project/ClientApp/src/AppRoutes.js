@@ -58,7 +58,7 @@ const AppRoutes = [
     element: <ResearchPage />
   },
   {
-    path: '/user-detail-page',
+    path: '/expert/profile',
     element: <UserDetailPage />
   },
   {
