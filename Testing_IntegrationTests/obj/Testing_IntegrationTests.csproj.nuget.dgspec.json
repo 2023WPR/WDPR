@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\youne\\Repos\\WDPR\\Testing_IntegrationTests\\Testing_IntegrationTests.csproj": {}
+    "C:\\Users\\youne\\Repos\\WDPR\\Testing_IntegrationTests\\Testing_IntegrationTests.csproj": {}
   },
   "projects": {
-    "c:\\Users\\youne\\Repos\\WDPR\\Testing_IntegrationTests\\Testing_IntegrationTests.csproj": {
+    "C:\\Users\\youne\\Repos\\WDPR\\Testing_IntegrationTests\\Testing_IntegrationTests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\youne\\Repos\\WDPR\\Testing_IntegrationTests\\Testing_IntegrationTests.csproj",
+        "projectUniqueName": "C:\\Users\\youne\\Repos\\WDPR\\Testing_IntegrationTests\\Testing_IntegrationTests.csproj",
         "projectName": "Testing_IntegrationTests",
-        "projectPath": "c:\\Users\\youne\\Repos\\WDPR\\Testing_IntegrationTests\\Testing_IntegrationTests.csproj",
+        "projectPath": "C:\\Users\\youne\\Repos\\WDPR\\Testing_IntegrationTests\\Testing_IntegrationTests.csproj",
         "packagesPath": "C:\\Users\\youne\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\youne\\Repos\\WDPR\\Testing_IntegrationTests\\obj\\",
+        "outputPath": "C:\\Users\\youne\\Repos\\WDPR\\Testing_IntegrationTests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\youne\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -28,8 +28,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "c:\\Users\\youne\\Repos\\WDPR\\wdpr-project\\wdpr-project.csproj": {
-                "projectPath": "c:\\Users\\youne\\Repos\\WDPR\\wdpr-project\\wdpr-project.csproj"
+              "C:\\Users\\youne\\Repos\\WDPR\\wdpr-project\\wdpr-project.csproj": {
+                "projectPath": "C:\\Users\\youne\\Repos\\WDPR\\wdpr-project\\wdpr-project.csproj"
               }
             }
           }
@@ -123,14 +123,14 @@
         }
       }
     },
-    "c:\\Users\\youne\\Repos\\WDPR\\wdpr-project\\wdpr-project.csproj": {
+    "C:\\Users\\youne\\Repos\\WDPR\\wdpr-project\\wdpr-project.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\youne\\Repos\\WDPR\\wdpr-project\\wdpr-project.csproj",
+        "projectUniqueName": "C:\\Users\\youne\\Repos\\WDPR\\wdpr-project\\wdpr-project.csproj",
         "projectName": "wdpr-project",
-        "projectPath": "c:\\Users\\youne\\Repos\\WDPR\\wdpr-project\\wdpr-project.csproj",
+        "projectPath": "C:\\Users\\youne\\Repos\\WDPR\\wdpr-project\\wdpr-project.csproj",
         "packagesPath": "C:\\Users\\youne\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\youne\\Repos\\WDPR\\wdpr-project\\obj\\",
+        "outputPath": "C:\\Users\\youne\\Repos\\WDPR\\wdpr-project\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\youne\\AppData\\Roaming\\NuGet\\NuGet.Config",
