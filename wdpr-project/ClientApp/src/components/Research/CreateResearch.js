@@ -58,7 +58,7 @@ const CreateResearch = () => {
     };
 
     try {
-    const response = await axios.post('https://localhost:7192/Create-Research', updatedResearchData);
+    const response = await axios.post('https://stichingaccessebility.azurewebsites.net/Create-Research', updatedResearchData);
       console.log('Research created:', response.data);
       // Optionally, you can redirect the user or perform other actions after successful creation
     } catch (error) {

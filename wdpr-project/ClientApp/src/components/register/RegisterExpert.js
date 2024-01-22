@@ -72,7 +72,7 @@ const RegisterExpert = () => {
   };
 
   const submit = () => {
-    const backendEndpoint = 'http://localhost:5192/create';
+    const backendEndpoint = 'https://stichingaccessebility.azurewebsites.net/create';
     
     axios
       .post(backendEndpoint, formData)
