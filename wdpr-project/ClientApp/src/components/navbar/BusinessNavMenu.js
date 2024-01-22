@@ -26,7 +26,6 @@ const BusinessNavMenu = () => {
             </NavLink>
         </NavItem>
         <NavItem>
-        <NavItem>
             <NavLink tag={Link} id='signOut' className="text-light"  to="/" onClick={uitloggen}>
                 Logout
             </NavLink>
