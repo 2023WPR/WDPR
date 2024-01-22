@@ -59,7 +59,7 @@ export class NavMenu extends Component {
     this.setState({
       toegang: localStorage.getItem("toegang"),
     });
-    window.location.reload();
+    window.location.href = '/';
   }
   
   renderSwitch() {
@@ -84,7 +84,6 @@ export class NavMenu extends Component {
 
    redirect()  {
     const userRole = localStorage.getItem("role");
-    console.log(userRole)
     if (userRole) {
       switch (userRole) {
         case 'Expert':

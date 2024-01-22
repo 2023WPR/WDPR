@@ -6,7 +6,7 @@ const uitloggen = () => {
     this.setState({
         toegang: localStorage.getItem("toegang"),
     });
-    window.location.reload();
+    window.location.href = '/';
 }
 
 const ExpertNavMenu = () => {
@@ -17,7 +17,7 @@ const ExpertNavMenu = () => {
             </NavLink> 
         </NavItem>
         <NavItem>
-            <NavLink tag={Link} className="text-light" to="/chatIndex">
+            <NavLink tag={Link} id='chatIndex' className="text-light" to="/chatIndex">
                 Chat
             </NavLink>
         </NavItem>

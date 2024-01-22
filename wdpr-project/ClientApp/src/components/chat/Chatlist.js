@@ -5,6 +5,7 @@ import { Chat } from './Chat';
 import { jwtDecode } from 'jwt-decode';
 import Card from 'react-bootstrap/Card';
 import '../chat/Chat';
+
 export class ChatList extends Component {
   constructor(props) {
     super(props);
@@ -27,16 +28,14 @@ export class ChatList extends Component {
   fetchChats = async () => {
     try {
       const currentUserId = this.extractCurrentUser();
-      console.log('Fetched Chats:', currentUserId);
   
-      const response = await axios.post('https://stichingaccessebility.azurewebsites.net/chat/all', { current: currentUserId }, {
+      const response = await axios.post('https://stichingaccessebility.azurewebsites.net/chat/all/' +  currentUserId.userId, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
   
       const data = response.data;
-      console.log('Fetched Chats2:', data);
       this.setState({ chats: data });
     } catch (error) {
       console.error('Error fetching chats:', error.message);
@@ -48,8 +47,6 @@ export class ChatList extends Component {
     try {
       const response = await axios.get('https://stichingaccessebility.azurewebsites.net/chat/expert');
       const data = response.data;
-      console.log('Fetched Users:', data);
-      data.forEach((user) => console.log('User ID:', user.id));
       this.setState({ users: data });
     } catch (error) {
       console.error('Error fetching users:', error.message);
@@ -60,20 +57,15 @@ export class ChatList extends Component {
     const authToken = localStorage.getItem('token');
     try {
       const currentUserId = this.extractCurrentUser();
-      console.log("Current user id create chat: "+ currentUserId)
-      const response = await axios.post('https://stichingaccessebility.azurewebsites.net/chat/create', { userToId , currentUserId: currentUserId}, {
+      const response = await axios.post('https://stichingaccessebility.azurewebsites.net/chat/create', { userToId , currentUserId: currentUserId.userId}, {
         headers: {
-          Authorization: `Bearer ${authToken}`
+          Authorization: `Bearer ${authToken}`,
+          'X-User-Role': currentUserId.role
         }
       });
-      console.log(authToken)
       const chatRoomId = response.data.id;
       const messages = response.data.messages;
       const chat = response.data.chat;
-      console.log('Created Chat Room:', chatRoomId);
-      console.log('Created Chat Room:', messages);
-      console.log('Created Chat Room:', chat);
-
 
       this.setState({ chatRoomId: chatRoomId, messages: messages});
       return chatRoomId;
@@ -95,10 +87,9 @@ export class ChatList extends Component {
     try {
       const decodedToken = jwtDecode(authToken);
       const currentUserId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
-      console.log('User currentID: ' + currentUserId);
-
+      const currentRole = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role"];
       this.setState({ currentUser: currentUserId});
-      return currentUserId;
+      return { userId: currentUserId, role: currentRole };
     } catch (error) {
       console.error('Error decoding token:', error);
     }
