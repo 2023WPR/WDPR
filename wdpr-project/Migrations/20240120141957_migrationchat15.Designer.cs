@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using wdpr_project.Data;
 
@@ -11,9 +12,10 @@ using wdpr_project.Data;
 namespace wdpr_project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240120141957_migrationchat15")]
+    partial class migrationchat15
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -805,7 +807,8 @@ namespace wdpr_project.Migrations
 
             modelBuilder.Entity("wdpr_project.Models.Expert", b =>
                 {
-                    b.Navigation("ResearchExperts");
+                    b.Navigation("ResearchExperts")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

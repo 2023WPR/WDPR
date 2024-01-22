@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using wdpr_project.Data;
 using wdpr_project.Models;
 using wdpr_project.Services;
@@ -31,6 +32,8 @@ builder.Services.AddSignalR();
 
 // Custom services
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
 builder.Services.Configure<IdentityOptions>(options => options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier);
 builder.Services.AddAuthorization(options =>
 {
@@ -51,16 +54,27 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = "https://stichingaccessebility.azurewebsites.net:7047",
-            ValidAudience = "https://stichingaccessebility.azurewebsites.net:7047",
+
+            ValidIssuer = builder.Configuration["JwtUrl"],
+            ValidAudience = builder.Configuration["JwtUrl"],
+
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("awef98awef978haweof8g7aw789efhh789awef8h9awh89efh98f89uawef9j8aw89hefawef"))
         };
-    }).AddGoogle(options =>
-{
-    options.ClientId = "1012765062649-rchsk8hcpet6055qpdbm7opu4t4nvefm.apps.googleusercontent.com";
-    options.ClientSecret = "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";
-});;
+    });
+    builder.Services.AddControllers();
+    builder.Services.AddMvc();
+   
 
+
+builder.Services.AddSwaggerGen(c => c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+{
+    Name = "Authorization",
+    Type = SecuritySchemeType.ApiKey,
+    Scheme = "Bearer",
+    BearerFormat = "JWT",
+    In = ParameterLocation.Header,
+    Description = "JWT Authorization header using the Bearer scheme."
+}));
     
   
 

@@ -6,8 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using wdpr_project.DTOs;
-using System.Security.Claims;
-using Newtonsoft.Json.Linq;
 
 
 [ApiController]
@@ -28,21 +26,14 @@ public class ChatController : ControllerBase
         _roleManager = roleManager;
         _mapper= mapper;
     }
-
-    private Task<User> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+    
      // GET: users  
-     //[Authorize]
+   // [Authorize(Roles ="Expert")]
     [HttpGet("chat/expert")]
     public async Task<ActionResult<IEnumerable<User>>> ListChatOfAll()
 {
     try
     {
-        //  var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-        //    Console.WriteLine("test"+currentUserId);
-        // //     var current = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == currentUserId);
-        // if (currentUserId != null)
-        // {
-            // Retrieve all users excluding the current use
             var userRoleBsiness = await _userManager.GetUsersInRoleAsync("Business");
             var userRoleAdmin = await _userManager.GetUsersInRoleAsync("Admin");
             var userRoleUser = await _userManager.GetUsersInRoleAsync("Expert");
@@ -50,12 +41,6 @@ public class ChatController : ControllerBase
              var allUsers = userRoleBsiness.Concat(userRoleUser).ToList();
 
              return Ok(allUsers);
-       // }
-        // else
-        // {
-        //     // Handle the case where the current user ID claim is not found
-        //     return StatusCode(400, "Current user ID not found in claims.");
-        // }
     }
     catch (Exception)
     {
@@ -63,6 +48,25 @@ public class ChatController : ControllerBase
     }
 }
 
+   // [Authorize(Roles ="Business")]
+    [HttpGet("chat/business")]
+    public async Task<ActionResult<IEnumerable<User>>> ListChatOfAllExpert()
+{
+    try
+    {
+            var userRoleUser = await _userManager.GetUsersInRoleAsync("Expert");
+           
+             var allUsers = userRoleUser.ToList();
+
+             return Ok(allUsers);
+    }
+    catch (Exception)
+    {
+        return StatusCode(500, "Internal Server Error");
+    }
+}
+
+//[Authorize(Roles = "Expert, Business")]
 [HttpPost("chat/create")]
 public async Task<ActionResult<ChatDTO>> CreateChat([FromBody] ChatRequest chatRequest)
 {
@@ -71,7 +75,6 @@ public async Task<ActionResult<ChatDTO>> CreateChat([FromBody] ChatRequest chatR
         // Get the current user ID from the claims
         var currentUser = await _dbContext.Users.FindAsync(chatRequest.CurrentUserId);
         var userTo = await _dbContext.Users.FindAsync(chatRequest.UserToId);
-            Console.WriteLine("current userID: "+ chatRequest.CurrentUserId);
         if (currentUser == null || userTo == null)
         {
             return NotFound("One or both users not found");
@@ -126,30 +129,28 @@ public class ChatRequest
 
 
 // Inside your ChatController or relevant service class
-
-[HttpPost("chat/all")]
-public async Task<ActionResult<IEnumerable<Chat>>> GetAllChatsForUser([FromBody] JObject payload)
+//[Authorize(Roles = "Expert, Business")]
+[HttpPost("chat/all/{current}")]
+public async Task<ActionResult<IEnumerable<Chat>>> GetAllChatsForUser(string current)
 {
     try
     {
-        var currentUserId = payload.GetValue("current")?.ToString();
         
         // Get the current user ID from the claims
-       var currentUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == currentUserId);
-        Console.WriteLine("sssss"+currentUser.Id.ToString());
+       var currentUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == current);
         if (currentUser != null)
         {
             // Retrieve all chats where the current user is either the sender or receiver
-            var chats = await _dbContext.Chats
-                .Include(c => c.UserChats)
-                .Include(c => c.Messages)
-                .Where(c => c.UserChats.Any(u => u.UserId == currentUser.Id) || c.Messages.Any(m => m.UserId == currentUser.Id))
-                .ToListAsync();
+           var userChatIds = await _dbContext.UserChats
+            .Where(uc => uc.UserId == currentUser.Id)
+            .Select(uc => uc.ChatId)
+            .ToListAsync();
+
 
             // Map Chat entities to ChatDTO using AutoMapper
            
 
-            return Ok(currentUser);
+            return Ok(userChatIds);
         }
         else
         {

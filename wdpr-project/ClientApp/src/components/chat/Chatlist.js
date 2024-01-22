@@ -5,6 +5,7 @@ import { Chat } from './Chat';
 import { jwtDecode } from 'jwt-decode';
 import Card from 'react-bootstrap/Card';
 import '../chat/Chat';
+
 export class ChatList extends Component {
   constructor(props) {
     super(props);
@@ -27,16 +28,14 @@ export class ChatList extends Component {
   fetchChats = async () => {
     try {
       const currentUserId = this.extractCurrentUser();
-      console.log('Fetched Chats:', currentUserId);
   
-      const response = await axios.post('https://stichingaccessebility.azurewebsites.net/chat/all', { current: currentUserId }, {
+      const response = await axios.post(process.env.REACT_APP_API_URL +'/chat/all/' +  currentUserId.userId, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
   
       const data = response.data;
-      console.log('Fetched Chats2:', data);
       this.setState({ chats: data });
     } catch (error) {
       console.error('Error fetching chats:', error.message);
@@ -45,11 +44,20 @@ export class ChatList extends Component {
   
 
   fetchUsers = async () => {
+    const currentUser = this.extractCurrentUser();
+    console.log(currentUser.role);
+    let path = '/chat/expert';
     try {
-      const response = await axios.get('https://stichingaccessebility.azurewebsites.net/chat/expert');
+      if(currentUser.role === 'Business'){
+         path = '/chat/business';
+      }
+      const response = await axios.get(process.env.REACT_APP_API_URL + path, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Role: currentUser.role
+        },
+      });
       const data = response.data;
-      console.log('Fetched Users:', data);
-      data.forEach((user) => console.log('User ID:', user.id));
       this.setState({ users: data });
     } catch (error) {
       console.error('Error fetching users:', error.message);
@@ -58,22 +66,18 @@ export class ChatList extends Component {
 
   createChat = async (userToId) => {
     const authToken = localStorage.getItem('token');
+    const decodedToken = jwtDecode(authToken);
     try {
       const currentUserId = this.extractCurrentUser();
-      console.log("Current user id create chat: "+ currentUserId)
-      const response = await axios.post('https://stichingaccessebility.azurewebsites.net/chat/create', { userToId , currentUserId: currentUserId}, {
+      const response = await axios.post(process.env.REACT_APP_API_URL +'/chat/create', { userToId , currentUserId: currentUserId.userId}, {
         headers: {
-          Authorization: `Bearer ${authToken}`
+          Authorization: `Bearer ${decodedToken}`
         }
       });
-      console.log(authToken)
       const chatRoomId = response.data.id;
       const messages = response.data.messages;
+      // eslint-disable-next-line
       const chat = response.data.chat;
-      console.log('Created Chat Room:', chatRoomId);
-      console.log('Created Chat Room:', messages);
-      console.log('Created Chat Room:', chat);
-
 
       this.setState({ chatRoomId: chatRoomId, messages: messages});
       return chatRoomId;
@@ -90,15 +94,15 @@ export class ChatList extends Component {
 
  extractCurrentUser() {
   const authToken = localStorage.getItem('token');
-
   if (authToken) {
     try {
       const decodedToken = jwtDecode(authToken);
-      const currentUserId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
-      console.log('User currentID: ' + currentUserId);
 
+      const currentUserId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+      const userRole = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+      console.log(userRole);
       this.setState({ currentUser: currentUserId});
-      return currentUserId;
+      return { userId: currentUserId, role: userRole };
     } catch (error) {
       console.error('Error decoding token:', error);
     }
@@ -152,7 +156,7 @@ export class ChatList extends Component {
                     <Card.Body>
                       <p>Bericht: {message.message}</p>
                       <p>
-                      Van gebruiker: <span role="text">{message.username}</span>
+                      Van gebruiker: <span>{message.username}</span>
                       </p>
                       <p>Datum: {message.date}</p>
                     </Card.Body>

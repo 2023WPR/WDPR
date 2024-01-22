@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import ResearchCard from "./ResearchCard";
@@ -7,11 +7,10 @@ const Research = () => {
     
     const [researches, setResearches] = useState([]);
     useEffect(() => {
-        fetch('https://stichingaccessebility.azurewebsites.net:7276/Research')
+        fetch(process.env.REACT_APP_API_URL + '/Research')
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
-                setResearches(data);
+                 setResearches(data);
             })
             .catch((err) => {
                 console.log(err.message);
@@ -20,6 +19,7 @@ const Research = () => {
     
         return (
             <Container className="Research-container">
+                <h1>Onderzoeken</h1>
                 <Row>
                     {researches.map((research => {
                         return (
