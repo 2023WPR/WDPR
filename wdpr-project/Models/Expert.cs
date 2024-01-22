@@ -13,7 +13,7 @@ public class Expert : User
     public List<DisabilityAid> Aids { get; set; } = new List<DisabilityAid>();
     public PersonalData PersonalData { get; set; } = new PersonalData();
     public PersonalData? Caretaker { get; set; }
-    public ResearchExpert ResearchExperts { get; set; } = new ResearchExpert();// Represents many-to-many relationship
+    public ResearchExpert? ResearchExperts { get; set; } = new ResearchExpert();// Represents many-to-many relationship
     
     public Expert(){}
 

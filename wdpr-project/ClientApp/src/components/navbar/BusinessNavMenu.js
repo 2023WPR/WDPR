@@ -1,10 +1,21 @@
 import {NavItem, NavLink} from "reactstrap";
 import { Link } from 'react-router-dom';
-
+import { useState } from 'react';
+import { Home } from "../Home";
 const BusinessNavMenu = () => {
+    const [toegang, setToegang] = useState(localStorage.getItem("toegang"));
+
+    const uitloggen = () => {
+      
+        localStorage.removeItem("token");
+        setToegang(localStorage.getItem("toegang"));
+        <Home/>
+        window.location.href = '/';
+    
+    }
     return (<>
         <NavItem>
-            <NavLink tag={Link} className="text-light" to="/business/onderzoek">
+            <NavLink tag={Link} className="text-light" to="/research-overview">
                 Onderzoeken
             </NavLink>
         </NavItem>
@@ -19,7 +30,7 @@ const BusinessNavMenu = () => {
             </NavLink>
         </NavItem> 
         <NavItem>
-            <NavLink tag={Link} id='signOut' className="text-light"  to="/" onClick={this.uitloggen}>
+            <NavLink tag={Link} id='signOut' className="text-light"  to="/" onClick={uitloggen}>
                 Logout
             </NavLink>
         </NavItem>

@@ -10,8 +10,7 @@ const Research = () => {
         fetch(process.env.REACT_APP_API_URL + '/Research')
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
-                setResearches(data);
+                 setResearches(data);
             })
             .catch((err) => {
                 console.log(err.message);

@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol;
 using wdpr_project.Data;
 using wdpr_project.Models;
 using wdpr_project.Services;
@@ -19,7 +20,7 @@ namespace wdpr_project.Controllers_
             _context = context;
             _mapper = mapper;
         }
-
+        [Authorize(Roles = "Expert, Admin, Business")]
         // GET: Research
         [HttpGet("Research")]
         public async Task<ActionResult<IEnumerable<Research>>> ListResearch()
@@ -46,7 +47,7 @@ namespace wdpr_project.Controllers_
         }
 
 
-        [HttpPost("research/{researchId}/participate")]
+[HttpPost("research/{researchId}/participate")]
 public async Task<ActionResult> ParticipateInResearch(int researchId, [FromBody] ExpertDTO expert)
 {
     try
@@ -97,7 +98,7 @@ public async Task<ActionResult> ParticipateInResearch(int researchId, [FromBody]
 public class ExpertDTO{
     public string Id{get;set;}
 }
-
+//[Authorize(Roles = "Business")]
 [HttpPost("researchess")]
 public async Task<ActionResult<IEnumerable<Research>>> GetResearchesWithParticipants([FromBody] CurrentUser currentUser)
 {
@@ -109,7 +110,7 @@ public async Task<ActionResult<IEnumerable<Research>>> GetResearchesWithParticip
        // Assuming userId is the current user's ID
         var business = await _context.Businesses.FirstOrDefaultAsync(b => b.Id == currentUser.CurrentUserId);
         bool value = false;
-     
+     Console.WriteLine(value);
       if (business != null && business.Id != null)
         {
             // Retrieve the researches for the current business
@@ -126,7 +127,7 @@ public async Task<ActionResult<IEnumerable<Research>>> GetResearchesWithParticip
                     Capacity = r.Capacity,
                     Status = r.Status,
                     businessId = r.business.Id,
-                    ExpertIds = r.ResearchExperts.Select(re => re.Expert.Id).ToList(), // Assuming Expert has an Id property
+                    ExpertIds = r.ResearchExperts.Select(re => re.Expert.UserName).ToList()
                 })
                 .ToListAsync();
 
@@ -171,7 +172,7 @@ public class CurrentUser{
         {
             return Ok();
         }
-
+//[Authorize(Roles = "Business")]
 [HttpPost("Create-Research")]
 public async Task<ActionResult<ResearchDTO>> CreateResearch([FromBody] ResearchDTO researchdto)
 {  
@@ -197,15 +198,6 @@ public async Task<ActionResult<ResearchDTO>> CreateResearch([FromBody] ResearchD
             ResearchCriterium = researchdto.ResearchCriterium
         };
 
-        // var researchCriteria = new ResearchCriterium
-        // {
-        //     Id = researchdto.ResearchCriterium.Id,
-        //     MinmumAge = researchdto.ResearchCriterium.MinmumAge,
-        //     MaximumAge = researchdto.ResearchCriterium.MaximumAge,
-        //     Address = researchdto.ResearchCriterium.Address,
-        //     Disability = researchdto.ResearchCriterium.Disability,
-        // };
-
         _context.Researches.Add(research);
         //_context.ResearchCriteria.Add(researchCriteria);
         await _context.SaveChangesAsync();
@@ -219,7 +211,7 @@ public async Task<ActionResult<ResearchDTO>> CreateResearch([FromBody] ResearchD
     }
 }
 
-                
+        [Authorize(Roles = "Business")]
         [HttpGet("Edit/{id}")]
         public async Task<IActionResult> GetResearchForEdit(int id)
         {
@@ -236,6 +228,7 @@ public async Task<ActionResult<ResearchDTO>> CreateResearch([FromBody] ResearchD
         // POST: Research/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Business")]
         public async Task<IActionResult> Edit(int id, [FromBody] Research research)
         {
             if (id != research.Id)
@@ -267,6 +260,7 @@ public async Task<ActionResult<ResearchDTO>> CreateResearch([FromBody] ResearchD
         }
 
         // GET: Research/Delete/5
+        [Authorize(Roles = "Business")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Researches == null)
@@ -283,7 +277,7 @@ public async Task<ActionResult<ResearchDTO>> CreateResearch([FromBody] ResearchD
 
             return Ok(research);
         }
-
+        [Authorize(Roles = "Business")]
         // POST: Research/Delete/5
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)

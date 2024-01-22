@@ -19,37 +19,34 @@ const Login = () => {
     setPassword(event.target.value);
   };
 
- 
-const handleSubmit = async (event) => {
-  event.preventDefault();
-
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+  
     const backendEndpoint = process.env.REACT_APP_API_URL +'/login';
-
-  const formData = {
-    UserName: username,
-    Password: password,
-  };
-
-  try {
-    const response = await axios.post(backendEndpoint, formData);
-    const token = response.data.token;
-    localStorage.setItem("token", token);
-    localStorage.setItem("username", username);
-    Access();
-    redirect();
-    window.location.reload();
-  } catch (error) {
-    console.error('Error submitting form to backend:', error);
-
-    if (error.response) {
-      console.log(`Error: ${error}, Message: ${error.response.data}}`);
-      if (error.response.status === 401) {
-        setError(error.response.data);
+  
+    const formData = {
+      UserName: username,
+      Password: password,
+    };
+  
+    try {
+      const response = await axios.post(backendEndpoint, formData);
+      const token = response.data;
+      
+      localStorage.setItem("token", token);
+      localStorage.setItem("username", username);
+      await Access();
+      redirect();
+      window.location.reload();
+    } catch (error) {
+      console.error('Error submitting form to backend:', error);
+  
+      if (error.response) {
+          setError("Invalid gebruikersnaam of wachtwoord");
       }
     }
-  }
-};
-
+  };
+  
 // const login = useGoogleLogin({
 //   onSuccess: async (response) => {
 //     try {
@@ -96,10 +93,10 @@ const handleSubmit = async (event) => {
     }
   };
   return (
-    <>
     <Form onSubmit={handleSubmit}>
       {error && <Alert variant="danger">{error}</Alert>}
       <Form.Group className="mb-3" controlId="formBasicUserName">
+        <h1>Login</h1>
         <Form.Label>Vul je gebruikersnaam in</Form.Label>
         <Form.Control type="Username" value={username} onChange={handleUserNameChange} placeholder="vul in gebruikersnaam"/>
       </Form.Group>
@@ -113,7 +110,6 @@ const handleSubmit = async (event) => {
         Inloggen
       </Button>
     </Form>
-    </>
   );
 };
 
