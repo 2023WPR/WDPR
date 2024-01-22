@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { Home } from "../Home";
 const BusinessNavMenu = () => {
+    // eslint-disable-next-line
     const [toegang, setToegang] = useState(localStorage.getItem("toegang"));
 
     const uitloggen = () => {

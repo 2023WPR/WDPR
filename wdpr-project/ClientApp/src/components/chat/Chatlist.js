@@ -65,6 +65,7 @@ export class ChatList extends Component {
       });
       const chatRoomId = response.data.id;
       const messages = response.data.messages;
+      // eslint-disable-next-line
       const chat = response.data.chat;
 
       this.setState({ chatRoomId: chatRoomId, messages: messages});
