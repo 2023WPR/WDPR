@@ -12,18 +12,13 @@ const uitloggen = () => {
 const ExpertNavMenu = () => {
     return (<>
         <NavItem>
-            <NavLink tag={Link} className="text-light" to="/expert/onderzoek">
-                Onderzoeken
+            <NavLink tag={Link} className="text-light" to="/onderzoeken">
+                Onderzoeken overzicht
             </NavLink> 
         </NavItem>
         <NavItem>
             <NavLink tag={Link} id='chatIndex' className="text-light" to="/chatIndex">
                 Chat
-            </NavLink>
-        </NavItem>
-        <NavItem>
-            <NavLink tag={Link} className="text-light" to="/expert/profile">
-                Mijn gegevens
             </NavLink>
         </NavItem>
         <NavItem>

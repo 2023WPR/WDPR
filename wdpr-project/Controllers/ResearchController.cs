@@ -20,7 +20,7 @@ namespace wdpr_project.Controllers_
             _context = context;
             _mapper = mapper;
         }
-        [Authorize(Roles = "Expert, Admin, Business")]
+       // [Authorize(Roles = "Expert, Admin, Business")]
         // GET: Research
         [HttpGet("Research")]
         public async Task<ActionResult<IEnumerable<Research>>> ListResearch()
@@ -211,7 +211,7 @@ public async Task<ActionResult<ResearchDTO>> CreateResearch([FromBody] ResearchD
     }
 }
 
-        [Authorize(Roles = "Business")]
+       // [Authorize(Roles = "Business")]
         [HttpGet("Edit/{id}")]
         public async Task<IActionResult> GetResearchForEdit(int id)
         {
@@ -228,7 +228,7 @@ public async Task<ActionResult<ResearchDTO>> CreateResearch([FromBody] ResearchD
         // POST: Research/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "Business")]
+      //  [Authorize(Roles = "Business")]
         public async Task<IActionResult> Edit(int id, [FromBody] Research research)
         {
             if (id != research.Id)
@@ -260,7 +260,7 @@ public async Task<ActionResult<ResearchDTO>> CreateResearch([FromBody] ResearchD
         }
 
         // GET: Research/Delete/5
-        [Authorize(Roles = "Business")]
+       // [Authorize(Roles = "Business")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Researches == null)
@@ -277,7 +277,7 @@ public async Task<ActionResult<ResearchDTO>> CreateResearch([FromBody] ResearchD
 
             return Ok(research);
         }
-        [Authorize(Roles = "Business")]
+       // [Authorize(Roles = "Business")]
         // POST: Research/Delete/5
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)

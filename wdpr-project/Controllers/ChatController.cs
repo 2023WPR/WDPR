@@ -6,8 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using wdpr_project.DTOs;
-using System.Security.Claims;
-using Newtonsoft.Json.Linq;
 
 
 [ApiController]
@@ -30,7 +28,7 @@ public class ChatController : ControllerBase
     }
     
      // GET: users  
-    //[Authorize(Roles ="Expert")]
+   // [Authorize(Roles ="Expert")]
     [HttpGet("chat/expert")]
     public async Task<ActionResult<IEnumerable<User>>> ListChatOfAll()
 {
@@ -41,6 +39,24 @@ public class ChatController : ControllerBase
             var userRoleUser = await _userManager.GetUsersInRoleAsync("Expert");
            
              var allUsers = userRoleBsiness.Concat(userRoleUser).ToList();
+
+             return Ok(allUsers);
+    }
+    catch (Exception)
+    {
+        return StatusCode(500, "Internal Server Error");
+    }
+}
+
+   // [Authorize(Roles ="Business")]
+    [HttpGet("chat/business")]
+    public async Task<ActionResult<IEnumerable<User>>> ListChatOfAllExpert()
+{
+    try
+    {
+            var userRoleUser = await _userManager.GetUsersInRoleAsync("Expert");
+           
+             var allUsers = userRoleUser.ToList();
 
              return Ok(allUsers);
     }

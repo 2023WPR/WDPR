@@ -29,7 +29,7 @@ export class ChatList extends Component {
     try {
       const currentUserId = this.extractCurrentUser();
   
-      const response = await axios.post('https://stichingaccessebility.azurewebsites.net/chat/all/' +  currentUserId.userId, {
+      const response = await axios.post(process.env.REACT_APP_API_URL +'/chat/all/' +  currentUserId.userId, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -44,8 +44,19 @@ export class ChatList extends Component {
   
 
   fetchUsers = async () => {
+    const currentUser = this.extractCurrentUser();
+    console.log(currentUser.role);
+    let path = '/chat/expert';
     try {
-      const response = await axios.get('https://stichingaccessebility.azurewebsites.net/chat/expert');
+      if(currentUser.role === 'Business'){
+         path = '/chat/business';
+      }
+      const response = await axios.get(process.env.REACT_APP_API_URL + path, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Role: currentUser.role
+        },
+      });
       const data = response.data;
       this.setState({ users: data });
     } catch (error) {
@@ -55,12 +66,12 @@ export class ChatList extends Component {
 
   createChat = async (userToId) => {
     const authToken = localStorage.getItem('token');
+    const decodedToken = jwtDecode(authToken);
     try {
       const currentUserId = this.extractCurrentUser();
-      const response = await axios.post('https://stichingaccessebility.azurewebsites.net/chat/create', { userToId , currentUserId: currentUserId.userId}, {
+      const response = await axios.post(process.env.REACT_APP_API_URL +'/chat/create', { userToId , currentUserId: currentUserId.userId}, {
         headers: {
-          Authorization: `Bearer ${authToken}`,
-          'X-User-Role': currentUserId.role
+          Authorization: `Bearer ${decodedToken}`
         }
       });
       const chatRoomId = response.data.id;
@@ -83,14 +94,15 @@ export class ChatList extends Component {
 
  extractCurrentUser() {
   const authToken = localStorage.getItem('token');
-
   if (authToken) {
     try {
       const decodedToken = jwtDecode(authToken);
+
       const currentUserId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
-      const currentRole = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role"];
+      const userRole = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+      console.log(userRole);
       this.setState({ currentUser: currentUserId});
-      return { userId: currentUserId, role: currentRole };
+      return { userId: currentUserId, role: userRole };
     } catch (error) {
       console.error('Error decoding token:', error);
     }

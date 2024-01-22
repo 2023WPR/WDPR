@@ -30,6 +30,7 @@ public class AdminController : ControllerBase
         _roleManager = roleManager;
         _configuration = configuration;
     }
+
     //[Authorize(Roles ="Admin")]
       [HttpGet("admin/get/expert")]
         public async Task<ActionResult<IEnumerable<Expert>>> ListExperts()
@@ -45,7 +46,8 @@ public class AdminController : ControllerBase
           }
             return experts;
         }
-
+    
+   // [Authorize(Roles ="Admin")]
      [HttpGet("admin/get/business")]
         public async Task<ActionResult<IEnumerable<Business>>> ListBussines()
         {
@@ -59,7 +61,8 @@ public class AdminController : ControllerBase
 
             return businesses;
         }
-
+        
+   // [Authorize(Roles ="Admin")]
      [HttpGet("admin/get/research")]
 public async Task<ActionResult<IEnumerable<Research>>> ListResearch()
 {

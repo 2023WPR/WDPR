@@ -17,7 +17,7 @@ const ExpertList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://stichingaccessebility.azurewebsites.net/admin/get/expert');
+        const response = await axios.get(process.env.REACT_APP_API_URL +'/admin/get/expert');
         const data = response.data;
         setExperts(data);
       } catch (error) {

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using wdpr_project.Models;
 using wdpr_project.Services;
 
-
+[AllowAnonymous]
 [ApiController]
 public class AurhorizatiomController : ControllerBase
 {
@@ -13,7 +13,7 @@ public class AurhorizatiomController : ControllerBase
     { 
         _authService = authService;
     }
-[AllowAnonymous ]
+    
     [HttpPost("Login")]
     public async Task<string> Login([FromBody] User user)
     {

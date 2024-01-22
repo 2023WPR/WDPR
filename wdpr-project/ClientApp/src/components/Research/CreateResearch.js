@@ -12,21 +12,27 @@ const CreateResearch = () => {
     Capacity: '',
     Status: true,
     businessId: 0,
-    DisabilityId: 0,
     ResearchCriterium: {
       MinimumAge: '',
       MaximumAge: '',
       Address: '',
     }
   });
-
   const [disabilities, setDisabilities] = useState([]);
-
+  const [disability, setDisability] = useState({
+    DisabilityId : 0
+});
   useEffect(() => {
     // Fetch existing disabilities when the component mounts
+    const authToken = localStorage.getItem('token');
     const fetchDisabilities = async () => {
       try {
-        const response = await axios.get(process.env.REACT_APP_API_URL + '/Disability');
+        const response = await axios.get(process.env.REACT_APP_API_URL + '/Disability'
+        ,{headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${authToken}`, // notice the Bearer before your token
+        }
+      });
         setDisabilities(response.data);
       } catch (error) {
         console.error('Error fetching disabilities:', error);
@@ -40,8 +46,8 @@ const CreateResearch = () => {
  const handleDisabilityClick = (selectedDisabilityId) => {
     console.log(selectedDisabilityId);
     
-    setResearchData((prevData) => ({
-      ...researchData,
+    setDisability((prevData) => ({
+      ...disability,
       DisabilityId: selectedDisabilityId,
     }));
   };
@@ -58,7 +64,7 @@ const CreateResearch = () => {
     };
 
     try {
-    const response = await axios.post('https://stichingaccessebility.azurewebsites.net/Create-Research', updatedResearchData);
+    const response = await axios.post(process.env.REACT_APP_API_URL +'/Create-Research', updatedResearchData);
       console.log('Research created:', response.data);
       // Optionally, you can redirect the user or perform other actions after successful creation
     } catch (error) {
@@ -105,7 +111,7 @@ const CreateResearch = () => {
   };  
 
   return (
-    <form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       <Form.Group className="mb-3" controlId="formResearchTitle">
         <Form.Label>Titel:</Form.Label>
         <Form.Control type="text" name="Title" value={researchData.Title} onChange={handleChange} placeholder="vul in titel" />
@@ -140,7 +146,7 @@ const CreateResearch = () => {
       <ListGroup.Item
         action
         onClick={() => handleDisabilityClick(disability.id)}
-        active={researchData.ResearchCriterium.DisabilityId === disability.id}
+        active={disability.DisabilityId === disability.id}
       >
         {disability.type}
       </ListGroup.Item>
@@ -155,7 +161,7 @@ const CreateResearch = () => {
       <Button variant="primary" type="submit">
         Maak onderzoek
       </Button>
-    </form>
+    </Form>
   );
 };
 

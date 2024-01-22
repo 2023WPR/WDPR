@@ -8,7 +8,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row'
 import './list.css';
-
+import Access from '../login/Access';
 const BusinessList = () => {
   const [businesses, setBusinesses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -16,8 +16,14 @@ const BusinessList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+   let token = await Access();
       try {
-        const response = await axios.get('https://stichingaccessebility.azurewebsites.net/admin/get/business');
+        const response = await axios.get(process.env.REACT_APP_API_URL +'/admin/get/business'
+          ,{headers: {
+              'Content-type': 'application/json',
+              'Authorization': `Bearer ${token}`, // notice the Bearer before your token
+          }
+        });
         const data = response.data;
         setBusinesses(data);
       } catch (error) {

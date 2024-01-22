@@ -17,7 +17,7 @@ const ResearchList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://stichingaccessebility.azurewebsites.net/admin/get/research');
+        const response = await axios.get(process.env.REACT_APP_API_URL +'/admin/get/research');
         const data = response.data;
         setResearches(data);
       } catch (error) {

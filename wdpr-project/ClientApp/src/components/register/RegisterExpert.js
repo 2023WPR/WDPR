@@ -72,7 +72,8 @@ const RegisterExpert = () => {
   };
 
   const submit = () => {
-    const backendEndpoint = 'https://stichingaccessebility.azurewebsites.net/create';
+    const authToken = localStorage.getItem('token');
+    const backendEndpoint = process.env.REACT_APP_API_URL +'/create';
     
     axios
       .post(backendEndpoint, formData)

@@ -13,7 +13,7 @@ const ResearchOverview = () => {
     const fetchResearchData = async () => {
         const currentUserId = getCurrentUser();
       try {
-        const response = await axios.post('https://stichingaccessebility.azurewebsites.net/researchess', {
+        const response = await axios.post(process.env.REACT_APP_API_URL +'/researchess', {
           CurrentUserId: currentUserId, 
         });
         setResearchData(response.data);
